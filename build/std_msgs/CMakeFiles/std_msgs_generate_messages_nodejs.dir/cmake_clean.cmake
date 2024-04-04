@@ -1,0 +1,40 @@
+file(REMOVE_RECURSE
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Bool.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Byte.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/ByteMultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Char.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/ColorRGBA.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Duration.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Empty.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Float32.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Float32MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Float64.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Float64MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Header.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int16.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int16MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int32.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int32MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int64.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int64MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int8.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Int8MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/MultiArrayDimension.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/MultiArrayLayout.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/String.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/Time.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt16.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt16MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt32.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt32MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt64.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt64MultiArray.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt8.js"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/gennodejs/ros/std_msgs/msg/UInt8MultiArray.js"
+  "CMakeFiles/std_msgs_generate_messages_nodejs"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang )
+  include(CMakeFiles/std_msgs_generate_messages_nodejs.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: tf2_msgs
+Description: Description of tf2_msgs
+Version: 0.7.6
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/geometry2-0.7.6/tf2_msgs/include
+Libs: -L${prefix}/lib 
+Requires: message_generation geometry_msgs actionlib_msgs

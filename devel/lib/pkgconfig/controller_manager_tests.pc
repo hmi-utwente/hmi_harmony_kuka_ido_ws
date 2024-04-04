@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: controller_manager_tests
+Description: Description of controller_manager_tests
+Version: 0.20.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

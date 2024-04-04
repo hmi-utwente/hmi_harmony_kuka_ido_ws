@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -shared -Wl,-soname,libconfigfile.so -o /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/lib/libconfigfile.so CMakeFiles/configfile.dir/configfile/configfile.cpp.o 

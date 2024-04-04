@@ -1,0 +1,8 @@
+# CMake generated Testfile for 
+# Source directory: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/layers/social_navigation_layers
+# Build directory: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/layers/social_navigation_layers
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(_ctest_social_navigation_layers_roslint_package "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/catkin_generated/env_cached.sh" "/usr/bin/python3" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/catkin/cmake/test/run_tests.py" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/test_results/social_navigation_layers/roslint-social_navigation_layers.xml" "--working-dir" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/layers/social_navigation_layers" "--return-code" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/roslint/scripts/test_wrapper /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/test_results/social_navigation_layers/roslint-social_navigation_layers.xml make roslint_social_navigation_layers")
+set_tests_properties(_ctest_social_navigation_layers_roslint_package PROPERTIES  _BACKTRACE_TRIPLES "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/catkin/cmake/test/tests.cmake;160;add_test;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/roslint/cmake/roslint-extras.cmake;68;catkin_run_tests_target;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/layers/social_navigation_layers/CMakeLists.txt;47;roslint_add_test;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/layers/social_navigation_layers/CMakeLists.txt;0;")

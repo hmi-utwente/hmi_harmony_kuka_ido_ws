@@ -1,0 +1,7 @@
+<launch>
+  <!-- Launch joy_node -->
+  <node pkg="joy" type="joy_node" name="joy_node" />
+
+  <!-- Launch your PS3 controller teleop node -->
+  <node name="ps3_controller_teleop" type="ps3_controller_teleop.py" pkg="ps3_kuka_teleop" output="screen" />
+</launch>

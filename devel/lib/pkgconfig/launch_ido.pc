@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: launch_ido
+Description: Description of launch_ido
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

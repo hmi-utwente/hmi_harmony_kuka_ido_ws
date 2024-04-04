@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: ido_interface
+Description: Description of ido_interface
+Version: 0.0.0
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ido_interface/include
+Libs: -L${prefix}/lib -lMyRobot_hardware_interface
+Requires: hardware_interface controller_manager roscpp control_msgs trajectory_msgs pluginlib transmission_interface urdf control_toolbox joint_limits_interface

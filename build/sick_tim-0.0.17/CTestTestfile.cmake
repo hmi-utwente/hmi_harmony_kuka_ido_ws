@@ -1,0 +1,8 @@
+# CMake generated Testfile for 
+# Source directory: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/sick_tim-0.0.17
+# Build directory: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/sick_tim-0.0.17
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(_ctest_sick_tim_roslaunch-check_launch "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/catkin_generated/env_cached.sh" "/usr/bin/python3" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/catkin/cmake/test/run_tests.py" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/test_results/sick_tim/roslaunch-check_launch.xml" "--return-code" "/home/arjan/.local/lib/python3.10/site-packages/cmake/data/bin/cmake -E make_directory /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/test_results/sick_tim" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/tools/roslaunch/scripts/roslaunch-check -o \"/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/test_results/sick_tim/roslaunch-check_launch.xml\" \"/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/sick_tim-0.0.17/launch\" ")
+set_tests_properties(_ctest_sick_tim_roslaunch-check_launch PROPERTIES  _BACKTRACE_TRIPLES "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/catkin/cmake/test/tests.cmake;160;add_test;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/roslaunch/cmake/roslaunch-extras.cmake;66;catkin_run_tests_target;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/sick_tim-0.0.17/CMakeLists.txt;103;roslaunch_add_file_check;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/sick_tim-0.0.17/CMakeLists.txt;0;")

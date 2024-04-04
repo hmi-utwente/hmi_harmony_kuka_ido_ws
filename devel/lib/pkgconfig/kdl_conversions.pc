@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: kdl_conversions
+Description: Description of kdl_conversions
+Version: 1.13.2
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/geometry-1.13.2/kdl_conversions/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib -lkdl_conversions -lorocos-kdl
+Requires: geometry_msgs

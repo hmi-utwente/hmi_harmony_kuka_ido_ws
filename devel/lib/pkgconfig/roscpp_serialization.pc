@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: roscpp_serialization
+Description: Description of roscpp_serialization
+Version: 0.7.2
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/roscpp_core/roscpp_serialization/include
+Libs: -L${prefix}/lib -lroscpp_serialization
+Requires: cpp_common roscpp_traits rostime

@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/install
+
+Name: rosmake
+Description: Description of rosmake
+Version: 1.15.8
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

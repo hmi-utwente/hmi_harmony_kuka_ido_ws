@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+          
+    <rosparam file="$(find ido_interface)/config/diffDriveConfig.yaml" command="load" />
+    
+    <node name="diff_controller" pkg="controller_manager" type="spawner"
+          respawn="false" output="screen" args="mobile_base_controller"/>
+          
+</launch>

@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: camera-calibration
+Version: 1.17.0
+Summary: camera_calibration allows easy calibration of monocular or stereo cameras using a checkerboard calibration target.
+Home-page: http://www.ros.org/wiki/camera_calibration
+Author: James Bowman, Patrick Mihelich
+Maintainer: Vincent Rabaud <vincent.rabaud@gmail.com>, Autonomoustuff team <software@autonomoustuff.com>
+License: BSD
+Platform: UNKNOWN
+
+UNKNOWN
+

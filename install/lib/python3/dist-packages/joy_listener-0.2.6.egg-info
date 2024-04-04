@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: joy_listener
+Version: 0.2.6
+Summary: Translates joy msgs
+Home-page: http://ros.org/wiki/joy_listener
+Author: David V. Lu!!
+Author-email: davidvlu@gmail.com
+License: BSD
+Description: UNKNOWN
+Platform: UNKNOWN

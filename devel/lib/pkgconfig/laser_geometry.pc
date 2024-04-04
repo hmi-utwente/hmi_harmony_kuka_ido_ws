@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: laser_geometry
+Description: Description of laser_geometry
+Version: 1.6.7
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/laser_geometry-1.6.7/include -I/usr/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib -llaser_geometry /usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0
+Requires: tf tf2

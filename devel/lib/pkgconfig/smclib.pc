@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: smclib
+Description: Description of smclib
+Version: 1.8.6
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/bond_core/smclib/include
+Libs: -L${prefix}/lib 
+Requires: 

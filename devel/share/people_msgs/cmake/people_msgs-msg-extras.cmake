@@ -1,0 +1,2 @@
+set(people_msgs_MESSAGE_FILES "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/people_msgs/people_msgs/msg/People.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/people_msgs/people_msgs/msg/Person.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/people_msgs/people_msgs/msg/PersonStamped.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/people_msgs/people_msgs/msg/PositionMeasurement.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/people_msgs/people_msgs/msg/PositionMeasurementArray.msg")
+set(people_msgs_SERVICE_FILES "")

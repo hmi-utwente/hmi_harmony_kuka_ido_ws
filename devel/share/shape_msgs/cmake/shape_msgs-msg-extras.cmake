@@ -1,0 +1,2 @@
+set(shape_msgs_MESSAGE_FILES "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/shape_msgs/msg/Mesh.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/shape_msgs/msg/MeshTriangle.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/shape_msgs/msg/Plane.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/shape_msgs/msg/SolidPrimitive.msg")
+set(shape_msgs_SERVICE_FILES "")

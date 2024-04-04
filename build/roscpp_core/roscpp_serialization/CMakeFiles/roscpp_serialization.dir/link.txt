@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG -shared -Wl,-soname,libroscpp_serialization.so -o /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/lib/libroscpp_serialization.so CMakeFiles/roscpp_serialization.dir/src/serialization.cpp.o 

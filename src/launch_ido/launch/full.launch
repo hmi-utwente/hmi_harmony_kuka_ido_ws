@@ -1,0 +1,31 @@
+<launch>
+    
+    <!-- Start the rosserial node, with the correct settings. If there is an error, check whether the board is connected at /dev/ttyACM0 -->
+    <node name="serial_node"        pkg="rosserial_python"      type="serial_node.py">
+    <param name="port"              type="string"               value="/dev/ttyACM0"/>
+    <param name="baud"              type="int"                  value="57600"/>
+    </node>
+    
+    <!-- Start the hardwrae interface -->
+    <node name="hardware_interface"        pkg="ido_interface"      type="MyHardware_interface">
+    </node>
+
+    <!-- Run all the required launch files -->
+    <include file="$(find ido_interface)/launch/MyInterface.launch" />
+    
+    <include file="$(find sick_tim)/launch/sick_tim571_2050101.launch" />
+    
+    <include file="$(find gmapping)/launch/ido_gmapping.launch" />
+    
+    
+    <include file="$(find my_2d_nav)/launch/move_base.launch" /> 
+    
+    <!-- Start all the static TF publishers -->
+    <node pkg="tf" type="static_transform_publisher" name="footprint_to_link" args="0 0 0.08 0 0 0 base_footprint base_link 10" />
+    <node pkg="tf" type="static_transform_publisher" name="laser_to_link" args="0 0 0.23 0 0 3.14159 base_link laser_mount_link 10" />
+ 
+    <node pkg="tf" type="static_transform_publisher" name="link_to_leftsonar" args="0.11 0.05 1.04 0.21 0.785 0 base_link ultrasound_left_frame 10" />
+    <node pkg="tf" type="static_transform_publisher" name="link_to_centersonar" args="0.11 0 1.04 0 0 0 base_link ultrasound_center_frame 10" />
+    <node pkg="tf" type="static_transform_publisher" name="link_to_rightsonar" args="0.11 -0.05 1.04 -0.21 0.785 0 base_link ultrasound_right_frame 10" />
+     
+</launch>

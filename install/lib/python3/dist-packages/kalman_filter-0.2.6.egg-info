@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: kalman_filter
+Version: 0.2.6
+Summary: Simple Kalman Filter in Python
+Home-page: http://ros.org/wiki/kalman_filter
+Author: David V. Lu!!
+Author-email: davidvlu@gmail.com
+License: BSD
+Description: UNKNOWN
+Platform: UNKNOWN

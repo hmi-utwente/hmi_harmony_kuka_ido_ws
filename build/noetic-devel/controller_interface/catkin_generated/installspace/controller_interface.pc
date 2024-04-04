@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/install
+
+Name: controller_interface
+Description: Description of controller_interface
+Version: 0.20.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: hardware_interface roscpp

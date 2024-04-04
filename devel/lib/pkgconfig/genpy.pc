@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: genpy
+Description: Description of genpy
+Version: 0.6.16
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: genmsg

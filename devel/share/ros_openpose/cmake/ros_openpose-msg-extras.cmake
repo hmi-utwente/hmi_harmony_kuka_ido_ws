@@ -1,0 +1,2 @@
+set(ros_openpose_MESSAGE_FILES "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_openpose/msg/Pixel.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_openpose/msg/BodyPart.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_openpose/msg/Person.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_openpose/msg/Frame.msg")
+set(ros_openpose_SERVICE_FILES "")

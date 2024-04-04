@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: angles
+Description: Description of angles
+Version: 1.9.13
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/angles-1.9.13/angles/include
+Libs: -L${prefix}/lib 
+Requires: 

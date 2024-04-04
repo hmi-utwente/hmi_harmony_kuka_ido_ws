@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: tf2_geometry_msgs
+Description: Description of tf2_geometry_msgs
+Version: 0.7.6
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/geometry2-0.7.6/tf2_geometry_msgs/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib /usr/lib/x86_64-linux-gnu/liborocos-kdl.so -lorocos-kdl
+Requires: geometry_msgs tf2_ros tf2

@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/install
+
+Name: rosmaster
+Description: Description of rosmaster
+Version: 1.16.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

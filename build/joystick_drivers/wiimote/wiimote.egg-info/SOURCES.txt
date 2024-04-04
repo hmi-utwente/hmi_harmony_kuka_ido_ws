@@ -1,0 +1,9 @@
+README.md
+setup.py
+src/wiimote/WIIMote.py
+src/wiimote/__init__.py
+src/wiimote/wiimoteConstants.py
+src/wiimote/wiimoteExceptions.py
+src/wiimote/wiimoteTests.py
+src/wiimote/wiistate.py
+src/wiimote/wiiutils.py

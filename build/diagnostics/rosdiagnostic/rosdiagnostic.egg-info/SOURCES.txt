@@ -1,0 +1,4 @@
+setup.py
+scripts/rosdiagnostic
+src/rosdiagnostic/__init__.py
+src/rosdiagnostic/rosdiagnostic.py

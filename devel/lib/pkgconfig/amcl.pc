@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: amcl
+Description: Description of amcl
+Version: 1.17.1
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/navigation-1.17.1/amcl/include
+Libs: -L${prefix}/lib -lamcl_sensors -lamcl_map -lamcl_pf
+Requires: diagnostic_updater dynamic_reconfigure geometry_msgs nav_msgs rosbag roscpp sensor_msgs std_srvs tf2 tf2_msgs tf2_ros

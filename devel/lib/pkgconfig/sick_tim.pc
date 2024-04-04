@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: sick_tim
+Description: Description of sick_tim
+Version: 0.0.17
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/sick_tim-0.0.17/include -I/usr/include -I/usr/include/libusb-1.0
+Libs: -L${prefix}/lib -lsick_tim_3xx /usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0 -lusb-1.0
+Requires: roscpp sensor_msgs diagnostic_updater dynamic_reconfigure

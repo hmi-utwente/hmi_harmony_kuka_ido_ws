@@ -1,0 +1,2 @@
+set(trajectory_msgs_MESSAGE_FILES "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/trajectory_msgs/msg/JointTrajectory.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/trajectory_msgs/msg/JointTrajectoryPoint.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/trajectory_msgs/msg/MultiDOFJointTrajectory.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/trajectory_msgs/msg/MultiDOFJointTrajectoryPoint.msg")
+set(trajectory_msgs_SERVICE_FILES "")

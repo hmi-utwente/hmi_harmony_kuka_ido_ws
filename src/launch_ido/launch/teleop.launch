@@ -1,0 +1,10 @@
+<launch>
+    
+    <node name="joy_node"        pkg="joy"      type="joy_node">
+    <param name="~dev_name"              type="string"               value="Nintendo Co., Ltd. USB Gamepad"/>
+    </node>
+    
+    <node name="teleop_node"        pkg="ido_teleop"      type="ido_teleop_node">
+    </node>
+
+</launch>

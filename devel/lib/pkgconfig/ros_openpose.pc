@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: ros_openpose
+Description: Description of ros_openpose
+Version: 0.0.1
+Cflags: -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include -I/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_openpose/include
+Libs: -L${prefix}/lib 
+Requires: std_msgs geometry_msgs message_runtime sensor_msgs message_filters

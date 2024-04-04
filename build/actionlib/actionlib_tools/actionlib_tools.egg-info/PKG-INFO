@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: actionlib-tools
+Version: 1.14.0
+Summary: The actionlib_tools package
+Home-page: http://www.ros.org/wiki/actionlib
+Author: Eitan Marder-Eppstein, Vijay Pradeep, Mikael Arguedas
+Maintainer: Michael Carroll <michael@openrobotics.org>, Jacob Perron <jacob@openrobotics.org>
+License: BSD
+Platform: UNKNOWN
+
+UNKNOWN
+

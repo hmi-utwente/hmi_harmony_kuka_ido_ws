@@ -1,0 +1,8 @@
+prefix=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel
+
+Name: qt_gui
+Description: Description of qt_gui
+Version: 0.4.2
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
