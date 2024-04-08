@@ -538,6 +538,9 @@ CURL_LIBRARY_DEBUG:FILEPATH=CURL_LIBRARY_DEBUG-NOTFOUND
 //Path to a library.
 CURL_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libcurl.so
 
+//Path to a file.
+DARKNET_PATH:PATH=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/darknet_ros/darknet
+
 //Path to a program.
 DOXYGEN_EXECUTABLE:FILEPATH=/usr/bin/doxygen
 
@@ -1167,10 +1170,10 @@ X11_X11_INCLUDE_PATH:PATH=/usr/include
 X11_X11_LIB:FILEPATH=/usr/lib/x86_64-linux-gnu/libX11.so
 
 //Path to a file.
-X11_X11_xcb_INCLUDE_PATH:PATH=X11_X11_xcb_INCLUDE_PATH-NOTFOUND
+X11_X11_xcb_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_X11_xcb_LIB:FILEPATH=X11_X11_xcb_LIB-NOTFOUND
+X11_X11_xcb_LIB:FILEPATH=/usr/lib/x86_64-linux-gnu/libX11-xcb.so
 
 //Path to a file.
 X11_XRes_INCLUDE_PATH:PATH=X11_XRes_INCLUDE_PATH-NOTFOUND
@@ -1197,7 +1200,7 @@ X11_Xau_INCLUDE_PATH:PATH=/usr/include
 X11_Xau_LIB:FILEPATH=/usr/lib/x86_64-linux-gnu/libXau.so
 
 //Path to a file.
-X11_Xaw_INCLUDE_PATH:PATH=X11_Xaw_INCLUDE_PATH-NOTFOUND
+X11_Xaw_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
 X11_Xaw_LIB:FILEPATH=/usr/lib/x86_64-linux-gnu/libXaw.so
@@ -1341,10 +1344,136 @@ X11_xcb_INCLUDE_PATH:PATH=/usr/include
 X11_xcb_LIB:FILEPATH=/usr/lib/x86_64-linux-gnu/libxcb.so
 
 //Path to a file.
+X11_xcb_composite_INCLUDE_PATH:PATH=X11_xcb_composite_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_composite_LIB:FILEPATH=X11_xcb_composite_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_cursor_INCLUDE_PATH:PATH=X11_xcb_cursor_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_cursor_LIB:FILEPATH=X11_xcb_cursor_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_damage_INCLUDE_PATH:PATH=X11_xcb_damage_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_damage_LIB:FILEPATH=X11_xcb_damage_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_dpms_INCLUDE_PATH:PATH=X11_xcb_dpms_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_dpms_LIB:FILEPATH=X11_xcb_dpms_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_dri2_INCLUDE_PATH:PATH=X11_xcb_dri2_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_dri2_LIB:FILEPATH=X11_xcb_dri2_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_dri3_INCLUDE_PATH:PATH=X11_xcb_dri3_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_dri3_LIB:FILEPATH=X11_xcb_dri3_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_errors_INCLUDE_PATH:PATH=X11_xcb_errors_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_errors_LIB:FILEPATH=X11_xcb_errors_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_ewmh_INCLUDE_PATH:PATH=X11_xcb_ewmh_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_ewmh_LIB:FILEPATH=X11_xcb_ewmh_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_glx_INCLUDE_PATH:PATH=X11_xcb_glx_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_glx_LIB:FILEPATH=X11_xcb_glx_LIB-NOTFOUND
+
+//Path to a file.
 X11_xcb_icccm_INCLUDE_PATH:PATH=X11_xcb_icccm_INCLUDE_PATH-NOTFOUND
 
 //Path to a library.
 X11_xcb_icccm_LIB:FILEPATH=X11_xcb_icccm_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_image_INCLUDE_PATH:PATH=X11_xcb_image_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_image_LIB:FILEPATH=X11_xcb_image_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_keysyms_INCLUDE_PATH:PATH=X11_xcb_keysyms_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_keysyms_LIB:FILEPATH=X11_xcb_keysyms_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_present_INCLUDE_PATH:PATH=X11_xcb_present_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_present_LIB:FILEPATH=X11_xcb_present_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_randr_INCLUDE_PATH:PATH=X11_xcb_randr_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_randr_LIB:FILEPATH=X11_xcb_randr_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_record_INCLUDE_PATH:PATH=X11_xcb_record_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_record_LIB:FILEPATH=X11_xcb_record_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_render_INCLUDE_PATH:PATH=/usr/include
+
+//Path to a library.
+X11_xcb_render_LIB:FILEPATH=/usr/lib/x86_64-linux-gnu/libxcb-render.so
+
+//Path to a file.
+X11_xcb_render_util_INCLUDE_PATH:PATH=X11_xcb_render_util_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_render_util_LIB:FILEPATH=X11_xcb_render_util_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_res_INCLUDE_PATH:PATH=X11_xcb_res_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_res_LIB:FILEPATH=X11_xcb_res_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_screensaver_INCLUDE_PATH:PATH=X11_xcb_screensaver_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_screensaver_LIB:FILEPATH=X11_xcb_screensaver_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_shape_INCLUDE_PATH:PATH=X11_xcb_shape_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_shape_LIB:FILEPATH=X11_xcb_shape_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_shm_INCLUDE_PATH:PATH=/usr/include
+
+//Path to a library.
+X11_xcb_shm_LIB:FILEPATH=/usr/lib/x86_64-linux-gnu/libxcb-shm.so
+
+//Path to a file.
+X11_xcb_sync_INCLUDE_PATH:PATH=X11_xcb_sync_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_sync_LIB:FILEPATH=X11_xcb_sync_LIB-NOTFOUND
 
 //Path to a file.
 X11_xcb_util_INCLUDE_PATH:PATH=X11_xcb_util_INCLUDE_PATH-NOTFOUND
@@ -1353,13 +1482,58 @@ X11_xcb_util_INCLUDE_PATH:PATH=X11_xcb_util_INCLUDE_PATH-NOTFOUND
 X11_xcb_util_LIB:FILEPATH=X11_xcb_util_LIB-NOTFOUND
 
 //Path to a file.
+X11_xcb_xf86dri_INCLUDE_PATH:PATH=X11_xcb_xf86dri_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_xf86dri_LIB:FILEPATH=X11_xcb_xf86dri_LIB-NOTFOUND
+
+//Path to a file.
 X11_xcb_xfixes_INCLUDE_PATH:PATH=X11_xcb_xfixes_INCLUDE_PATH-NOTFOUND
 
 //Path to a library.
 X11_xcb_xfixes_LIB:FILEPATH=X11_xcb_xfixes_LIB-NOTFOUND
 
+//Path to a file.
+X11_xcb_xinerama_INCLUDE_PATH:PATH=X11_xcb_xinerama_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_xinerama_LIB:FILEPATH=X11_xcb_xinerama_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_xinput_INCLUDE_PATH:PATH=X11_xcb_xinput_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_xinput_LIB:FILEPATH=X11_xcb_xinput_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_xkb_INCLUDE_PATH:PATH=X11_xcb_xkb_INCLUDE_PATH-NOTFOUND
+
 //Path to a library.
 X11_xcb_xkb_LIB:FILEPATH=X11_xcb_xkb_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_xrm_INCLUDE_PATH:PATH=X11_xcb_xrm_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_xrm_LIB:FILEPATH=X11_xcb_xrm_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_xtest_INCLUDE_PATH:PATH=X11_xcb_xtest_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_xtest_LIB:FILEPATH=X11_xcb_xtest_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_xv_INCLUDE_PATH:PATH=X11_xcb_xv_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_xv_LIB:FILEPATH=X11_xcb_xv_LIB-NOTFOUND
+
+//Path to a file.
+X11_xcb_xvmc_INCLUDE_PATH:PATH=X11_xcb_xvmc_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+X11_xcb_xvmc_LIB:FILEPATH=X11_xcb_xvmc_LIB-NOTFOUND
 
 //Path to a file.
 X11_xkbcommon_INCLUDE_PATH:PATH=/usr/include
@@ -1664,6 +1838,9 @@ clear_costmap_recovery_LIB_DEPENDS:STATIC=general;costmap_2d;general;layers;gene
 //Value Computed by CMake
 clear_costmap_recovery_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/navigation-1.17.1/clear_costmap_recovery
 
+//The directory containing a CMake configuration file for cmake_clang_tools.
+cmake_clang_tools_DIR:PATH=cmake_clang_tools_DIR-NOTFOUND
+
 //Value Computed by CMake
 cmake_modules_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/cmake_modules
 
@@ -1843,6 +2020,33 @@ cv_bridge_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/s
 
 //Dependencies for the target
 cv_bridge_boost_LIB_DEPENDS:STATIC=general;Boost::python;general;rosconsole;general;rosconsole_log4cxx;general;rosconsole_backend_interface;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so.1.74.0;general;roscpp_serialization;general;rostime;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.74.0;general;cpp_common;general;/usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.1.0;general;cv_bridge;general;/usr/lib/x86_64-linux-gnu/libpython3.10.so;
+
+//Value Computed by CMake
+darknet_ros_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros
+
+//Value Computed by CMake
+darknet_ros_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+darknet_ros_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/darknet_ros/darknet_ros
+
+//Dependencies for the target
+darknet_ros_lib_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libSM.so;general;/usr/lib/x86_64-linux-gnu/libICE.so;general;/usr/lib/x86_64-linux-gnu/libX11.so;general;/usr/lib/x86_64-linux-gnu/libXext.so;general;/usr/local/cuda-11.7/lib64/libcudart_static.a;general;dl;general;/usr/lib/x86_64-linux-gnu/librt.a;general;cuda;general;cudart;general;cublas;general;curand;general;m;general;pthread;general;stdc++;general;Boost::thread;general;opencv_calib3d;general;opencv_core;general;opencv_dnn;general;opencv_features2d;general;opencv_flann;general;opencv_highgui;general;opencv_imgcodecs;general;opencv_imgproc;general;opencv_ml;general;opencv_objdetect;general;opencv_photo;general;opencv_stitching;general;opencv_video;general;opencv_videoio;general;opencv_alphamat;general;opencv_aruco;general;opencv_barcode;general;opencv_bgsegm;general;opencv_bioinspired;general;opencv_ccalib;general;opencv_datasets;general;opencv_dnn_objdetect;general;opencv_dnn_superres;general;opencv_dpm;general;opencv_face;general;opencv_freetype;general;opencv_fuzzy;general;opencv_hdf;general;opencv_hfs;general;opencv_img_hash;general;opencv_intensity_transform;general;opencv_line_descriptor;general;opencv_mcc;general;opencv_optflow;general;opencv_phase_unwrapping;general;opencv_plot;general;opencv_quality;general;opencv_rapid;general;opencv_reg;general;opencv_rgbd;general;opencv_saliency;general;opencv_shape;general;opencv_stereo;general;opencv_structured_light;general;opencv_superres;general;opencv_surface_matching;general;opencv_text;general;opencv_tracking;general;opencv_videostab;general;opencv_viz;general;opencv_wechat_qrcode;general;opencv_ximgproc;general;opencv_xobjdetect;general;opencv_xphoto;general;cv_bridge;general;/usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_dnn.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_features2d.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_flann.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_highgui.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_ml.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_photo.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_stitching.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_video.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_videoio.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_alphamat.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_aruco.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_barcode.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_bgsegm.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_bioinspired.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_ccalib.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_datasets.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_dnn_objdetect.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_dnn_superres.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_dpm.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_face.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_freetype.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_fuzzy.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_hdf.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_hfs.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_img_hash.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_intensity_transform.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_line_descriptor.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_mcc.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_optflow.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_phase_unwrapping.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_plot.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_quality.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_rapid.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_reg.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_rgbd.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_saliency.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_shape.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_stereo.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_structured_light.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_superres.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_surface_matching.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_text.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_tracking.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_videostab.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_viz.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_wechat_qrcode.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_ximgproc.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_xobjdetect.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_xphoto.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_core.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.4.5.4d;general;/usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.4.5.4d;general;actionlib;general;image_transport;general;message_filters;general;nodeletlib;general;bondcpp;general;/usr/lib/x86_64-linux-gnu/libuuid.so;general;class_loader;general;/usr/lib/x86_64-linux-gnu/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.a;general;roslib;general;rospack;general;/usr/lib/x86_64-linux-gnu/libpython3.10.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;roscpp;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0;general;rosconsole;general;rosconsole_log4cxx;general;rosconsole_backend_interface;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so.1.74.0;general;xmlrpcpp;general;roscpp_serialization;general;rostime;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.74.0;general;cpp_common;general;/usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.1.0;general;opencv_calib3d;general;opencv_core;general;opencv_dnn;general;opencv_features2d;general;opencv_flann;general;opencv_highgui;general;opencv_imgcodecs;general;opencv_imgproc;general;opencv_ml;general;opencv_objdetect;general;opencv_photo;general;opencv_stitching;general;opencv_video;general;opencv_videoio;general;opencv_alphamat;general;opencv_aruco;general;opencv_barcode;general;opencv_bgsegm;general;opencv_bioinspired;general;opencv_ccalib;general;opencv_datasets;general;opencv_dnn_objdetect;general;opencv_dnn_superres;general;opencv_dpm;general;opencv_face;general;opencv_freetype;general;opencv_fuzzy;general;opencv_hdf;general;opencv_hfs;general;opencv_img_hash;general;opencv_intensity_transform;general;opencv_line_descriptor;general;opencv_mcc;general;opencv_optflow;general;opencv_phase_unwrapping;general;opencv_plot;general;opencv_quality;general;opencv_rapid;general;opencv_reg;general;opencv_rgbd;general;opencv_saliency;general;opencv_shape;general;opencv_stereo;general;opencv_structured_light;general;opencv_superres;general;opencv_surface_matching;general;opencv_text;general;opencv_tracking;general;opencv_videostab;general;opencv_viz;general;opencv_wechat_qrcode;general;opencv_ximgproc;general;opencv_xobjdetect;general;opencv_xphoto;
+
+//Value Computed by CMake
+darknet_ros_msgs_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros_msgs
+
+//The directory containing a CMake configuration file for darknet_ros_msgs.
+darknet_ros_msgs_DIR:PATH=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/darknet_ros_msgs/cmake
+
+//Value Computed by CMake
+darknet_ros_msgs_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+darknet_ros_msgs_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/darknet_ros/darknet_ros_msgs
+
+//Dependencies for the target
+darknet_ros_nodelet_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libSM.so;general;/usr/lib/x86_64-linux-gnu/libICE.so;general;/usr/lib/x86_64-linux-gnu/libX11.so;general;/usr/lib/x86_64-linux-gnu/libXext.so;general;/usr/local/cuda-11.7/lib64/libcudart_static.a;general;dl;general;/usr/lib/x86_64-linux-gnu/librt.a;general;darknet_ros_lib;
 
 //Value Computed by CMake
 depth_image_proc_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/image_pipeline/depth_image_proc
@@ -4496,6 +4700,9 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 COMPILER_SUPPORTS_CXX17:INTERNAL=1
 //ADVANCED property for variable: CUDA_64_BIT_DEVICE_CODE
 CUDA_64_BIT_DEVICE_CODE-ADVANCED:INTERNAL=1
+//List of intermediate files that are part of the cuda dependency
+// scanning.
+CUDA_ADDITIONAL_CLEAN_FILES:INTERNAL=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_activation_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_crop_layer_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_avgpool_layer_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_deconvolutional_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_blas_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_dropout_layer_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_col2im_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_im2col_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_convolutional_kernels.cu.o.depend;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/darknet_ros/darknet_ros/CMakeFiles/darknet_ros_lib.dir/__/darknet/src/darknet_ros_lib_generated_maxpool_layer_kernels.cu.o.depend
 //ADVANCED property for variable: CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE
 CUDA_ATTACH_VS_BUILD_RULE_TO_CUDA_FILE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CUDA_BUILD_CUBIN
@@ -4560,7 +4767,7 @@ CUDA_cusolver_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CUDA_cusparse_LIBRARY
 CUDA_cusparse_LIBRARY-ADVANCED:INTERNAL=1
 //Location of make2cmake.cmake
-CUDA_make2cmake:INTERNAL=/usr/share/cmake-3.22/Modules/FindCUDA/make2cmake.cmake
+CUDA_make2cmake:INTERNAL=/home/arjan/.local/lib/python3.10/site-packages/cmake/data/share/cmake-3.28/Modules/FindCUDA/make2cmake.cmake
 //ADVANCED property for variable: CUDA_nppc_LIBRARY
 CUDA_nppc_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CUDA_nppial_LIBRARY
@@ -4586,9 +4793,11 @@ CUDA_npps_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CUDA_nvToolsExt_LIBRARY
 CUDA_nvToolsExt_LIBRARY-ADVANCED:INTERNAL=1
 //Location of parse_cubin.cmake
-CUDA_parse_cubin:INTERNAL=/usr/share/cmake-3.22/Modules/FindCUDA/parse_cubin.cmake
+CUDA_parse_cubin:INTERNAL=/home/arjan/.local/lib/python3.10/site-packages/cmake/data/share/cmake-3.28/Modules/FindCUDA/parse_cubin.cmake
+//ADVANCED property for variable: CUDA_rt_LIBRARY
+CUDA_rt_LIBRARY-ADVANCED:INTERNAL=1
 //Location of run_nvcc.cmake
-CUDA_run_nvcc:INTERNAL=/usr/share/cmake-3.22/Modules/FindCUDA/run_nvcc.cmake
+CUDA_run_nvcc:INTERNAL=/home/arjan/.local/lib/python3.10/site-packages/cmake/data/share/cmake-3.28/Modules/FindCUDA/run_nvcc.cmake
 //ADVANCED property for variable: CURL_DIR
 CURL_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CURL_INCLUDE_DIR
@@ -5475,20 +5684,132 @@ X11_dpms_INCLUDE_PATH-ADVANCED:INTERNAL=1
 X11_xcb_INCLUDE_PATH-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_LIB
 X11_xcb_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_composite_INCLUDE_PATH
+X11_xcb_composite_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_composite_LIB
+X11_xcb_composite_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_cursor_INCLUDE_PATH
+X11_xcb_cursor_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_cursor_LIB
+X11_xcb_cursor_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_damage_INCLUDE_PATH
+X11_xcb_damage_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_damage_LIB
+X11_xcb_damage_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_dpms_INCLUDE_PATH
+X11_xcb_dpms_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_dpms_LIB
+X11_xcb_dpms_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_dri2_INCLUDE_PATH
+X11_xcb_dri2_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_dri2_LIB
+X11_xcb_dri2_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_dri3_INCLUDE_PATH
+X11_xcb_dri3_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_dri3_LIB
+X11_xcb_dri3_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_errors_INCLUDE_PATH
+X11_xcb_errors_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_errors_LIB
+X11_xcb_errors_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_ewmh_INCLUDE_PATH
+X11_xcb_ewmh_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_ewmh_LIB
+X11_xcb_ewmh_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_glx_INCLUDE_PATH
+X11_xcb_glx_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_glx_LIB
+X11_xcb_glx_LIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_icccm_INCLUDE_PATH
 X11_xcb_icccm_INCLUDE_PATH-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_icccm_LIB
 X11_xcb_icccm_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_image_INCLUDE_PATH
+X11_xcb_image_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_image_LIB
+X11_xcb_image_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_keysyms_INCLUDE_PATH
+X11_xcb_keysyms_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_keysyms_LIB
+X11_xcb_keysyms_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_present_INCLUDE_PATH
+X11_xcb_present_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_present_LIB
+X11_xcb_present_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_randr_INCLUDE_PATH
+X11_xcb_randr_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_randr_LIB
+X11_xcb_randr_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_record_INCLUDE_PATH
+X11_xcb_record_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_record_LIB
+X11_xcb_record_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_render_INCLUDE_PATH
+X11_xcb_render_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_render_LIB
+X11_xcb_render_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_render_util_INCLUDE_PATH
+X11_xcb_render_util_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_render_util_LIB
+X11_xcb_render_util_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_res_INCLUDE_PATH
+X11_xcb_res_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_res_LIB
+X11_xcb_res_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_screensaver_INCLUDE_PATH
+X11_xcb_screensaver_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_screensaver_LIB
+X11_xcb_screensaver_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_shape_INCLUDE_PATH
+X11_xcb_shape_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_shape_LIB
+X11_xcb_shape_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_shm_INCLUDE_PATH
+X11_xcb_shm_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_shm_LIB
+X11_xcb_shm_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_sync_INCLUDE_PATH
+X11_xcb_sync_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_sync_LIB
+X11_xcb_sync_LIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_util_INCLUDE_PATH
 X11_xcb_util_INCLUDE_PATH-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_util_LIB
 X11_xcb_util_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xf86dri_INCLUDE_PATH
+X11_xcb_xf86dri_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xf86dri_LIB
+X11_xcb_xf86dri_LIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_xfixes_INCLUDE_PATH
 X11_xcb_xfixes_INCLUDE_PATH-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_xfixes_LIB
 X11_xcb_xfixes_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xinerama_INCLUDE_PATH
+X11_xcb_xinerama_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xinerama_LIB
+X11_xcb_xinerama_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xinput_INCLUDE_PATH
+X11_xcb_xinput_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xinput_LIB
+X11_xcb_xinput_LIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xcb_xkb_LIB
 X11_xcb_xkb_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xrm_INCLUDE_PATH
+X11_xcb_xrm_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xrm_LIB
+X11_xcb_xrm_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xtest_INCLUDE_PATH
+X11_xcb_xtest_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xtest_LIB
+X11_xcb_xtest_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xv_INCLUDE_PATH
+X11_xcb_xv_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xv_LIB
+X11_xcb_xv_LIB-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xvmc_INCLUDE_PATH
+X11_xcb_xvmc_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: X11_xcb_xvmc_LIB
+X11_xcb_xvmc_LIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xkbcommon_INCLUDE_PATH
 X11_xkbcommon_INCLUDE_PATH-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: X11_xkbcommon_LIB

@@ -22,20 +22,6 @@ class RobotMovement:
 
         rospy.loginfo('RobotMovement is ready')
         
-        #self.run()
-
-    def run(self):
-        r = rospy.Rate(40)  # 40Hz
-        while not rospy.is_shutdown():
-            try:
-                transform = self.tfBuffer.lookup_transform('odom', 'base_link', rospy.Time())
-                q = transform.transform.rotation
-                self.robot_angle = euler_from_quaternion([q.x, q.y, q.z, q.w])[2]
-                self.robot_position = transform.transform.translation
-            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
-                pass
-
-            r.sleep()
 
     def limit_angle(self, angle):
         while (angle < -np.pi) or (angle > np.pi):
@@ -43,14 +29,14 @@ class RobotMovement:
             rospy.loginfo(f'Limited to {angle}')
         return angle
 
-    def rotate(self, angle, speed, p=0.9, i=0.02, a=3.14):
+    def rotate(self, angle, speed, p=0.9, i=0.02, a=1.14):
         max_speed = abs(speed)
         p_gain = p
         i_gain = i
         acc = a
 
         startTime = time.time()
-        dt = 0.05
+        dt = 0.01
         last_wz = 0.0
         err_z_hist = [0.0]*9
         err_z = angle-self.robot_angle
@@ -70,27 +56,26 @@ class RobotMovement:
             err_z_hist.append(err_z)
             err_z_hist.pop(0)
             
-            msgs = Twist()
+            msgs_ = Twist()
             wz = p_gain*err_z_hist[-1]+sum(err_z_hist)*i_gain
             wz = max(min(wz, last_wz+dt*acc), last_wz-dt*acc)
             wz = max(min(wz, max_speed), -max_speed)
-            msgs.angular.z = wz
-            self.publisher_.publish(msgs)
+            msgs_.angular.z = wz
+            self.publisher_.publish(msgs_)
             last_wz = wz
-            time.sleep(dt)
+            time.sleep(dt)        
 
         rospy.loginfo('Finished at {}'.format(self.robot_angle))
         self.publisher_.publish(Twist())
-        time.sleep(dt)
+        time.sleep(0.1)
 
     def move(self, distance, speed, p=0.8, i=0.05, a=0.4):
-          
         max_speed = abs(speed)
         p_gain = p
         i_gain = i
         acc = a
 
-        startPose = (self.robot_position, self.robot_position)
+        startPose = (self.robot_position.x, self.robot_position.y)
         endPose = self.calcPoint(startPose, distance, self.robot_angle)
 
         startTime = time.time()
@@ -104,18 +89,17 @@ class RobotMovement:
             if time.time() - startTime > 10.0:
                 rospy.logwarn('TIMEOUT WHILE MOVING')
                 break
-
-            startPose = (self.robot_position, self.robot_position)
+            startPose = (self.robot_position.x, self.robot_position.y)
             err_d = (-1 if distance < 0 else 1)*self.calcDist(startPose, endPose)
             last_err.append(err_d)
             last_err.pop(0)
             # Compute PID velocity
-            msgs = Twist()
+            msg = Twist()
             vel = last_err[-1]*p_gain+sum(last_err)*i_gain
             vel = max(min(vel, last_vel+dt*acc), last_vel-dt*acc)
             vel = max(min(vel, max_speed), -max_speed)
-            msgs.linear.x = vel
-            self.publisher_.publish(msgs)
+            msg.linear.x = vel
+            self.publisher_.publish(msg)
             last_vel = vel
             time.sleep(dt)
         
@@ -132,8 +116,8 @@ class RobotMovement:
         y = origin[1] + distance * math.sin(angle)
         return (x, y)
 
-if __name__ == '__main__':
-    try:
-        robot_movement = RobotMovement()
-    except rospy.ROSInterruptException:
-        pass
+#if __name__ == '__main__':
+#    try:
+#        robot_movement = RobotMovement()
+#    except rospy.ROSInterruptException:
+#        pass
