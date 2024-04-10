@@ -22,20 +22,6 @@ class RobotMovement:
 
         rospy.loginfo('RobotMovement is ready')
         
-        #self.run()
-
-    def run(self):
-        r = rospy.Rate(40)  # 40Hz
-        while not rospy.is_shutdown():
-            try:
-                transform = self.tfBuffer.lookup_transform('odom', 'base_link', rospy.Time())
-                q = transform.transform.rotation
-                self.robot_angle = euler_from_quaternion([q.x, q.y, q.z, q.w])[2]
-                self.robot_position = transform.transform.translation
-            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
-                pass
-
-            r.sleep()
 
     def limit_angle(self, angle):
         while (angle < -np.pi) or (angle > np.pi):
@@ -43,16 +29,15 @@ class RobotMovement:
             rospy.loginfo(f'Limited to {angle}')
         return angle
 
-    def rotate(self, angle, speed, p=0.9, i=0.02, a=3.14):
+    def rotate(self, angle, speed, msg, p=0.9, i=0.02, a=1.14):
         max_speed = abs(speed)
         p_gain = p
         i_gain = i
         acc = a
 
         startTime = time.time()
-        dt = 0.05
+        dt = 0.01
         last_wz = 0.0
-        rotated_angle = 0
         err_z_hist = [0.0]*9
         err_z = angle-self.robot_angle
         while abs(err_z) > np.pi:
@@ -61,33 +46,29 @@ class RobotMovement:
 
         timeout = 10.0
 
-        while abs(rotated_angle) < abs(angle):
+        while not msg:
             if time.time() - startTime > timeout:
                 rospy.logwarn('TIMEOUT WHILE ROTATING')
                 break
-
-            err_z = angle - self.robot_angle
+            err_z = angle-self.robot_angle
             while abs(err_z) > np.pi:
-                err_z += -np.sign(err_z) * 2 * np.pi
+                err_z += -np.sign(err_z)*2*np.pi
             err_z_hist.append(err_z)
             err_z_hist.pop(0)
-    
+            
             msgs_ = Twist()
-            wz = p_gain * err_z_hist[-1] + sum(err_z_hist) * i_gain
-            wz = max(min(wz, last_wz + dt * acc), last_wz - dt * acc)
+            wz = p_gain*err_z_hist[-1]+sum(err_z_hist)*i_gain
+            wz = max(min(wz, last_wz+dt*acc), last_wz-dt*acc)
             wz = max(min(wz, max_speed), -max_speed)
             msgs_.angular.z = wz
-            self.publisher_.publish(msgs_)
+            if not msg:
+                self.publisher_.publish(msgs_)
             last_wz = wz
-
-            # Update the rotated angle
-            rotated_angle += abs(wz) * dt
-            time.sleep(dt)
-
+            time.sleep(dt)        
 
         rospy.loginfo('Finished at {}'.format(self.robot_angle))
         self.publisher_.publish(Twist())
-
+        time.sleep(0.1)
 
     def move(self, distance, speed, p=0.8, i=0.05, a=0.4):
         max_speed = abs(speed)
@@ -136,8 +117,8 @@ class RobotMovement:
         y = origin[1] + distance * math.sin(angle)
         return (x, y)
 
-if __name__ == '__main__':
-    try:
-        robot_movement = RobotMovement()
-    except rospy.ROSInterruptException:
-        pass
+#if __name__ == '__main__':
+#    try:
+#        robot_movement = RobotMovement()
+#    except rospy.ROSInterruptException:
+#        pass

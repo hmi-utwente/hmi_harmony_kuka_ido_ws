@@ -1641,6 +1641,45 @@ angles_IS_TOP_LEVEL:STATIC=OFF
 angles_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/angles-1.9.13/angles
 
 //Value Computed by CMake
+audio_capture_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/audio_common/audio_capture
+
+//Value Computed by CMake
+audio_capture_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+audio_capture_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_capture
+
+//Value Computed by CMake
+audio_common_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/audio_common/audio_common
+
+//Value Computed by CMake
+audio_common_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+audio_common_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common
+
+//Value Computed by CMake
+audio_common_msgs_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/audio_common/audio_common_msgs
+
+//The directory containing a CMake configuration file for audio_common_msgs.
+audio_common_msgs_DIR:PATH=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/share/audio_common_msgs/cmake
+
+//Value Computed by CMake
+audio_common_msgs_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+audio_common_msgs_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs
+
+//Value Computed by CMake
+audio_play_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/audio_common/audio_play
+
+//Value Computed by CMake
+audio_play_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+audio_play_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_play
+
+//Value Computed by CMake
 base_local_planner_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/navigation-1.17.1/base_local_planner
 
 //The directory containing a CMake configuration file for base_local_planner.
@@ -3015,6 +3054,15 @@ perception_pcl_IS_TOP_LEVEL:STATIC=OFF
 perception_pcl_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/perception_pcl/perception_pcl
 
 //Path to a library.
+pkgcfg_lib_GST1.0_glib-2.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libglib-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GST1.0_gobject-2.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libgobject-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GST1.0_gstreamer-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libgstreamer-1.0.so
+
+//Path to a library.
 pkgcfg_lib_PC_CURL_curl:FILEPATH=/usr/lib/x86_64-linux-gnu/libcurl.so
 
 //Path to a library.
@@ -3930,6 +3978,15 @@ social_navigation_layers_IS_TOP_LEVEL:STATIC=OFF
 social_navigation_layers_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/layers/social_navigation_layers
 
 //Value Computed by CMake
+sound_play_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/audio_common/sound_play
+
+//Value Computed by CMake
+sound_play_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+sound_play_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/sound_play
+
+//Value Computed by CMake
 spacenav_node_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/joystick_drivers/spacenav_node
 
 //Value Computed by CMake
@@ -4651,7 +4708,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=254
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=259
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -4983,6 +5040,41 @@ GMOCK_FROM_SOURCE_INCLUDE_DIRS:INTERNAL=/usr/src/googletest/googlemock/include
 GMOCK_FROM_SOURCE_LIBRARIES:INTERNAL=gmock
 GMOCK_FROM_SOURCE_LIBRARY_DIRS:INTERNAL=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/gmock
 GMOCK_FROM_SOURCE_MAIN_LIBRARIES:INTERNAL=gmock_main
+GST1.0_CFLAGS:INTERNAL=-pthread;-I/usr/include/gstreamer-1.0;-I/usr/include;-I/usr/include/x86_64-linux-gnu;-I/usr/include;-I/usr/include/glib-2.0;-I/usr/lib/x86_64-linux-gnu/glib-2.0/include;-I/usr/include
+GST1.0_CFLAGS_I:INTERNAL=
+GST1.0_CFLAGS_OTHER:INTERNAL=-pthread
+GST1.0_FOUND:INTERNAL=1
+GST1.0_INCLUDEDIR:INTERNAL=/usr/include
+GST1.0_INCLUDE_DIRS:INTERNAL=/usr/include/gstreamer-1.0;/usr/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include;/usr/include
+GST1.0_LDFLAGS:INTERNAL=-L/usr/lib/x86_64-linux-gnu;-lgstreamer-1.0;-lgobject-2.0;-lglib-2.0
+GST1.0_LDFLAGS_OTHER:INTERNAL=
+GST1.0_LIBDIR:INTERNAL=/usr/lib/x86_64-linux-gnu
+GST1.0_LIBRARIES:INTERNAL=gstreamer-1.0;gobject-2.0;glib-2.0
+GST1.0_LIBRARY_DIRS:INTERNAL=/usr/lib/x86_64-linux-gnu
+GST1.0_LIBS:INTERNAL=
+GST1.0_LIBS_L:INTERNAL=
+GST1.0_LIBS_OTHER:INTERNAL=
+GST1.0_LIBS_PATHS:INTERNAL=
+GST1.0_MODULE_NAME:INTERNAL=gstreamer-1.0
+GST1.0_PREFIX:INTERNAL=/usr
+GST1.0_STATIC_CFLAGS:INTERNAL=-pthread;-I/usr/include/gstreamer-1.0;-I/usr/include;-I/usr/include/x86_64-linux-gnu;-I/usr/include;-I/usr/include/glib-2.0;-I/usr/lib/x86_64-linux-gnu/glib-2.0/include;-I/usr/include
+GST1.0_STATIC_CFLAGS_I:INTERNAL=
+GST1.0_STATIC_CFLAGS_OTHER:INTERNAL=-pthread
+GST1.0_STATIC_INCLUDE_DIRS:INTERNAL=/usr/include/gstreamer-1.0;/usr/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include;/usr/include
+GST1.0_STATIC_LDFLAGS:INTERNAL=-L/usr/lib/x86_64-linux-gnu;-lgstreamer-1.0;-lm;-ldl;-Wl,--export-dynamic;-lgmodule-2.0;-pthread;-lunwind;-llzma;-ldw;-lbz2;-llzma;-pthread;-lpthread;-lelf;-lz;-lgobject-2.0;-lffi;-lglib-2.0;-pthread;-lm;-lpcre
+GST1.0_STATIC_LDFLAGS_OTHER:INTERNAL=-Wl,--export-dynamic;-pthread
+GST1.0_STATIC_LIBDIR:INTERNAL=
+GST1.0_STATIC_LIBRARIES:INTERNAL=gstreamer-1.0;m;dl;gmodule-2.0;unwind;lzma;dw;bz2;lzma;pthread;elf;z;gobject-2.0;ffi;glib-2.0;m;pcre
+GST1.0_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib/x86_64-linux-gnu
+GST1.0_STATIC_LIBS:INTERNAL=
+GST1.0_STATIC_LIBS_L:INTERNAL=
+GST1.0_STATIC_LIBS_OTHER:INTERNAL=
+GST1.0_STATIC_LIBS_PATHS:INTERNAL=
+GST1.0_VERSION:INTERNAL=1.20.3
+GST1.0_gstreamer-1.0_INCLUDEDIR:INTERNAL=
+GST1.0_gstreamer-1.0_LIBDIR:INTERNAL=
+GST1.0_gstreamer-1.0_PREFIX:INTERNAL=
+GST1.0_gstreamer-1.0_VERSION:INTERNAL=
 GTEST_FROM_SOURCE_FOUND:INTERNAL=TRUE
 GTEST_FROM_SOURCE_INCLUDE_DIRS:INTERNAL=/usr/include
 GTEST_FROM_SOURCE_LIBRARIES:INTERNAL=gtest
@@ -5913,6 +6005,7 @@ _Python_INTERPRETER_PROPERTIES:INTERNAL=Python;3;10;12;64;32;;cpython-310-x86_64
 _Python_INTERPRETER_SIGNATURE:INTERNAL=b91b4035ecb3bb3f5760d35922531bcd
 //NumPy reason failure
 _Python_NumPy_REASON_FAILURE:INTERNAL=
+__pkg_config_arguments_GST1.0:INTERNAL=gstreamer-1.0;REQUIRED
 __pkg_config_arguments_PC_CURL:INTERNAL=QUIET;libcurl
 __pkg_config_arguments_PC_EIGEN:INTERNAL=eigen3
 __pkg_config_arguments_PC_EXPAT:INTERNAL=QUIET;expat
@@ -5925,6 +6018,7 @@ __pkg_config_arguments_YAMLCPP:INTERNAL=yaml-cpp;QUIET
 __pkg_config_arguments_YAML_CPP:INTERNAL=yaml-cpp
 __pkg_config_arguments_bullet:INTERNAL=bullet
 __pkg_config_arguments_libusb:INTERNAL=libusb-1.0
+__pkg_config_checked_GST1.0:INTERNAL=1
 __pkg_config_checked_PC_CURL:INTERNAL=1
 __pkg_config_checked_PC_EIGEN:INTERNAL=1
 __pkg_config_checked_PC_EXPAT:INTERNAL=1
@@ -6048,6 +6142,12 @@ libusb_libusb-1.0_INCLUDEDIR:INTERNAL=
 libusb_libusb-1.0_LIBDIR:INTERNAL=
 libusb_libusb-1.0_PREFIX:INTERNAL=
 libusb_libusb-1.0_VERSION:INTERNAL=
+//ADVANCED property for variable: pkgcfg_lib_GST1.0_glib-2.0
+pkgcfg_lib_GST1.0_glib-2.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GST1.0_gobject-2.0
+pkgcfg_lib_GST1.0_gobject-2.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_GST1.0_gstreamer-1.0
+pkgcfg_lib_GST1.0_gstreamer-1.0-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_PC_CURL_curl
 pkgcfg_lib_PC_CURL_curl-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_PC_EXPAT_expat

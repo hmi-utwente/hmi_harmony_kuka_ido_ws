@@ -29,7 +29,7 @@ class RobotMovement:
             rospy.loginfo(f'Limited to {angle}')
         return angle
 
-    def rotate(self, angle, speed, p=0.9, i=0.02, a=1.14):
+    def rotate(self, angle, speed, msg, p=0.9, i=0.02, a=1.14):
         max_speed = abs(speed)
         p_gain = p
         i_gain = i
@@ -46,7 +46,7 @@ class RobotMovement:
 
         timeout = 10.0
 
-        while any(abs(err) > 0.05 for err in err_z_hist):
+        while not msg:
             if time.time() - startTime > timeout:
                 rospy.logwarn('TIMEOUT WHILE ROTATING')
                 break
@@ -61,7 +61,8 @@ class RobotMovement:
             wz = max(min(wz, last_wz+dt*acc), last_wz-dt*acc)
             wz = max(min(wz, max_speed), -max_speed)
             msgs_.angular.z = wz
-            self.publisher_.publish(msgs_)
+            if not msg:
+                self.publisher_.publish(msgs_)
             last_wz = wz
             time.sleep(dt)        
 

@@ -1,0 +1,8 @@
+README.md
+setup.py
+src/sound_play/__init__.py
+src/sound_play/festival_plugin.py
+src/sound_play/flite_plugin.py
+src/sound_play/libsoundplay.py
+src/sound_play/sound_play_plugin.py
+src/sound_play/sound_type.py

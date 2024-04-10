@@ -25,6 +25,8 @@ def joy_callback(msg):
     if msg.buttons[0]:  # A button
         rospy.loginfo("A button pressed")
         stop_rotate = True
+        behaviors = Behaviors(stop_rotate) 
+        behaviors
     elif msg.buttons[1]:  # B button
         rospy.loginfo("B button pressed")
     elif msg.buttons[2]:  # X button

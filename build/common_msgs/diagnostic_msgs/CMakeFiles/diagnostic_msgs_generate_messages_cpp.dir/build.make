@@ -81,8 +81,8 @@ common_msgs/diagnostic_msgs/CMakeFiles/diagnostic_msgs_generate_messages_cpp: /h
 
 /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include/diagnostic_msgs/DiagnosticArray.h: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/gencpp/scripts/gen_cpp.py
 /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include/diagnostic_msgs/DiagnosticArray.h: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/diagnostic_msgs/msg/DiagnosticArray.msg
-/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include/diagnostic_msgs/DiagnosticArray.h: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg
 /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include/diagnostic_msgs/DiagnosticArray.h: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/diagnostic_msgs/msg/DiagnosticStatus.msg
+/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include/diagnostic_msgs/DiagnosticArray.h: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg
 /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include/diagnostic_msgs/DiagnosticArray.h: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/diagnostic_msgs/msg/KeyValue.msg
 /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/devel/include/diagnostic_msgs/DiagnosticArray.h: /home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/gencpp/scripts/msg.h.template
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating C++ code from diagnostic_msgs/DiagnosticArray.msg"

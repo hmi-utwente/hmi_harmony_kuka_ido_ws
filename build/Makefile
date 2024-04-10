@@ -4592,6 +4592,188 @@ actionlib_msgs_genpy/fast:
 .PHONY : actionlib_msgs_genpy/fast
 
 #=============================================================================
+# Target rules for targets named audio_common_msgs_generate_messages
+
+# Build rule for target.
+audio_common_msgs_generate_messages: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_generate_messages
+.PHONY : audio_common_msgs_generate_messages
+
+# fast build rule for target.
+audio_common_msgs_generate_messages/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages.dir/build
+.PHONY : audio_common_msgs_generate_messages/fast
+
+#=============================================================================
+# Target rules for targets named _audio_common_msgs_generate_messages_check_deps_AudioData
+
+# Build rule for target.
+_audio_common_msgs_generate_messages_check_deps_AudioData: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _audio_common_msgs_generate_messages_check_deps_AudioData
+.PHONY : _audio_common_msgs_generate_messages_check_deps_AudioData
+
+# fast build rule for target.
+_audio_common_msgs_generate_messages_check_deps_AudioData/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/_audio_common_msgs_generate_messages_check_deps_AudioData.dir/build.make audio_common/audio_common_msgs/CMakeFiles/_audio_common_msgs_generate_messages_check_deps_AudioData.dir/build
+.PHONY : _audio_common_msgs_generate_messages_check_deps_AudioData/fast
+
+#=============================================================================
+# Target rules for targets named _audio_common_msgs_generate_messages_check_deps_AudioDataStamped
+
+# Build rule for target.
+_audio_common_msgs_generate_messages_check_deps_AudioDataStamped: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _audio_common_msgs_generate_messages_check_deps_AudioDataStamped
+.PHONY : _audio_common_msgs_generate_messages_check_deps_AudioDataStamped
+
+# fast build rule for target.
+_audio_common_msgs_generate_messages_check_deps_AudioDataStamped/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/_audio_common_msgs_generate_messages_check_deps_AudioDataStamped.dir/build.make audio_common/audio_common_msgs/CMakeFiles/_audio_common_msgs_generate_messages_check_deps_AudioDataStamped.dir/build
+.PHONY : _audio_common_msgs_generate_messages_check_deps_AudioDataStamped/fast
+
+#=============================================================================
+# Target rules for targets named _audio_common_msgs_generate_messages_check_deps_AudioInfo
+
+# Build rule for target.
+_audio_common_msgs_generate_messages_check_deps_AudioInfo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _audio_common_msgs_generate_messages_check_deps_AudioInfo
+.PHONY : _audio_common_msgs_generate_messages_check_deps_AudioInfo
+
+# fast build rule for target.
+_audio_common_msgs_generate_messages_check_deps_AudioInfo/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/_audio_common_msgs_generate_messages_check_deps_AudioInfo.dir/build.make audio_common/audio_common_msgs/CMakeFiles/_audio_common_msgs_generate_messages_check_deps_AudioInfo.dir/build
+.PHONY : _audio_common_msgs_generate_messages_check_deps_AudioInfo/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_generate_messages_cpp
+
+# Build rule for target.
+audio_common_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_generate_messages_cpp
+.PHONY : audio_common_msgs_generate_messages_cpp
+
+# fast build rule for target.
+audio_common_msgs_generate_messages_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_cpp.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_cpp.dir/build
+.PHONY : audio_common_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_gencpp
+
+# Build rule for target.
+audio_common_msgs_gencpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_gencpp
+.PHONY : audio_common_msgs_gencpp
+
+# fast build rule for target.
+audio_common_msgs_gencpp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_gencpp.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_gencpp.dir/build
+.PHONY : audio_common_msgs_gencpp/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_generate_messages_eus
+
+# Build rule for target.
+audio_common_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_generate_messages_eus
+.PHONY : audio_common_msgs_generate_messages_eus
+
+# fast build rule for target.
+audio_common_msgs_generate_messages_eus/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_eus.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_eus.dir/build
+.PHONY : audio_common_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_geneus
+
+# Build rule for target.
+audio_common_msgs_geneus: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_geneus
+.PHONY : audio_common_msgs_geneus
+
+# fast build rule for target.
+audio_common_msgs_geneus/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_geneus.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_geneus.dir/build
+.PHONY : audio_common_msgs_geneus/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_generate_messages_lisp
+
+# Build rule for target.
+audio_common_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_generate_messages_lisp
+.PHONY : audio_common_msgs_generate_messages_lisp
+
+# fast build rule for target.
+audio_common_msgs_generate_messages_lisp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_lisp.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_lisp.dir/build
+.PHONY : audio_common_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_genlisp
+
+# Build rule for target.
+audio_common_msgs_genlisp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_genlisp
+.PHONY : audio_common_msgs_genlisp
+
+# fast build rule for target.
+audio_common_msgs_genlisp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_genlisp.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_genlisp.dir/build
+.PHONY : audio_common_msgs_genlisp/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_generate_messages_nodejs
+
+# Build rule for target.
+audio_common_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_generate_messages_nodejs
+.PHONY : audio_common_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+audio_common_msgs_generate_messages_nodejs/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_nodejs.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_nodejs.dir/build
+.PHONY : audio_common_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_gennodejs
+
+# Build rule for target.
+audio_common_msgs_gennodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_gennodejs
+.PHONY : audio_common_msgs_gennodejs
+
+# fast build rule for target.
+audio_common_msgs_gennodejs/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_gennodejs.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_gennodejs.dir/build
+.PHONY : audio_common_msgs_gennodejs/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_generate_messages_py
+
+# Build rule for target.
+audio_common_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_generate_messages_py
+.PHONY : audio_common_msgs_generate_messages_py
+
+# fast build rule for target.
+audio_common_msgs_generate_messages_py/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_py.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_generate_messages_py.dir/build
+.PHONY : audio_common_msgs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named audio_common_msgs_genpy
+
+# Build rule for target.
+audio_common_msgs_genpy: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_common_msgs_genpy
+.PHONY : audio_common_msgs_genpy
+
+# fast build rule for target.
+audio_common_msgs_genpy/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_genpy.dir/build.make audio_common/audio_common_msgs/CMakeFiles/audio_common_msgs_genpy.dir/build
+.PHONY : audio_common_msgs_genpy/fast
+
+#=============================================================================
 # Target rules for targets named bond_generate_messages
 
 # Build rule for target.
@@ -10479,6 +10661,32 @@ roscpp: cmake_check_build_system
 roscpp/fast:
 	$(MAKE) $(MAKESILENT) -f ros_comm/clients/roscpp/CMakeFiles/roscpp.dir/build.make ros_comm/clients/roscpp/CMakeFiles/roscpp.dir/build
 .PHONY : roscpp/fast
+
+#=============================================================================
+# Target rules for targets named audio_capture
+
+# Build rule for target.
+audio_capture: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_capture
+.PHONY : audio_capture
+
+# fast build rule for target.
+audio_capture/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_capture/CMakeFiles/audio_capture.dir/build.make audio_common/audio_capture/CMakeFiles/audio_capture.dir/build
+.PHONY : audio_capture/fast
+
+#=============================================================================
+# Target rules for targets named audio_play
+
+# Build rule for target.
+audio_play: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 audio_play
+.PHONY : audio_play
+
+# fast build rule for target.
+audio_play/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/audio_play/CMakeFiles/audio_play.dir/build.make audio_common/audio_play/CMakeFiles/audio_play.dir/build
+.PHONY : audio_play/fast
 
 #=============================================================================
 # Target rules for targets named bondcpp
@@ -25899,6 +26107,253 @@ clean_test_results_sick_tim/fast:
 .PHONY : clean_test_results_sick_tim/fast
 
 #=============================================================================
+# Target rules for targets named sound_play_generate_messages
+
+# Build rule for target.
+sound_play_generate_messages: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_generate_messages
+.PHONY : sound_play_generate_messages
+
+# fast build rule for target.
+sound_play_generate_messages/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_generate_messages.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_generate_messages.dir/build
+.PHONY : sound_play_generate_messages/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequestAction
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestAction: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequestAction
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestAction
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestAction/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestAction.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestAction.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestAction/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequestActionGoal
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestActionGoal: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequestActionGoal
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestActionGoal
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestActionGoal/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestActionGoal.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestActionGoal.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestActionGoal/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequestActionResult
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestActionResult: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequestActionResult
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestActionResult
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestActionResult/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestActionResult.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestActionResult.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestActionResult/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequestActionFeedback
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestActionFeedback: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequestActionFeedback
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestActionFeedback
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestActionFeedback/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestActionFeedback.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestActionFeedback.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestActionFeedback/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequestGoal
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestGoal: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequestGoal
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestGoal
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestGoal/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestGoal.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestGoal.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestGoal/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequestResult
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestResult: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequestResult
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestResult
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestResult/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestResult.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestResult.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestResult/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequestFeedback
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestFeedback: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequestFeedback
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestFeedback
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequestFeedback/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestFeedback.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequestFeedback.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequestFeedback/fast
+
+#=============================================================================
+# Target rules for targets named _sound_play_generate_messages_check_deps_SoundRequest
+
+# Build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _sound_play_generate_messages_check_deps_SoundRequest
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequest
+
+# fast build rule for target.
+_sound_play_generate_messages_check_deps_SoundRequest/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequest.dir/build.make audio_common/sound_play/CMakeFiles/_sound_play_generate_messages_check_deps_SoundRequest.dir/build
+.PHONY : _sound_play_generate_messages_check_deps_SoundRequest/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_generate_messages_cpp
+
+# Build rule for target.
+sound_play_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_generate_messages_cpp
+.PHONY : sound_play_generate_messages_cpp
+
+# fast build rule for target.
+sound_play_generate_messages_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_generate_messages_cpp.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_generate_messages_cpp.dir/build
+.PHONY : sound_play_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_gencpp
+
+# Build rule for target.
+sound_play_gencpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_gencpp
+.PHONY : sound_play_gencpp
+
+# fast build rule for target.
+sound_play_gencpp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_gencpp.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_gencpp.dir/build
+.PHONY : sound_play_gencpp/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_generate_messages_eus
+
+# Build rule for target.
+sound_play_generate_messages_eus: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_generate_messages_eus
+.PHONY : sound_play_generate_messages_eus
+
+# fast build rule for target.
+sound_play_generate_messages_eus/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_generate_messages_eus.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_generate_messages_eus.dir/build
+.PHONY : sound_play_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_geneus
+
+# Build rule for target.
+sound_play_geneus: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_geneus
+.PHONY : sound_play_geneus
+
+# fast build rule for target.
+sound_play_geneus/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_geneus.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_geneus.dir/build
+.PHONY : sound_play_geneus/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_generate_messages_lisp
+
+# Build rule for target.
+sound_play_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_generate_messages_lisp
+.PHONY : sound_play_generate_messages_lisp
+
+# fast build rule for target.
+sound_play_generate_messages_lisp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_generate_messages_lisp.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_generate_messages_lisp.dir/build
+.PHONY : sound_play_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_genlisp
+
+# Build rule for target.
+sound_play_genlisp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_genlisp
+.PHONY : sound_play_genlisp
+
+# fast build rule for target.
+sound_play_genlisp/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_genlisp.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_genlisp.dir/build
+.PHONY : sound_play_genlisp/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_generate_messages_nodejs
+
+# Build rule for target.
+sound_play_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_generate_messages_nodejs
+.PHONY : sound_play_generate_messages_nodejs
+
+# fast build rule for target.
+sound_play_generate_messages_nodejs/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_generate_messages_nodejs.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_generate_messages_nodejs.dir/build
+.PHONY : sound_play_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_gennodejs
+
+# Build rule for target.
+sound_play_gennodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_gennodejs
+.PHONY : sound_play_gennodejs
+
+# fast build rule for target.
+sound_play_gennodejs/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_gennodejs.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_gennodejs.dir/build
+.PHONY : sound_play_gennodejs/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_generate_messages_py
+
+# Build rule for target.
+sound_play_generate_messages_py: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_generate_messages_py
+.PHONY : sound_play_generate_messages_py
+
+# fast build rule for target.
+sound_play_generate_messages_py/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_generate_messages_py.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_generate_messages_py.dir/build
+.PHONY : sound_play_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named sound_play_genpy
+
+# Build rule for target.
+sound_play_genpy: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sound_play_genpy
+.PHONY : sound_play_genpy
+
+# fast build rule for target.
+sound_play_genpy/fast:
+	$(MAKE) $(MAKESILENT) -f audio_common/sound_play/CMakeFiles/sound_play_genpy.dir/build.make audio_common/sound_play/CMakeFiles/sound_play_genpy.dir/build
+.PHONY : sound_play_genpy/fast
+
+#=============================================================================
 # Target rules for targets named roslint_spacenav_node
 
 # Build rule for target.
@@ -36465,6 +36920,9 @@ help:
 	@echo "... _actionlib_msgs_generate_messages_check_deps_GoalID"
 	@echo "... _actionlib_msgs_generate_messages_check_deps_GoalStatus"
 	@echo "... _actionlib_msgs_generate_messages_check_deps_GoalStatusArray"
+	@echo "... _audio_common_msgs_generate_messages_check_deps_AudioData"
+	@echo "... _audio_common_msgs_generate_messages_check_deps_AudioDataStamped"
+	@echo "... _audio_common_msgs_generate_messages_check_deps_AudioInfo"
 	@echo "... _base_local_planner_generate_messages_check_deps_Position2DInt"
 	@echo "... _bond_generate_messages_check_deps_Constants"
 	@echo "... _bond_generate_messages_check_deps_Status"
@@ -37306,6 +37764,14 @@ help:
 	@echo "... _shape_msgs_generate_messages_check_deps_MeshTriangle"
 	@echo "... _shape_msgs_generate_messages_check_deps_Plane"
 	@echo "... _shape_msgs_generate_messages_check_deps_SolidPrimitive"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequest"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequestAction"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequestActionFeedback"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequestActionGoal"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequestActionResult"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequestFeedback"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequestGoal"
+	@echo "... _sound_play_generate_messages_check_deps_SoundRequestResult"
 	@echo "... _std_msgs_generate_messages_check_deps_Bool"
 	@echo "... _std_msgs_generate_messages_check_deps_Byte"
 	@echo "... _std_msgs_generate_messages_check_deps_ByteMultiArray"
@@ -37516,6 +37982,17 @@ help:
 	@echo "... amcl_texas_willow_hallway_loop_indexed.bag"
 	@echo "... amcl_willow-full-0.05.pgm"
 	@echo "... amcl_willow-full.pgm"
+	@echo "... audio_common_msgs_gencpp"
+	@echo "... audio_common_msgs_generate_messages"
+	@echo "... audio_common_msgs_generate_messages_cpp"
+	@echo "... audio_common_msgs_generate_messages_eus"
+	@echo "... audio_common_msgs_generate_messages_lisp"
+	@echo "... audio_common_msgs_generate_messages_nodejs"
+	@echo "... audio_common_msgs_generate_messages_py"
+	@echo "... audio_common_msgs_geneus"
+	@echo "... audio_common_msgs_genlisp"
+	@echo "... audio_common_msgs_gennodejs"
+	@echo "... audio_common_msgs_genpy"
 	@echo "... base_local_planner_gencfg"
 	@echo "... base_local_planner_gencpp"
 	@echo "... base_local_planner_generate_messages"
@@ -38597,6 +39074,17 @@ help:
 	@echo "... shape_msgs_genpy"
 	@echo "... sick_tim_gencfg"
 	@echo "... social_navigation_layers_gencfg"
+	@echo "... sound_play_gencpp"
+	@echo "... sound_play_generate_messages"
+	@echo "... sound_play_generate_messages_cpp"
+	@echo "... sound_play_generate_messages_eus"
+	@echo "... sound_play_generate_messages_lisp"
+	@echo "... sound_play_generate_messages_nodejs"
+	@echo "... sound_play_generate_messages_py"
+	@echo "... sound_play_geneus"
+	@echo "... sound_play_genlisp"
+	@echo "... sound_play_gennodejs"
+	@echo "... sound_play_genpy"
 	@echo "... std_msgs_gencpp"
 	@echo "... std_msgs_generate_messages"
 	@echo "... std_msgs_generate_messages_cpp"
@@ -38813,6 +39301,8 @@ help:
 	@echo "... amcl_sensors"
 	@echo "... analyzer_loader"
 	@echo "... array_parser_test"
+	@echo "... audio_capture"
+	@echo "... audio_play"
 	@echo "... autoptr_test"
 	@echo "... bag_player"
 	@echo "... base_local_planner"

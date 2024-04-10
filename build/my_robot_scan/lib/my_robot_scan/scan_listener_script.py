@@ -94,20 +94,54 @@ import math
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 from ros_openpose.msg import Frame
+from std_msgs.msg import Float64
+
 from robot_movement.robot_movement_script import RobotMovement as robot_movement
 import time
 
+
+#Parameters
+close_range = 0.7
+speed = 50
+
+
 class Behaviors:
-    def __init__(self):
+    def __init__(self,stop_rotate):
         self.object_detected = False
         self.person_detected = False
+        self.object_detected_close_range = False
         self.obstruction_resolved = False
         self.persons_in_proximity = False
+        self.latest_scan_msg = None
 
-        rospy.init_node('person_detector', anonymous=True)
+        #rospy.init_node('person_detector', anonymous=True)
         rospy.Subscriber('/frame', Frame, self.frame_callback)
         rospy.Subscriber('/scan_obstacles', LaserScan, self.scan_callback)
 
+        self.stop_rotation = stop_rotate 
+
+    
+    def publish_led_parameters(self):
+        # Initialize ROS node
+       # rospy.init_node("led_controller_publisher", anonymous=True)
+    
+        # Create publisher for the parameter updates topic
+        pub = rospy.Publisher("/led_controller_node/modes/custom_programs/base_led_animations/animation0/solid/parameter_updates", Float64, queue_size=10)
+
+        # Create a Float64 message with the desired RGB values
+        r = 0.0
+        g = 0.7
+        b = 0.34
+        a = 1.0
+        msg_led= Float64(data=r)
+        msg_led.data = g
+        msg_led.data = b
+        msg_led.data = a
+
+        # Publish the message
+        pub.publish(msg_led)
+
+    
     def frame_callback(self, frame_msg):
         if not frame_msg.persons:
             rospy.logwarn("No person detected!")
@@ -115,50 +149,87 @@ class Behaviors:
         else:
             rospy.logwarn("Person detected!")
             self.person_detected = True
+            self.publish_led_parameters() #not resolved yet
+            
 
-    def point_towards_obstruction(self, scan_msg, valid_ranges):
-        if valid_ranges:
-            if all(val > 0.6 for val in valid_ranges):
-                self.object_detected = False
-                rospy.loginfo("No blockage of the way")
-            else:
-                min_range = min(valid_ranges)
-                min_range_index = scan_msg.ranges.index(min_range)
-                angle_increment = scan_msg.angle_increment
-                angle_min = scan_msg.angle_min 
-                angle_at_min_range = (angle_min + min_range_index * angle_increment) 
-                turning_angle = angle_at_min_range
-                rospy.loginfo(turning_angle)
-                idx = 0
-                while not self.person_detected:
-                    robot_movement().rotate(turning_angle + math.pi, 127)
-                    time.sleep(5)
-                    idx += 1
-                    if idx == 4:
-                        rospy.loginfo("Turned 360 degrees, no person detected")
-                        break
+    def point_towards_obstruction(self):
+
+        while self.object_detected and not self.stop_rotation:
+            
+            if self.latest_scan_msg:
+                valid_ranges = [range_val for range_val in self.latest_scan_msg.ranges if not np.isnan(range_val)]
+                if valid_ranges:
+                    if all(val > close_range for val in valid_ranges):
+                        #rospy.loginfo(valid_ranges)
+                        self.object_detected = False
+                        rospy.loginfo("No obstruction of the way")
+                        time.sleep(30)
+                        self.stop_rotation = True
+                        return
+                    else:
+                        min_range = min(valid_ranges)
+                        min_range_index = self.latest_scan_msg.ranges.index(min_range)
+                        angle_increment = self.latest_scan_msg.angle_increment
+                        angle_min = self.latest_scan_msg.angle_min 
+                        angle_at_min_range = angle_min + min_range_index * angle_increment
+                        turning_angle = angle_at_min_range
+                        rospy.loginfo(turning_angle)
+                        idx = 0
+                        if not self.person_detected and not self.stop_rotation:
+                            idx = 0
+                            while idx  < 2: #rotate 180 degrees in steps
+                                robot_movement().rotate(-1 *math.copysign(1,turning_angle) * (0.5 * math.pi), speed, self.person_detected)
+                                rospy.loginfo("Check for people...")
+                                time.sleep(30)
+                                idx += 1
+                                if self.person_detected:
+                                    rospy.loginfo("Person detected, can you help me")
+                                    time.sleep(30)
+                                    self.point_towards_obstruction()
+                                else:
+                                    rospy.loginfo("Rotation: " + str(idx) +" ,no person detected")
+                            self.stop_rotation = True
+                            return
+                        else:
+                            rospy.loginfo("Obstacle in the way, can you help?")
+                            time.sleep(30)
+                            self.point_towards_obstruction()
                 else:
-                    rospy.loginfo("Obstacle in the way, can you help?")
+                    rospy.loginfo("No valid ranges in laser scan data")
+                    return
+            else:
+                rospy.loginfo("No laser scan data received")
+                return
+
 
     def scan_callback(self, scan_msg):
+        self.latest_scan_msg = scan_msg
         valid_ranges = [range_val for range_val in scan_msg.ranges if not np.isnan(range_val)]
         if valid_ranges:
+            if any(val < close_range for val in valid_ranges):
+                self.object_detected_close_range = True
             self.object_detected = True
         else:
             self.object_detected = False
 
-        if self.object_detected:
-            rospy.loginfo("Object detected")
-            self.point_towards_obstruction(scan_msg, valid_ranges)
+        if self.object_detected_close_range:
+            #rospy.loginfo("Object detected")
+            if not self.stop_rotation:
+                self.point_towards_obstruction()
+            else:
+                rospy.loginfo("Signaling for help, obstacle in the way")
+                time.sleep(30)
+                self.stop_rotation = False
+                self.point_towards_obstruction()
         else:
-            rospy.loginfo("No object detected")
+            rospy.loginfo("No close object detected")
 
     def run(self):
         rospy.spin()
 
-if __name__ == '__main__':
-    try:
-        pd = Behaviors()
-        pd.run()
-    except rospy.ROSInterruptException:
-        pass
+#if __name__ == '__main__':
+#    try:
+#        pd = Behaviors()
+#        pd.run()
+#    except rospy.ROSInterruptException:
+#        pass
