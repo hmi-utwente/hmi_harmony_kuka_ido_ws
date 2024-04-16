@@ -10,12 +10,12 @@ linear_vel = 0.0
 angular_vel = 0.0
 
 # Define scaling factors for velocity adjustment
-linear_scale = 127.5
-angular_scale = 127.5
-
+linear_scale = 12.5
+angular_scale = 12.5
+behaviors_instance = None
 
 def joy_callback(msg):
-    global linear_vel, angular_vel
+    global linear_vel, angular_vel, behaviors_instance
     status_obstacle = 0
     # Map joystick axes to linear and angular velocities
     linear_vel = msg.axes[1] * linear_scale   # Left stick vertical axis
@@ -24,19 +24,71 @@ def joy_callback(msg):
     #Configuration for behaviours (xbox controller based):
     if msg.buttons[0]:  # A button
         rospy.loginfo("A button pressed")
-        stop_rotate = True
-        behaviors = Behaviors(stop_rotate) 
-        behaviors
+        if behaviors_instance is not None:
+            behaviors_instance.stop_rotation= True
+            behaviors_instance.button_press_a = True
+            behaviors_instance.button_press_y = False
+            behaviors_instance.button_press_x = False
+            behaviors_instance.button_press_b = False
+        else:
+            stop_rotate= True
+            button_press_a = True
+            button_press_y = False
+            button_press_x = False
+            button_press_b = False
+            behaviors_instance = Behaviors(stop_rotate, button_press_y,button_press_x, button_press_b, button_press_a) 
+            
+
     elif msg.buttons[1]:  # B button
         rospy.loginfo("B button pressed")
+        if behaviors_instance is not None:
+            behaviors_instance.stop_rotate= True
+            behaviors_instance.button_press_a = False
+            behaviors_instance.button_press_y = False
+            behaviors_instance.button_press_x = False
+            behaviors_instance.button_press_b = True
+        else:
+            stop_rotate = True
+            button_press_a = False
+            button_press_x = False
+            button_press_b = True
+            button_press_y = False
+            behaviors_instance = Behaviors(stop_rotate, button_press_y,button_press_x, button_press_b, button_press_a) 
+            #behaviors_instance.obstacle()
+
     elif msg.buttons[2]:  # X button
         rospy.loginfo("X button pressed")
+        if behaviors_instance is not None:
+            behaviors_instance.stop_rotation= True
+            behaviors_instance.button_press_a = False
+            behaviors_instance.button_press_y = False
+            behaviors_instance.button_press_x = True
+            behaviors_instance.button_press_b = False
+        else:
+            stop_rotate = True
+            button_press_a = False
+            button_press_x = True
+            button_press_b = False
+            button_press_y = False
+            behaviors_instance = Behaviors(stop_rotate, button_press_y,button_press_x, button_press_b, button_press_a) 
+            #behaviors_instance.mobility()
     elif msg.buttons[3]:  # Y button
         #block the way
         rospy.loginfo("Y button pressed")
-        stop_rotate = False
-        behaviors = Behaviors(stop_rotate) 
-        behaviors.point_towards_obstruction()
+        if behaviors_instance is not None:
+            behaviors_instance.stop_rotate = False
+            behaviors_instance.button_press_a = False
+            behaviors_instance.button_press_x = False
+            behaviors_instance.button_press_b = False
+            behaviors_instance.button_press_y = True
+        else:
+            stop_rotate = False
+            button_press_a = False
+            button_press_x = False
+            button_press_b = False
+            button_press_y = True
+            behaviors_instance = Behaviors(stop_rotate, button_press_y,button_press_x, button_press_b, button_press_a) 
+            behaviors_instance.obstacle()
 
 def publish_command():
     # Create Twist message
@@ -51,7 +103,7 @@ if __name__ == "__main__":
     rospy.init_node("ps3_controller_teleop", anonymous=True)
 
     # Initialize publisher for Twist messages
-    pub = rospy.Publisher("/cmd_vel", Twist, queue_size=50)
+    pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
 
     # Subscribe to Joy messages from the joystick
     rospy.Subscriber("/joy", Joy, joy_callback)

@@ -24,7 +24,7 @@
 #        rospy.logwarn("Person detected!")
 #        person_detected = True
 
-#def point_towards_obstruction(scan_msg,valid_ranges):
+#def obstacle(scan_msg,valid_ranges):
 #    if valid_ranges:
 #        if all(val > 0.8 for val in valid_ranges):
 #            object_detected = False
@@ -70,7 +70,7 @@
     # Check conditions and react accordingly
 #    if object_detected:
 #        rospy.loginfo("Object detected")
-#        point_towards_obstruction(scan_msg,valid_ranges)
+#        obstacle(scan_msg,valid_ranges)
 #    else:
 #        rospy.loginfo("No object detected")
 
@@ -95,18 +95,24 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 from ros_openpose.msg import Frame
 from std_msgs.msg import Float64
+from sound_play.msg import SoundRequest  #check of dit werkt
+from sound_play.libsoundplay import SoundClient #check of dit werkt
 
 from robot_movement.robot_movement_script import RobotMovement as robot_movement
 import time
-
+from playsound import playsound
+import sys
+import re
+sys.path.append('/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/my_robot_scan/src/my_robot_scan/')
+from gestures_ml_model import *
 
 #Parameters
 close_range = 0.7
-speed = 50
+speed = 10
 
 
 class Behaviors:
-    def __init__(self,stop_rotate):
+    def __init__(self,stop_rotate, button_press_y, button_press_x, button_press_b, button_press_a):
         self.object_detected = False
         self.person_detected = False
         self.object_detected_close_range = False
@@ -119,7 +125,10 @@ class Behaviors:
         rospy.Subscriber('/scan_obstacles', LaserScan, self.scan_callback)
 
         self.stop_rotation = stop_rotate 
-
+        self.button_press_y = button_press_y
+        self.button_press_x = button_press_x
+        self.button_press_b = button_press_b
+        self.button_press_a = button_press_a
     
     def publish_led_parameters(self):
         # Initialize ROS node
@@ -140,7 +149,6 @@ class Behaviors:
 
         # Publish the message
         pub.publish(msg_led)
-
     
     def frame_callback(self, frame_msg):
         if not frame_msg.persons:
@@ -150,20 +158,99 @@ class Behaviors:
             rospy.logwarn("Person detected!")
             self.person_detected = True
             self.publish_led_parameters() #not resolved yet
-            
+            if self.button_press_a:
+                self.gestures_expand_data(frame_msg)
+                #self.mobility(frame_msg)
+    
+    def gestures_expand_data(self,frame_msg):
+        start_time = time.time()
+        larger_array = []
+        file_path = "/home/arjan/Desktop/ros_noetic_base_2204/persons/person.txt"
+        with open(file_path, "w") as file:
+            for part_info in frame_msg.persons:
+                file.write(str(part_info))
+        # Read the content of the text file
+        with open('/home/arjan/Desktop/ros_noetic_base_2204/persons/person.txt', 'r') as file:
+            data = file.read()
 
-    def point_towards_obstruction(self):
+        # Use regular expressions to find all (x, y) pixel points
+        # Use regular expressions to find all (x, y) pixel points
+        pixel_points = re.findall(r'pixel:\s+?x:\s*([\d.]+)\s+y:\s*([\d.]+)', data)
+        
+        # Convert the pixel points to tuples of floats
+        pixel_points = [(float(x), float(y)) for x, y in pixel_points]
+        flattened_coordinates = [coord for point in pixel_points for coord in point]
+        larger_array.append(flattened_coordinates)
+        
+        df = pd.DataFrame(larger_array)
+        #rospy.loginfo(df)
+
+           
+        df['New_Column'] = 0 
+     
+
+        excel_file_path = '/home/arjan/Desktop/ros_noetic_base_2204/persons/gestures_data_collection.csv'
+
+        if os.path.isfile(excel_file_path):
+            existing_df = pd.read_csv(excel_file_path)
+            if df.empty:
+                print("DataFrame 'df' is empty. No data to append.")
+            else:
+                # Append data to the first column of existing_df
+                df.columns = existing_df.columns
+        
+                 # Append data to existing_df along rows
+                updated_df = pd.concat([existing_df, df], ignore_index=True)
+                updated_df.to_csv(excel_file_path, index=False)
+
+        else:
+            if df.empty:
+                print("DataFrame 'df' is empty. No data to write.")
+            else:
+            # Write df to a new CSV file
+                df.to_csv(excel_file_path, index=False)
+        
+
+    def mobility(self,frame_msg):
+        start_time = time.time()
+        larger_array = []
+        file_path = "/home/arjan/Desktop/ros_noetic_base_2204/persons/person.txt"
+        with open(file_path, "w") as file:
+            for part_info in frame_msg.persons:
+                file.write(str(part_info))
+        # Read the content of the text file
+        with open('/home/arjan/Desktop/ros_noetic_base_2204/persons/person.txt', 'r') as file:
+            data = file.read()
+
+        # Use regular expressions to find all (x, y) pixel points
+        # Use regular expressions to find all (x, y) pixel points
+        pixel_points = re.findall(r'pixel:\s+?x:\s*([\d.]+)\s+y:\s*([\d.]+)', data)
+        
+        # Convert the pixel points to tuples of floats
+        pixel_points = [(float(x), float(y)) for x, y in pixel_points]
+        flattened_coordinates = [coord for point in pixel_points for coord in point]
+        larger_array.append(flattened_coordinates)
+        
+        df = pd.DataFrame(larger_array)
+        
+    
+        predictions = model.predict(df)
+        predicted_labels = np.argmax(predictions, axis=1)
+        rospy.loginfo(predicted_labels)
+
+    def obstacle(self):
 
         while self.object_detected and not self.stop_rotation:
             
             if self.latest_scan_msg:
+                #scan for obstacles
                 valid_ranges = [range_val for range_val in self.latest_scan_msg.ranges if not np.isnan(range_val)]
                 if valid_ranges:
                     if all(val > close_range for val in valid_ranges):
                         #rospy.loginfo(valid_ranges)
                         self.object_detected = False
                         rospy.loginfo("No obstruction of the way")
-                        time.sleep(30)
+                        time.sleep(10)
                         self.stop_rotation = True
                         return
                     else:
@@ -174,26 +261,54 @@ class Behaviors:
                         angle_at_min_range = angle_min + min_range_index * angle_increment
                         turning_angle = angle_at_min_range
                         rospy.loginfo(turning_angle)
-                        idx = 0
-                        if not self.person_detected and not self.stop_rotation:
+                        
+                        if not self.person_detected:
                             idx = 0
-                            while idx  < 2: #rotate 180 degrees in steps
-                                robot_movement().rotate(-1 *math.copysign(1,turning_angle) * (0.5 * math.pi), speed, self.person_detected)
+                            return_angle = 0
+                            if not self.button_press_a and idx < 1: #rotate in steps
+                                robot_movement().rotate(math.copysign(1,turning_angle) * (0.5 * math.pi), speed, self.person_detected)
                                 rospy.loginfo("Check for people...")
-                                time.sleep(30)
+                                time.sleep(15)
                                 idx += 1
+                                return_angle += np.abs(math.copysign(1,turning_angle) * (0.5 * math.pi))
                                 if self.person_detected:
+                                    
                                     rospy.loginfo("Person detected, can you help me")
-                                    time.sleep(30)
-                                    self.point_towards_obstruction()
+                                    playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SRP_EX_NSNAT_NL_033.wav')
+                                    time.sleep(15)
+                                    
+                                    
+                                    
+                                    robot_movement().rotate(-return_angle, speed, self.person_detected)
+
+                                    
+                                    valid_ranges = [range_val for range_val in self.latest_scan_msg.ranges if not np.isnan(range_val)]
+
+                                    if valid_ranges:
+                                        while any(val < close_range for val in valid_ranges):
+                                            playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SAD_EX_NSNAT_NL_032.wav')
+                                            time.sleep(15)
+                                               
+                                        if all(val > close_range for val in valid_ranges):
+                                            playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SRP_EX_NSNAT_NL_029.wav')
+                                        
+                                        self.obstacle()
+
+
                                 else:
-                                    rospy.loginfo("Rotation: " + str(idx) +" ,no person detected")
+                                    rospy.loginfo("no person detected")
+                                    playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SAD_EX_NSNAT_NL_032.wav')
+
+                            robot_movement().rotate(-return_angle, speed, self.person_detected)
+                                            
+                            
                             self.stop_rotation = True
                             return
                         else:
-                            rospy.loginfo("Obstacle in the way, can you help?")
-                            time.sleep(30)
-                            self.point_towards_obstruction()
+                            #rospy.loginfo("Obstacle in the way, can you help?")
+                            #playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SAD_EX_NSNAT_NL_032.wav')
+                            #time.sleep(30)
+                            self.obstacle()
                 else:
                     rospy.loginfo("No valid ranges in laser scan data")
                     return
@@ -211,25 +326,29 @@ class Behaviors:
             self.object_detected = True
         else:
             self.object_detected = False
-
         if self.object_detected_close_range:
             #rospy.loginfo("Object detected")
-            if not self.stop_rotation:
-                self.point_towards_obstruction()
-            else:
+            if not self.stop_rotation and self.button_press_y:
+                self.obstacle()
+            elif self.stop_rotation and self.button_press_y:
                 rospy.loginfo("Signaling for help, obstacle in the way")
-                time.sleep(30)
+                playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SAD_EX_NSNAT_NL_032.wav')
+                time.sleep(5)
                 self.stop_rotation = False
-                self.point_towards_obstruction()
+                
+            #elif self.button_press_a:
+                #Do tasks for event A
+                #rospy.loginfo("Event A")
+            #elif self.button_press_x:
+                #Do tasks for event X
+                #rospy.loginfo("Event X")
+            #elif self.button_press_b:
+                #Do tasks for event b
+                #rospy.loginfo("Event B")
         else:
-            rospy.loginfo("No close object detected")
+            rospy.loginfo("No close object detected")      
+            
 
-    def run(self):
-        rospy.spin()
+      
 
-#if __name__ == '__main__':
-#    try:
-#        pd = Behaviors()
-#        pd.run()
-#    except rospy.ROSInterruptException:
-#        pass
+    
