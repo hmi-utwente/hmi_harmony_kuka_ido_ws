@@ -99,6 +99,7 @@ from sound_play.msg import SoundRequest  #check of dit werkt
 from sound_play.libsoundplay import SoundClient #check of dit werkt
 
 from robot_movement.robot_movement_script import RobotMovement as robot_movement
+
 import time
 from playsound import playsound
 import sys
@@ -158,9 +159,10 @@ class Behaviors:
             rospy.logwarn("Person detected!")
             self.person_detected = True
             self.publish_led_parameters() #not resolved yet
-            if self.button_press_a:
-                self.gestures_expand_data(frame_msg)
-                #self.mobility(frame_msg)
+            #if self.button_press_a:
+                #self.gestures_expand_data(frame_msg)
+            #if self.button_press_x:
+            self.mobility(frame_msg)
     
     def gestures_expand_data(self,frame_msg):
         start_time = time.time()
@@ -185,8 +187,8 @@ class Behaviors:
         df = pd.DataFrame(larger_array)
         #rospy.loginfo(df)
 
-           
-        df['New_Column'] = 0 
+        
+        df['New_Column'] = 3
      
 
         excel_file_path = '/home/arjan/Desktop/ros_noetic_base_2204/persons/gestures_data_collection.csv'
@@ -198,9 +200,15 @@ class Behaviors:
             else:
                 # Append data to the first column of existing_df
                 df.columns = existing_df.columns
-        
+                
                  # Append data to existing_df along rows
                 updated_df = pd.concat([existing_df, df], ignore_index=True)
+                #new_column = updated_df['New_Column'] 
+                #scaler = MinMaxScaler()
+                #numerical_columns = updated_df.select_dtypes(include=['float64', 'int64']).columns.drop('New_Column')
+                #updated_df[numerical_columns] = scaler.fit_transform(updated_df[numerical_columns])
+                #updated_df['New_Column'] = new_column
+
                 updated_df.to_csv(excel_file_path, index=False)
 
         else:
@@ -236,7 +244,12 @@ class Behaviors:
     
         predictions = model.predict(df)
         predicted_labels = np.argmax(predictions, axis=1)
+        if any(predicted_labels) == 3:
+            playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SRP_EX_NSNAT_NL_033.wav')
+
+            
         rospy.loginfo(predicted_labels)
+        
 
     def obstacle(self):
 
@@ -288,6 +301,8 @@ class Behaviors:
                                         while any(val < close_range for val in valid_ranges):
                                             playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SAD_EX_NSNAT_NL_032.wav')
                                             time.sleep(15)
+                                            robot_movement().rotate(-return_angle, speed, self.person_detected)
+
                                                
                                         if all(val > close_range for val in valid_ranges):
                                             playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SRP_EX_NSNAT_NL_029.wav')
@@ -305,9 +320,9 @@ class Behaviors:
                             self.stop_rotation = True
                             return
                         else:
-                            #rospy.loginfo("Obstacle in the way, can you help?")
-                            #playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SAD_EX_NSNAT_NL_032.wav')
-                            #time.sleep(30)
+                            rospy.loginfo("Obstacle in the way, can you help?")
+                            playsound('/home/arjan/Desktop/ML_Human_Actions/ROBOGIB_SAD_EX_NSNAT_NL_032.wav')
+                            time.sleep(15)
                             self.obstacle()
                 else:
                     rospy.loginfo("No valid ranges in laser scan data")

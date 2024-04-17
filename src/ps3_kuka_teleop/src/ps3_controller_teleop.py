@@ -10,8 +10,8 @@ linear_vel = 0.0
 angular_vel = 0.0
 
 # Define scaling factors for velocity adjustment
-linear_scale = 12.5
-angular_scale = 12.5
+linear_scale = 0.65 
+angular_scale = 127
 behaviors_instance = None
 
 def joy_callback(msg):

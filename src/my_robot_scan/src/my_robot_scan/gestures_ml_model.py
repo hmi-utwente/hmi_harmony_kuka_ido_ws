@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 
 def label_data(video_lbl, frame_rate = 15.08):
     df = pd.read_excel('/home/arjan/Desktop/openpose/gestures/gestures/ActionOfInterestTVSubject3.xlsx')
@@ -65,12 +66,44 @@ predict = True
 data_list = []
 excel_file_path = '/home/arjan/Desktop/ros_noetic_base_2204/persons/gestures_data_collection.csv'
 if os.path.isfile(excel_file_path) and predict:
+
+    # Loop through the json files
+    for idx in range(1, 11):
+        x, src = import_json_openpose_data(idx)
+        y = label_data(idx)['Action_Label']
+    
+        # Iterate through each entry
+        for entry in range(1801):
+            action_label = y[entry]
+            pose_keypoints = x[entry]['people'][0]['pose_keypoints_2d']
+        
+            # Unpack pose_keypoints array and store each value in a separate column
+            pose_keypoints_dict = {}
+            for i in range(0, len(pose_keypoints), 3):
+                pose_keypoints_dict[f'Pose_{i//3}_X'] = pose_keypoints[i]
+                pose_keypoints_dict[f'Pose_{i//3}_Y'] = pose_keypoints[i + 1]
+                pose_keypoints_dict[f'Pose_{i//3}_Confidence'] = pose_keypoints[i + 2]
+        
+            # Append data to the list
+            data_list.append({'Action_Label': action_label, **pose_keypoints_dict})
+
+    # Create DataFrame from the list
+    full_data = pd.DataFrame(data_list)
+    
+    
     existing_df_nw = pd.read_csv(excel_file_path)
-    y_add = existing_df_nw['New_Column'].astype(float)
+    y_add = existing_df_nw['New_Column']
     existing_df_nw = existing_df_nw.drop(columns=['New_Column'])
+    #y_add_2 = full_data['Action_Label']
+    #full_data = full_data.drop(columns=['Action_Label'])
+    #full_data = full_data.drop(full_data.filter(like='Confidence').columns, axis=1)
+    #scaler = MinMaxScaler()
+    #full_data =  pd.DataFrame(scaler.fit_transform(full_data))
+    #full_data.columns = existing_df_nw.columns
+    #x = pd.concat([existing_df_nw, full_data], ignore_index=True)
+    #y = y_add.append(y_add_2).reset_index(drop=True)
     x = existing_df_nw
     y = y_add
-    y = pd.DataFrame(y)
     y.astype('int32')
 
     from sklearn.model_selection import train_test_split
@@ -111,7 +144,7 @@ if os.path.isfile(excel_file_path) and predict:
 
     model.add(keras.layers.Dense(13, activation='relu'))
 
-    model.add(keras.layers.Dense(5, activation='softmax'))
+    model.add(keras.layers.Dense(4, activation='softmax'))
 
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 #model.summary()
