@@ -1,4 +1,15 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
+plugin.xml
 setup.py
+resource/cm_icon.png
+resource/controller_info.ui
+resource/controller_manager.ui
+resource/led_green.png
+resource/led_off.png
+resource/led_red.png
+scripts/rqt_controller_manager
 src/rqt_controller_manager/__init__.py
 src/rqt_controller_manager/controller_manager.py
 src/rqt_controller_manager/update_combo.py

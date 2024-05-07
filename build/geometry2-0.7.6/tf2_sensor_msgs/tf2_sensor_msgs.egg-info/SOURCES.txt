@@ -1,4 +1,10 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
 setup.py
+include/tf2_sensor_msgs/tf2_sensor_msgs.h
 src/tf2_sensor_msgs/__init__.py
 src/tf2_sensor_msgs/tf2_sensor_msgs.py
+test/test.launch
+test/test_tf2_sensor_msgs.cpp
 test/test_tf2_sensor_msgs.py

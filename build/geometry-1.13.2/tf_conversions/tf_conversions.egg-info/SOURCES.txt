@@ -1,3 +1,17 @@
+CHANGELOG.rst
+CMakeLists.txt
+conf.py
+index.rst
+package.xml
+rosdoc.yaml
 setup.py
+include/tf_conversions/mainpage.dox
+include/tf_conversions/tf_eigen.h
+include/tf_conversions/tf_kdl.h
+src/tf_eigen.cpp
+src/tf_kdl.cpp
 src/tf_conversions/__init__.py
 src/tf_conversions/posemath.py
+test/posemath.py
+test/test_eigen_tf.cpp
+test/test_kdl_tf.cpp

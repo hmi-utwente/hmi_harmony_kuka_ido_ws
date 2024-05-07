@@ -1,3 +1,7 @@
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
 setup.py
 src/qt_dotgraph/__init__.py
 src/qt_dotgraph/colors.py
@@ -8,3 +12,6 @@ src/qt_dotgraph/graph_item.py
 src/qt_dotgraph/node_item.py
 src/qt_dotgraph/pydotfactory.py
 src/qt_dotgraph/pygraphvizfactory.py
+test/dot_to_qt_test.py
+test/pydot_factory_test.py
+test/pygraphviz_factory_test.py

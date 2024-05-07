@@ -1,4 +1,11 @@
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
 setup.py
+resource/dock_widget_title_bar.ui
+resource/perspective_create.ui
+resource/ros_org_vertical.png
 src/qt_gui/__init__.py
 src/qt_gui/about_handler.py
 src/qt_gui/application_context.py

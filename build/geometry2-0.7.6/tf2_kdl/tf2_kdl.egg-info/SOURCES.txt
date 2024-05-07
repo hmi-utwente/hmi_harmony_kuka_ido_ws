@@ -1,3 +1,16 @@
+CHANGELOG.rst
+CMakeLists.txt
+conf.py
+index.rst
+mainpage.dox
+package.xml
+rosdoc.yaml
 setup.py
+include/tf2_kdl/tf2_kdl.h
+include/tf2_kdl/tf2_kdl/tf2_kdl.h
+scripts/test.py
 src/tf2_kdl/__init__.py
 src/tf2_kdl/tf2_kdl.py
+test/test.launch
+test/test_python.launch
+test/test_tf2_kdl.cpp

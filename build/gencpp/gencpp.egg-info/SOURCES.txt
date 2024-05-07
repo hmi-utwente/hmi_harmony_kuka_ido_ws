@@ -1,2 +1,11 @@
+.gitignore
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
 setup.py
+cmake/gencpp-extras.cmake.em
+scripts/CMakeLists.txt
+scripts/gen_cpp.py
+scripts/msg.h.template
+scripts/srv.h.template
 src/gencpp/__init__.py

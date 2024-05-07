@@ -1,6 +1,14 @@
+.gitignore
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
+plugin.xml
 setup.py
+resource/RosGraph.ui
 scripts/rqt_graph
 src/rqt_graph/__init__.py
 src/rqt_graph/dotcode.py
 src/rqt_graph/interactive_graphics_view.py
 src/rqt_graph/ros_graph.py
+test/dotcode_test.py

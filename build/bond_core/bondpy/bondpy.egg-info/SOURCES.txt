@@ -1,3 +1,7 @@
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
 setup.py
 python/bondpy/BondSM_sm.py
 python/bondpy/__init__.py

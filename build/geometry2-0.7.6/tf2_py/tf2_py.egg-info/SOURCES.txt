@@ -1,2 +1,7 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
 setup.py
+src/python_compat.h
+src/tf2_py.cpp
 src/tf2_py/__init__.py

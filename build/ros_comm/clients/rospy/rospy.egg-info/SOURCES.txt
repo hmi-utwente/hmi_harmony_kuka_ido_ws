@@ -1,4 +1,13 @@
+CHANGELOG.rst
+CMakeLists.txt
+epydoc.config
+package.xml
+rosdoc.yaml
 setup.py
+rosbuild/rospy.cmake
+rosbuild/scripts/genmsg_py.py
+rosbuild/scripts/gensrv_py.py
+rosbuild/scripts/genutil.py
 scripts/rosconsole
 src/rospy/__init__.py
 src/rospy/client.py
@@ -29,3 +38,5 @@ src/rospy/impl/tcpros_service.py
 src/rospy/impl/transport.py
 src/rospy/impl/udpros.py
 src/rospy/impl/validators.py
+test_nodes/listener.py
+test_nodes/talker.py

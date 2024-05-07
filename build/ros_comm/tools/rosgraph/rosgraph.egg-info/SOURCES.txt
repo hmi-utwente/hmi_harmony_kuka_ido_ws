@@ -1,4 +1,9 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
+rosdoc.yaml
 setup.py
+conf/python_logging.conf
 scripts/rosgraph
 src/rosgraph/__init__.py
 src/rosgraph/masterapi.py
@@ -10,6 +15,7 @@ src/rosgraph/roslogging.py
 src/rosgraph/xmlrpc.py
 src/rosgraph/impl/__init__.py
 src/rosgraph/impl/graph.py
+test/__init__.py
 test/test_myargv.py
 test/test_names.py
 test/test_network.py

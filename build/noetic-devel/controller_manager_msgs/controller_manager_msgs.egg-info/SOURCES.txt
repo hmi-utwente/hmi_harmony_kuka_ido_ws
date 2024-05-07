@@ -1,3 +1,17 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
+rosdoc.yaml
 setup.py
+msg/ControllerState.msg
+msg/ControllerStatistics.msg
+msg/ControllersStatistics.msg
+msg/HardwareInterfaceResources.msg
 src/controller_manager_msgs/__init__.py
 src/controller_manager_msgs/utils.py
+srv/ListControllerTypes.srv
+srv/ListControllers.srv
+srv/LoadController.srv
+srv/ReloadControllerLibraries.srv
+srv/SwitchController.srv
+srv/UnloadController.srv

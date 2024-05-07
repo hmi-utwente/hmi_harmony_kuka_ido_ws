@@ -1,2 +1,13 @@
+CHANGELOG.rst
+CMakeLists.txt
+CODEOWNERS
+mainpage.dox
+package.xml
+plugin.xml
 setup.py
+include/rqt_image_view/image_view.h
+include/rqt_image_view/ratio_layouted_frame.h
+resource/image_view.ui
 scripts/rqt_image_view
+src/rqt_image_view/image_view.cpp
+src/rqt_image_view/ratio_layouted_frame.cpp

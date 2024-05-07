@@ -1,4 +1,11 @@
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
 setup.py
+scripts/export_csv.py
+scripts/sparse_csv.py
 src/diagnostic_analysis/__init__.py
 src/diagnostic_analysis/exporter.py
 src/diagnostic_analysis/sparse.py
+test/bag_csv_test.py

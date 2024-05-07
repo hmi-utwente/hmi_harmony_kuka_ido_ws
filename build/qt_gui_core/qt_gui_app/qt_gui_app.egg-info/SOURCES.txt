@@ -1,1 +1,6 @@
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
 setup.py
+scripts/qt_gui_app

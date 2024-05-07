@@ -1,3 +1,8 @@
+CHANGELOG.rst
+CMakeLists.txt
+epydoc.config
+package.xml
+rosdoc.yaml
 setup.py
 scripts/rosmaster
 src/rosmaster/__init__.py

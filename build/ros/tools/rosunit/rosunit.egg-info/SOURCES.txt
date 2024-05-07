@@ -1,5 +1,15 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
+rosdoc.yaml
 setup.py
+cmake/rosunit-extras.cmake.em
+scripts/check_test_ran.py
+scripts/clean_junit_xml.py
+scripts/pycoverage_to_html.py
 scripts/rosunit
+scripts/summarize_results.py
+scripts/test_results_dir.py
 src/rosunit/__init__.py
 src/rosunit/baretest.py
 src/rosunit/core.py
@@ -8,6 +18,8 @@ src/rosunit/pmon.py
 src/rosunit/pyunit.py
 src/rosunit/rosunit_main.py
 src/rosunit/xmlrunner.py
+test/__init__.py
+test/dotname_cases.py
 test/test_dotname.py
 test/test_junitxml.py
 test/test_xmlrunner.py

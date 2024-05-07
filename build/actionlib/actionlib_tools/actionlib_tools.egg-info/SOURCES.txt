@@ -1,4 +1,9 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
 setup.py
+scripts/axclient.py
+scripts/axserver.py
 src/actionlib_tools/__init__.py
 src/actionlib_tools/dynamic_action.py
 src/actionlib_tools/library.py

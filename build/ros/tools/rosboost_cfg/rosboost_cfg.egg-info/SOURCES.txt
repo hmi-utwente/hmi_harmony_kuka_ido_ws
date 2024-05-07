@@ -1,3 +1,6 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
 setup.py
 scripts/rosboost-cfg
 src/rosboost_cfg/__init__.py

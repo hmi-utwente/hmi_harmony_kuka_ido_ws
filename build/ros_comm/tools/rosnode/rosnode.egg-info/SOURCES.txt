@@ -1,5 +1,13 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
+rosdoc.yaml
 setup.py
 scripts/rosnode
 src/rosnode/__init__.py
+test/check_rosnode_command_online.py
+test/rosnode.test
 test/test_rosnode.py
 test/test_rosnode_command_offline.py
+test_nodes/listener.py
+test_nodes/talker.py

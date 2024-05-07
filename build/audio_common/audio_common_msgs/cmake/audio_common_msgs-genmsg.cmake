@@ -24,7 +24,7 @@ add_custom_target(_audio_common_msgs_generate_messages_check_deps_${_filename}
 
 get_filename_component(_filename "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg" NAME_WE)
 add_custom_target(_audio_common_msgs_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "audio_common_msgs" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg" "std_msgs/Header:audio_common_msgs/AudioData"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "audio_common_msgs" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg" "audio_common_msgs/AudioData:std_msgs/Header"
 )
 
 get_filename_component(_filename "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioInfo.msg" NAME_WE)
@@ -47,7 +47,7 @@ _generate_msg_cpp(audio_common_msgs
 _generate_msg_cpp(audio_common_msgs
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/audio_common_msgs
 )
 _generate_msg_cpp(audio_common_msgs
@@ -96,7 +96,7 @@ _generate_msg_eus(audio_common_msgs
 _generate_msg_eus(audio_common_msgs
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/audio_common_msgs
 )
 _generate_msg_eus(audio_common_msgs
@@ -145,7 +145,7 @@ _generate_msg_lisp(audio_common_msgs
 _generate_msg_lisp(audio_common_msgs
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/audio_common_msgs
 )
 _generate_msg_lisp(audio_common_msgs
@@ -194,7 +194,7 @@ _generate_msg_nodejs(audio_common_msgs
 _generate_msg_nodejs(audio_common_msgs
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/audio_common_msgs
 )
 _generate_msg_nodejs(audio_common_msgs
@@ -243,7 +243,7 @@ _generate_msg_py(audio_common_msgs
 _generate_msg_py(audio_common_msgs
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioDataStamped.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/audio_common/audio_common_msgs/msg/AudioData.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/audio_common_msgs
 )
 _generate_msg_py(audio_common_msgs

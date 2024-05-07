@@ -1,5 +1,14 @@
+CHANGELOG.rst
+CMakeLists.txt
+epydoc.config
+package.xml
+rosdoc.yaml
 setup.py
 scripts/rostopic
 src/rostopic/__init__.py
+test/check_rostopic_command_line_online.py
+test/rostopic.test
+test/rostopic2.test
 test/test_rostopic.py
 test/test_rostopic_command_line_offline.py
+test_nodes/talker.py

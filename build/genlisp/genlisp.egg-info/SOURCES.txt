@@ -1,4 +1,12 @@
+.gitignore
+CMakeLists.txt
+package.xml
 setup.py
+cmake/genlisp-extras.cmake.em
+scripts/CMakeLists.txt
+scripts/gen_lisp.py
+scripts/msg.lisp.template
+scripts/srv.lisp.template
 src/genlisp/__init__.py
 src/genlisp/generate.py
 src/genlisp/genlisp_main.py

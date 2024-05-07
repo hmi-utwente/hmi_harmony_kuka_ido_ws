@@ -1,3 +1,8 @@
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
 setup.py
+include/smclib/statemap.h
 python/smclib/__init__.py
 python/smclib/statemap.py

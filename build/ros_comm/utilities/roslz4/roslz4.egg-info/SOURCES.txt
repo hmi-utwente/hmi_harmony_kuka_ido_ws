@@ -1,2 +1,11 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
 setup.py
+include/roslz4/lz4s.h
+src/_roslz4module.c
+src/lz4s.c
+src/xxhash.c
+src/xxhash.h
 src/roslz4/__init__.py
+test/roslz4_test.cpp

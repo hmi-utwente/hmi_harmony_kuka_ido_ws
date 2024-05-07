@@ -1,3 +1,7 @@
+CHANGELOG.rst
+CMakeLists.txt
+package.xml
+rosdoc.yaml
 setup.py
 scripts/roswtf
 src/roswtf/__init__.py
@@ -13,4 +17,9 @@ src/roswtf/rosdep_db.py
 src/roswtf/roslaunchwtf.py
 src/roswtf/rules.py
 src/roswtf/stacks.py
+test/__init__.py
+test/check_roswtf_command_line_online.py
+test/min.launch
+test/roswtf.test
 test/test_roswtf_command_line_offline.py
+test_nodes/talker.py

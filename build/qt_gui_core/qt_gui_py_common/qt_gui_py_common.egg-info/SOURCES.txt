@@ -1,4 +1,9 @@
+CHANGELOG.rst
+CMakeLists.txt
+mainpage.dox
+package.xml
 setup.py
+resource/simple_settings_dialog.ui
 src/qt_gui_py_common/__init__.py
 src/qt_gui_py_common/checkbox_group.py
 src/qt_gui_py_common/console_text_edit.py
