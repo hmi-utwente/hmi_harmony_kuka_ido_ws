@@ -2097,6 +2097,15 @@ darknet_ros_msgs_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catk
 darknet_ros_nodelet_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libSM.so;general;/usr/lib/x86_64-linux-gnu/libICE.so;general;/usr/lib/x86_64-linux-gnu/libX11.so;general;/usr/lib/x86_64-linux-gnu/libXext.so;general;/usr/local/cuda-11.7/lib64/libcudart_static.a;general;dl;general;/usr/lib/x86_64-linux-gnu/librt.a;general;darknet_ros_lib;
 
 //Value Computed by CMake
+data_logger_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/data_logger
+
+//Value Computed by CMake
+data_logger_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+data_logger_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/data_logger
+
+//Value Computed by CMake
 depth_image_proc_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/image_pipeline/depth_image_proc
 
 //Value Computed by CMake
@@ -2806,6 +2815,15 @@ move_slow_and_clear_LIB_DEPENDS:STATIC=general;Boost::thread;general;costmap_2d;
 move_slow_and_clear_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/navigation-1.17.1/move_slow_and_clear
 
 //Value Computed by CMake
+my_central_node_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/my_central_node
+
+//Value Computed by CMake
+my_central_node_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+my_central_node_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/my_central_node
+
+//Value Computed by CMake
 my_robot_scan_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/my_robot_scan
 
 //Value Computed by CMake
@@ -2906,6 +2924,15 @@ nodelet_topic_tools_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/c
 
 //Dependencies for the target
 nodeletlib_LIB_DEPENDS:STATIC=general;bondcpp;general;/usr/lib/x86_64-linux-gnu/libuuid.so;general;class_loader;general;/usr/lib/x86_64-linux-gnu/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.a;general;roslib;general;rospack;general;/usr/lib/x86_64-linux-gnu/libpython3.10.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;roscpp;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0;general;rosconsole;general;rosconsole_log4cxx;general;rosconsole_backend_interface;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so.1.74.0;general;xmlrpcpp;general;roscpp_serialization;general;rostime;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.74.0;general;cpp_common;general;/usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.1.0;
+
+//Value Computed by CMake
+obstacle_check_BINARY_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/build/obstacle_check
+
+//Value Computed by CMake
+obstacle_check_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+obstacle_check_SOURCE_DIR:STATIC=/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/obstacle_check
 
 //Path to a library.
 onelib:FILEPATH=/usr/lib/x86_64-linux-gnu/liburdfdom_world.so
@@ -4726,7 +4753,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=261
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=263
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

@@ -24,7 +24,7 @@ add_custom_target(_wiimote_generate_messages_check_deps_${_filename}
 
 get_filename_component(_filename "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg" NAME_WE)
 add_custom_target(_wiimote_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "wiimote" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg" "geometry_msgs/Vector3:wiimote/IrSourceInfo:std_msgs/Header"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "wiimote" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg" "geometry_msgs/Vector3:std_msgs/Header:wiimote/IrSourceInfo"
 )
 
 get_filename_component(_filename "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/TimedSwitch.msg" NAME_WE)
@@ -47,7 +47,7 @@ _generate_msg_cpp(wiimote
 _generate_msg_cpp(wiimote
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/wiimote
 )
 _generate_msg_cpp(wiimote
@@ -96,7 +96,7 @@ _generate_msg_eus(wiimote
 _generate_msg_eus(wiimote
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/wiimote
 )
 _generate_msg_eus(wiimote
@@ -145,7 +145,7 @@ _generate_msg_lisp(wiimote
 _generate_msg_lisp(wiimote
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/wiimote
 )
 _generate_msg_lisp(wiimote
@@ -194,7 +194,7 @@ _generate_msg_nodejs(wiimote
 _generate_msg_nodejs(wiimote
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/wiimote
 )
 _generate_msg_nodejs(wiimote
@@ -243,7 +243,7 @@ _generate_msg_py(wiimote
 _generate_msg_py(wiimote
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/State.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/common_msgs/geometry_msgs/msg/Vector3.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/std_msgs/msg/Header.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/joystick_drivers/wiimote/msg/IrSourceInfo.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/wiimote
 )
 _generate_msg_py(wiimote

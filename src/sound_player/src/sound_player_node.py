@@ -16,25 +16,25 @@ def sound_callback(msg):
         playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/draw-attention.wav')
 
     if msg.data == 'blocked_multiple_attempts':
-        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/blocked-multiple-attempts.wav')
+        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/request-for-assistance.wav')
 
     if msg.data == "hello":
         playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/hello.wav')
     
     if msg.data == "happy":
-        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/happy.wav')
+        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/happy2.wav')
     
     if msg.data == "Do you need assistance?":
         playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/do-you-need-help.wav')
 
-    if msg.data == "request assistance":
-        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/request-for-assistance.wav')
+    if msg.data == "oeps":
+        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/oops-surprise-blocked.wav')
 
     if msg.data == "thankyou-bye":
         playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/request-for-assistance.wav')
 
     if msg.data == "takecare":
-        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/take-care2.wav')
+        playsound('/home/arjan/Desktop/ros_noetic_base_2204/for-kuka/take-care3.wav')
 
 
 
