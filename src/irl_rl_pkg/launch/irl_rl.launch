@@ -1,0 +1,26 @@
+<launch>
+    <node pkg="irl_rl_pkg" type="data_extraction_node.py" name="data_extraction_node" output="screen">
+        <param name="bag_files" value="[
+        '/home/arjan/Desktop/data/data_processed/p11.bag',
+        '/home/arjan/Desktop/data/data_processed/p12.bag',
+        '/home/arjan/Desktop/data/data_processed/p13.bag',
+        '/home/arjan/Desktop/data/data_processed/p31.bag',
+        '/home/arjan/Desktop/data/data_processed/p32.bag',
+        '/home/arjan/Desktop/data/data_processed/p33.bag',
+        '/home/arjan/Desktop/data/data_processed/p41.bag',
+        '/home/arjan/Desktop/data/data_processed/p42.bag',
+        '/home/arjan/Desktop/data/data_processed/p43.bag',
+        '/home/arjan/Desktop/data/data_processed/p51.bag',
+        '/home/arjan/Desktop/data/data_processed/p52.bag',
+        '/home/arjan/Desktop/data/data_processed/p53.bag',
+        '/home/arjan/Desktop/data/data_processed/p61.bag',
+        '/home/arjan/Desktop/data/data_processed/p62.bag',
+        '/home/arjan/Desktop/data/data_processed/p63.bag',
+        '/home/arjan/Desktop/data/data_processed/p71.bag',
+        '/home/arjan/Desktop/data/data_processed/p81.bag',
+        '/home/arjan/Desktop/data/data_processed/p82.bag',
+        '/home/arjan/Desktop/data/data_processed/p83.bag'
+        ]"/>
+    </node>
+    <node pkg="irl_rl_pkg" type="irl_node.py" name="irl_node" output="screen"/>
+</launch>

@@ -39,12 +39,12 @@ add_custom_target(_test_rosmaster_generate_messages_check_deps_${_filename}
 
 get_filename_component(_filename "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg" NAME_WE)
 add_custom_target(_test_rosmaster_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "test_rosmaster" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg" "test_rosmaster/CompositeA:test_rosmaster/CompositeB"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "test_rosmaster" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg" "test_rosmaster/CompositeB:test_rosmaster/CompositeA"
 )
 
 get_filename_component(_filename "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg" NAME_WE)
 add_custom_target(_test_rosmaster_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "test_rosmaster" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg" "test_rosmaster/Simple:test_rosmaster/Arrays"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "test_rosmaster" "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg" "test_rosmaster/Arrays:test_rosmaster/Simple"
 )
 
 get_filename_component(_filename "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Floats.msg" NAME_WE)
@@ -145,13 +145,13 @@ _generate_msg_cpp(test_rosmaster
 _generate_msg_cpp(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_cpp(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_cpp(test_rosmaster
@@ -322,13 +322,13 @@ _generate_msg_eus(test_rosmaster
 _generate_msg_eus(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_eus(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_eus(test_rosmaster
@@ -499,13 +499,13 @@ _generate_msg_lisp(test_rosmaster
 _generate_msg_lisp(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_lisp(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_lisp(test_rosmaster
@@ -676,13 +676,13 @@ _generate_msg_nodejs(test_rosmaster
 _generate_msg_nodejs(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_nodejs(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_nodejs(test_rosmaster
@@ -853,13 +853,13 @@ _generate_msg_py(test_rosmaster
 _generate_msg_py(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Composite.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeB.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/CompositeA.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_py(test_rosmaster
   "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Embed.msg"
   "${MSG_I_FLAGS}"
-  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg"
+  "/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Arrays.msg;/home/arjan/Desktop/ros_noetic_base_2204/catkin_ws/src/ros_comm/test/test_rosmaster/msg/Simple.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/test_rosmaster
 )
 _generate_msg_py(test_rosmaster

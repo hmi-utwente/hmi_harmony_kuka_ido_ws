@@ -7,7 +7,7 @@ import math
 
 def laser_callback(scan):
     # Safety threshold distance in meters
-    threshold_distance = 1.0
+    threshold_distance = 1.5
 
     # Calculate the index corresponding to the angle 0 radians (straight ahead)
     center_index = int((0.0 - scan.angle_min) / scan.angle_increment)
