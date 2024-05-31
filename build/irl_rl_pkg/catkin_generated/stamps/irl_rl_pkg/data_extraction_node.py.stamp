@@ -62,9 +62,15 @@ class DataExtractionNode:
         self.merged_dataset = pd.merge(self.dataset_openpose, self.dataset_obstacle_check, on='timestamp')
         self.merged_dataset = pd.merge(self.merged_dataset, self.dataset_sound, on='timestamp', how='left' )
         self.merged_dataset['sound'].fillna('no_sound', inplace=True)
-        self.merged_dataset.to_csv('/home/arjan/Desktop/datatest.csv')
-        #rospy.loginfo(f"Merged data: {merged_dataset}")
-        rospy.set_param("merged_data", self.merged_dataset)
+
+        rows_per_file = 500000  # Adjust this value based on your requirements
+
+        # Splitting the DataFrame into multiple CSV files
+        for i in range(0, len(self.merged_dataset), rows_per_file):
+            part = self.merged_dataset.iloc[i:i + rows_per_file]
+            part.to_csv(f'/home/arjan/Desktop/large_dataset_part_{i//rows_per_file + 1}.csv', index=False)
+
+        rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
         rospy.loginfo("Data extraction complete and parameter set.")
 
     def frame_callback(self, data, timestamp):

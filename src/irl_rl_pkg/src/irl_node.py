@@ -2,58 +2,99 @@
 import rospy
 import numpy as np
 import pandas as pd
+from scipy.optimize import minimize
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+import time
 
-def compute_feature_expectations(trajectories, feature_matrix):
-    feature_expectations = np.zeros(feature_matrix.shape[1])
-    for state, action in trajectories:
-        feature = np.concatenate((state[0], [state[1]]))  # Combine pose and blockage info
-        feature_expectations += feature
-    return feature_expectations / len(trajectories)
+# Start time
+start_time = time.time()
 
-def softmax(x):
-    return np.exp(x - np.max(x)) / np.sum(np.exp(x - np.max(x)), axis=0)
+# Define the MaxEnt IRL objective function
+def maxent_irl_objective(theta, X, y):
+    # Ensure theta is a NumPy array
+    theta = np.array(theta)
+    
+    # Calculate scores
+    scores = np.dot(X, theta)
+    
+    # Ensure y is a NumPy array
+    y = np.array(y)
+    
+    # Calculate log likelihood
+    log_likelihood = np.sum(np.multiply(scores, y) - np.log(1 + np.exp(scores)))
 
-def compute_policy(feature_matrix, theta):
-    rewards = feature_matrix.dot(theta)
-    policy = softmax(rewards)
-    return policy
+    # Calculate gradient
+    probabilities = 1 / (1 + np.exp(-scores))
+    gradient = np.dot(X.T, y - probabilities)
 
-def compute_gradient(feature_expectations_expert, feature_matrix, theta):
-    policy = compute_policy(feature_matrix, theta)
-    feature_expectations_policy = feature_matrix.T.dot(policy)
-    gradient = feature_expectations_expert - feature_expectations_policy
-    return gradient
+    return -log_likelihood, -gradient
 
-def max_ent_irl(env, feature_expectations_expert, learning_rate=0.01, iterations=100):
-    theta = np.random.rand(env.feature_matrix.shape[1])
-    for _ in range(iterations):
-        gradient = compute_gradient(feature_expectations_expert, env.feature_matrix, theta)
-        theta += learning_rate * gradient
-    return theta
+
+def extract_features(pixel_x, pixel_y, point_z, score, blocked_path):
+    # You can modify this function as needed based on your feature extraction logic
+    return np.array([pixel_x, pixel_y, point_z, score, blocked_path])
+
+# Calculate reward function
+def calculate_reward(state_action_pair, theta):
+    # Extract features for the state-action pair
+    features = extract_features(*state_action_pair)
+    
+    # Calculate reward using dot product of features and theta
+    reward = np.dot(theta, features)
+    
+    return reward
 
 if __name__ == '__main__':
     rospy.init_node('irl_node')
 
-    # Retrieve data from parameters set by data_extraction_node
-    extracted_data = rospy.get_param('extracted_data')
-    dataset = pd.DataFrame.from_dict(extracted_data)
+    csv_files = [
+    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_1.csv',
+    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_2.csv',
+    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_3.csv',
+    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_4.csv',
+    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_5.csv',
+    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_6.csv',
+    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_7.csv'
+]
+
+    # Read the CSV files into a single DataFrame
+    data_frames = [pd.read_csv(file) for file in csv_files]
+    data = pd.concat(data_frames, ignore_index=True)
+    data['blocked_path'] = data['blocked_path'].apply(lambda x: 1 if x == 'Path is blocked. Obstacle detected.' else 0)
+    # Extract features and labels
+    X = data[['pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
+    scaler = StandardScaler()
+    #Fit the scaler to the data and transform X
+    X_normalized = scaler.fit_transform(X)
+
+    y = data['sound'].values  # Assuming 'sound' is your label
+    label_encoder = LabelEncoder()
+    y_encoded = label_encoder.fit_transform(y)
+
+    # Initialize parameters
+    initial_theta = np.random.rand(X.shape[1])
+
+    # Optimize theta using a suitable optimizer
+    result = minimize(lambda theta: maxent_irl_objective(theta, X_normalized, y_encoded), initial_theta, jac=True, method='L-BFGS-B')
+
+    # Optimal parameters
+    optimal_theta = result.x
+    total_states = len(data)
+    rewards = []
+    for index, row in data.iterrows():
+        state_action_pair = row[['pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
+        reward = calculate_reward(state_action_pair, optimal_theta)
+        rewards.append(reward)
+        progress = (index + 1) / total_states * 100
+        elapsed_time = time.time() - start_time
     
-    # Assuming obstacle_check is 1 if obstacle is present, 0 otherwise
-    dataset['obstacle_check'] = dataset['obstacle_check'].apply(lambda x: 1 if x == 'Path is blocked. Obstacle detected.' else 0)
-    
-    feature_matrix = dataset[['pixel_x', 'pixel_y', 'point_z', 'score', 'obstacle_check']].dropna().values
-    action_data = dataset['obstacle_check'].dropna().values
-    num_actions = len(set(action_data))
+        # Log the progress as a percentage
+        rospy.loginfo("Progress: %.2f%%, Elapsed Time: %.2f seconds" % (progress, elapsed_time))    
 
-    class Environment:
-        def __init__(self, feature_matrix, num_actions):
-            self.feature_matrix = feature_matrix
-            self.num_actions = num_actions
+    # Add rewards to the DataFrame
+    data['reward'] = rewards
+    rospy.loginfo(optimal_theta)
 
-    env = Environment(feature_matrix, num_actions)
-    trajectories = [(state, action) for state, action in zip(feature_matrix, action_data)]
-    feature_expectations_expert = compute_feature_expectations(trajectories, env.feature_matrix)
-    theta = max_ent_irl(env, feature_expectations_expert)
 
-    rospy.set_param('irl_theta', theta.tolist())
-    rospy.loginfo(f"Learned reward weights: {theta}")
+    rospy.loginfo(data.head(10))
