@@ -63,7 +63,7 @@ if __name__ == '__main__':
     data = pd.concat(data_frames, ignore_index=True)
     data['blocked_path'] = data['blocked_path'].apply(lambda x: 1 if x == 'Path is blocked. Obstacle detected.' else 0)
     # Extract features and labels
-    X = data[['pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
+    X = data[['person_id','body_part_id','pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
     scaler = StandardScaler()
     #Fit the scaler to the data and transform X
     X_normalized = scaler.fit_transform(X)
@@ -80,21 +80,20 @@ if __name__ == '__main__':
 
     # Optimal parameters
     optimal_theta = result.x
-    total_states = len(data)
-    rewards = []
-    for index, row in data.iterrows():
-        state_action_pair = row[['pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
-        reward = calculate_reward(state_action_pair, optimal_theta)
-        rewards.append(reward)
-        progress = (index + 1) / total_states * 100
-        elapsed_time = time.time() - start_time
+    #total_states = len(data)
+    #rewards = []
+    #for index, row in data.iterrows():
+    #    state_action_pair = row[['pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
+    #    reward = calculate_reward(state_action_pair, optimal_theta)
+    #    rewards.append(reward)
+    #    progress = (index + 1) / total_states * 100
+    #    elapsed_time = time.time() - start_time
     
         # Log the progress as a percentage
-        rospy.loginfo("Progress: %.2f%%, Elapsed Time: %.2f seconds" % (progress, elapsed_time))    
+   #     rospy.loginfo("Progress: %.2f%%, Elapsed Time: %.2f seconds" % (progress, elapsed_time))    
 
     # Add rewards to the DataFrame
-    data['reward'] = rewards
+   # data['reward'] = rewards
     rospy.loginfo(optimal_theta)
 
 
-    rospy.loginfo(data.head(10))
