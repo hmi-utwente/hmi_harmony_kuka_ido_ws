@@ -77,6 +77,55 @@ def maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states):
 
     return -log_likelihood
 
+def ANN():
+    reward_model = create_reward_network(x_train.shape[1])
+    reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+    # Early stopping callback
+    early_stop = EarlyStopping(monitor='loss', patience=2)
+
+    # Train the model
+    hist = reward_model.fit(x_train, y_train, epochs=20, validation_split=0.20, batch_size=128, callbacks=[early_stop])
+
+    # Example expert trajectories and all states (for demonstration purposes)
+    # Replace these with your actual data
+    expert_trajectories = [x_train]  # Assuming entire x_train is considered as expert trajectories
+    all_states = x_train
+
+   # Training loop
+    epochs = 100
+    accuracy_history = [] 
+
+    for epoch in range(epochs):
+        with tf.GradientTape() as tape:
+            # Compute the MaxEnt IRL objective
+            log_likelihood = maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states)
+
+        # Compute gradients
+        gradients = tape.gradient(log_likelihood, reward_model.trainable_variables)
+
+        # Update the weights
+        reward_model.optimizer.apply_gradients(zip(gradients, reward_model.trainable_variables))
+
+        if epoch % 10 == 0:
+            rospy.loginfo(f'Epoch {epoch}, Log Likelihood: {-log_likelihood}')
+
+        # Evaluate validation accuracy for each epoch
+        validation_rewards = reward_model.predict(x_test)
+        validation_accuracy = np.mean(np.argmax(validation_rewards, axis=1) == np.argmax(y_test, axis=1))
+        accuracy_history.append(validation_accuracy)  # Store accuracy for this epoch
+
+        rospy.loginfo(f'Epoch {epoch}, Validation Accuracy: {validation_accuracy}')
+
+    # Plot accuracy over epochs
+    plt.plot(range(epochs), accuracy_history, marker='o')
+    plt.xlabel('Epochs')    
+    plt.ylabel('Validation Accuracy')
+    plt.title('Validation Accuracy for different Epochs')
+    plt.grid(True)
+    plt.savefig(f'plot_accuracy_ANN.png')
+    plt.show()
+
 
 if __name__ == '__main__':
     rospy.init_node('irl_node')
@@ -128,53 +177,7 @@ if __name__ == '__main__':
 
     x_train, x_test, y_train, y_test = train_test_split(X_normalized, y_one_hot, test_size=0.10, shuffle=True)
 
-
-    reward_model = create_reward_network(x_train.shape[1])
-    reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-
-    # Early stopping callback
-    early_stop = EarlyStopping(monitor='loss', patience=2)
-
-    # Train the model
-    hist = reward_model.fit(x_train, y_train, epochs=20, validation_split=0.20, batch_size=128, callbacks=[early_stop])
-
-    # Example expert trajectories and all states (for demonstration purposes)
-    # Replace these with your actual data
-    expert_trajectories = [x_train]  # Assuming entire x_train is considered as expert trajectories
-    all_states = x_train
-
-   # Training loop
-    epochs = 100
-    accuracy_history = [] 
-
-    for epoch in range(epochs):
-        with tf.GradientTape() as tape:
-            # Compute the MaxEnt IRL objective
-            log_likelihood = maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states)
-
-        # Compute gradients
-        gradients = tape.gradient(log_likelihood, reward_model.trainable_variables)
-
-        # Update the weights
-        reward_model.optimizer.apply_gradients(zip(gradients, reward_model.trainable_variables))
-
-        if epoch % 10 == 0:
-            rospy.loginfo(f'Epoch {epoch}, Log Likelihood: {-log_likelihood}')
-
-        # Evaluate validation accuracy for each epoch
-        validation_rewards = reward_model.predict(x_test)
-        validation_accuracy = np.mean(np.argmax(validation_rewards, axis=1) == np.argmax(y_test, axis=1))
-        accuracy_history.append(validation_accuracy)  # Store accuracy for this epoch
-
-        rospy.loginfo(f'Epoch {epoch}, Validation Accuracy: {validation_accuracy}')
-
-    # Plot accuracy over epochs
-    plt.plot(range(epochs), accuracy_history, marker='o')
-    plt.xlabel('Epochs')    
-    plt.ylabel('Validation Accuracy')
-    plt.title('Validation Accuracy for different Epochs')
-    plt.grid(True)
-    plt.savefig(f'plot_accuracy_ANN.png')
-    plt.show()
+    ANN()
+    
 
 
