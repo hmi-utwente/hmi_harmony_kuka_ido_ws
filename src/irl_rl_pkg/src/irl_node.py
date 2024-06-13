@@ -10,6 +10,11 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import time
 
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.model_selection import KFold
+
 # Start time
 start_time = time.time()
 
@@ -78,50 +83,60 @@ def maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states):
     return -log_likelihood
 
 def ANN():
-    reward_model = create_reward_network(x_train.shape[1])
-    reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    kf = KFold(n_splits=5)
+    epochs = 20
+    overall_accuracy_history = []
+    overall_accuracy_train_history = []
+    #x_train, x_test, y_train, y_test = train_test_split(X_normalized, y_one_hot, test_size=0.10, shuffle=True)
 
-    # Early stopping callback
-    early_stop = EarlyStopping(monitor='loss', patience=2)
+    for fold, (train_index, val_index) in enumerate(kf.split(X_normalized)):
+        rospy.loginfo(f'Fold {fold+1}')
+        x_train_fold, x_val_fold = X_normalized[train_index], X_normalized[val_index]
+        y_train_fold, y_val_fold = y_one_hot[train_index], y_one_hot[val_index]
 
-    # Train the model
-    hist = reward_model.fit(x_train, y_train, epochs=20, validation_split=0.20, batch_size=128, callbacks=[early_stop])
+        reward_model = create_reward_network(X_normalized.shape[1])
+        reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    # Example expert trajectories and all states (for demonstration purposes)
-    # Replace these with your actual data
-    expert_trajectories = [x_train]  # Assuming entire x_train is considered as expert trajectories
-    all_states = x_train
+        early_stop = EarlyStopping(monitor='loss', patience=2)
+        reward_model.fit(x_train_fold, y_train_fold, epochs=20, validation_split=0.20, batch_size=128, callbacks=[early_stop])
 
-   # Training loop
-    epochs = 100
-    accuracy_history = [] 
+        expert_trajectories = [x_train_fold]  # Replace with your actual expert trajectories
+        all_states = x_train_fold
 
-    for epoch in range(epochs):
-        with tf.GradientTape() as tape:
-            # Compute the MaxEnt IRL objective
-            log_likelihood = maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states)
+        accuracy_history = []
+        accuracy_history_train = []
 
-        # Compute gradients
-        gradients = tape.gradient(log_likelihood, reward_model.trainable_variables)
+        for epoch in range(epochs):
+            with tf.GradientTape() as tape:
+                log_likelihood = maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states)
 
-        # Update the weights
-        reward_model.optimizer.apply_gradients(zip(gradients, reward_model.trainable_variables))
+            gradients = tape.gradient(log_likelihood, reward_model.trainable_variables)
+            reward_model.optimizer.apply_gradients(zip(gradients, reward_model.trainable_variables))
 
-        if epoch % 10 == 0:
-            rospy.loginfo(f'Epoch {epoch}, Log Likelihood: {-log_likelihood}')
+            if epoch % 10 == 0:
+                rospy.loginfo(f'Epoch {epoch}, Log Likelihood: {-log_likelihood}')
 
-        # Evaluate validation accuracy for each epoch
-        validation_rewards = reward_model.predict(x_test)
-        validation_accuracy = np.mean(np.argmax(validation_rewards, axis=1) == np.argmax(y_test, axis=1))
-        accuracy_history.append(validation_accuracy)  # Store accuracy for this epoch
+            validation_rewards = reward_model.predict(x_val_fold)
+            validation_accuracy = np.mean(np.argmax(validation_rewards, axis=1) == np.argmax(y_val_fold, axis=1))
+            accuracy_history.append(validation_accuracy)
+            train_rewards = reward_model.predict(x_train_fold)
+            train_accuracy = np.mean(np.argmax(train_rewards, axis=1) == np.argmax(y_train_fold, axis=1))
+            accuracy_history_train.append(train_accuracy)
+            rospy.loginfo(f'Epoch {epoch}, Train  Accuracy: {train_accuracy}')
+            rospy.loginfo(f'Epoch {epoch}, Validation Accuracy: {validation_accuracy}')
 
-        rospy.loginfo(f'Epoch {epoch}, Validation Accuracy: {validation_accuracy}')
-
-    # Plot accuracy over epochs
-    plt.plot(range(epochs), accuracy_history, marker='o')
-    plt.xlabel('Epochs')    
-    plt.ylabel('Validation Accuracy')
-    plt.title('Validation Accuracy for different Epochs')
+        overall_accuracy_history.append(accuracy_history)
+        overall_accuracy_train_history.append(accuracy_history_train)
+    # Compute the mean accuracy over all folds for each epoch
+    mean_accuracy_history = np.mean(overall_accuracy_history, axis=0)
+    mean_train_accuracy_history =  np.mean(overall_accuracy_train_history, axis=0)
+    # Plotting
+    plt.plot(range(epochs), mean_accuracy_history, marker='o', label='Validation Accuracy')
+    plt.plot(range(epochs), mean_train_accuracy_history, marker = 'o', label = 'Training Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.title('Accuracy for different Epochs (5-Fold Cross-Validation)')
+    plt.legend()
     plt.grid(True)
     plt.savefig(f'plot_accuracy_ANN.png')
     plt.show()
@@ -175,9 +190,8 @@ if __name__ == '__main__':
     import tensorflow as tf
     from tensorflow import keras
 
-    x_train, x_test, y_train, y_test = train_test_split(X_normalized, y_one_hot, test_size=0.10, shuffle=True)
-
     ANN()
     
 
 
+    
