@@ -87,6 +87,8 @@ def ANN():
     epochs = 20
     overall_accuracy_history = []
     overall_accuracy_train_history = []
+    best_model_path = ''
+    best_val_accuracy = 0.0
     #x_train, x_test, y_train, y_test = train_test_split(X_normalized, y_one_hot, test_size=0.10, shuffle=True)
 
     for fold, (train_index, val_index) in enumerate(kf.split(X_normalized)):
@@ -98,7 +100,8 @@ def ANN():
         reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
         early_stop = EarlyStopping(monitor='loss', patience=2)
-        reward_model.fit(x_train_fold, y_train_fold, epochs=20, validation_split=0.20, batch_size=128, callbacks=[early_stop])
+        history = reward_model.fit(x_train_fold, y_train_fold, epochs=20, validation_split=0.20, batch_size=128, callbacks=[early_stop])
+
 
         expert_trajectories = [x_train_fold]  # Replace with your actual expert trajectories
         all_states = x_train_fold
@@ -118,6 +121,8 @@ def ANN():
 
             validation_rewards = reward_model.predict(x_val_fold)
             validation_accuracy = np.mean(np.argmax(validation_rewards, axis=1) == np.argmax(y_val_fold, axis=1))
+          
+
             accuracy_history.append(validation_accuracy)
             train_rewards = reward_model.predict(x_train_fold)
             train_accuracy = np.mean(np.argmax(train_rewards, axis=1) == np.argmax(y_train_fold, axis=1))
@@ -127,6 +132,12 @@ def ANN():
 
         overall_accuracy_history.append(accuracy_history)
         overall_accuracy_train_history.append(accuracy_history_train)
+
+        best_model_path = f'reward_model_fold_{fold+1}_final_epoch.h5'
+        reward_model.save(best_model_path)
+        rospy.loginfo(f'Saved model for fold {fold+1} at final epoch: {best_model_path}')
+
+
     # Compute the mean accuracy over all folds for each epoch
     mean_accuracy_history = np.mean(overall_accuracy_history, axis=0)
     mean_train_accuracy_history =  np.mean(overall_accuracy_train_history, axis=0)
@@ -138,6 +149,7 @@ def ANN():
     plt.title('Accuracy for different Epochs (5-Fold Cross-Validation)')
     plt.legend()
     plt.grid(True)
+    plt.xticks(range(epochs))
     plt.savefig(f'plot_accuracy_ANN.png')
     plt.show()
 
