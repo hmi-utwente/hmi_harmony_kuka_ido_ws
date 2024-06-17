@@ -8,12 +8,18 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
+from ros_openpose.msg import Frame  
+from std_msgs.msg import String
+
 import time
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import KFold
+
+from math import floor
+import pickle
 
 # Start time
 start_time = time.time()
@@ -153,57 +159,162 @@ def ANN():
     plt.savefig(f'plot_accuracy_ANN.png')
     plt.show()
 
+class RealTimeDataNode:
+    def __init__(self):
+        rospy.init_node('real_time_data_node')
+        self.dataset_openpose = pd.DataFrame(columns=['timestamp', 'person_id', 'body_part_id', 'pixel_x', 'pixel_y', 'point_z', 'score'])
+        self.dataset_obstacle_check = pd.DataFrame(columns=['timestamp', 'blocked_path'])
+        self.dataset_sound = pd.DataFrame(columns=['timestamp', 'sound'])
+        
+        self.openpose_sub = rospy.Subscriber('/frame', Frame, self.frame_callback)
+        self.obstacle_check_sub = rospy.Subscriber('obstacle_check', String, self.obstacle_check_callback)
+        self.sound_sub = rospy.Subscriber('/sound_command', String, self.sound_callback)
+
+        rospy.loginfo("Real-time data node initialized and subscribers set up.")
+
+    def frame_callback(self, data):
+        timestamp = rospy.get_rostime().to_sec()
+        for person_id, person in enumerate(data.persons):
+            for body_part_id, body_part in enumerate(person.bodyParts):
+                new_data = {
+                    'timestamp': timestamp,
+                    'person_id': person_id,
+                    'body_part_id': body_part_id,
+                    'pixel_x': body_part.pixel.x,
+                    'pixel_y': body_part.pixel.y,
+                    'point_z': body_part.point.z,
+                    'score': body_part.score
+                }
+                self.dataset_openpose = self.dataset_openpose.append(new_data, ignore_index=True)
+                self.dataset_openpose = self.dataset_openpose.dropna()
+                #rospy.loginfo(f"New data appended to openpose dataset: {new_data}")
+        
+    def obstacle_check_callback(self, data):
+        timestamp = rospy.get_rostime().to_sec()
+        new_data = {
+            'timestamp': timestamp,
+            'blocked_path': data.data
+        }
+        self.dataset_obstacle_check = self.dataset_obstacle_check.append(new_data, ignore_index=True)
+        self.dataset_obstacle_check = self.dataset_obstacle_check.dropna()
+        #rospy.loginfo(f"New data appended to obstacle check dataset: {new_data}")
+
+    def sound_callback(self, data):
+        timestamp = rospy.get_rostime().to_sec()
+        new_data = {
+            'timestamp': timestamp,
+            'sound': data.data
+        }
+        self.dataset_sound = self.dataset_sound.append(new_data, ignore_index=True)
+        self.dataset_sound = self.dataset_sound.dropna()
+        #rospy.loginfo(f"New data appended to sound dataset: {new_data}")
+
+    def merge_datasets(self):
+        current_timestamp = floor(rospy.get_time())
+        self.dataset_openpose['timestamp'] = self.dataset_openpose['timestamp'].apply(lambda x: floor(x)).astype(float)
+        self.dataset_obstacle_check['timestamp'] = self.dataset_obstacle_check['timestamp'].apply(lambda x: floor(x)).astype(float)
+        #self.dataset_sound['timestamp'] = self.dataset_sound['timestamp'].apply(lambda x: floor(x)).astype(float)
+
+        self.merged_dataset = pd.merge(self.dataset_openpose, self.dataset_obstacle_check, on='timestamp')
+        #self.merged_dataset = pd.merge(self.merged_dataset, self.dataset_sound, on='timestamp', how='left')
+        #self.merged_dataset['sound'].fillna('no_sound', inplace=True)
+        
+        # Set the DataFrame as a ROS parameter (optional)
+        rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
+        rospy.loginfo("Data merged and parameter set.")
+
+        # Filter the DataFrames to only include rows with the current integer timestamp
+        openpose_current = self.dataset_openpose[self.dataset_openpose['timestamp'] == current_timestamp]
+        obstacle_check_current = self.dataset_obstacle_check[self.dataset_obstacle_check['timestamp'] == current_timestamp]
+        sound_current = self.dataset_sound[self.dataset_sound['timestamp'] == current_timestamp]
+
+        # Merge the filtered DataFrames
+        merged_current = pd.merge(openpose_current, obstacle_check_current, on='timestamp', how='outer')
+        #merged_current = pd.merge(merged_current, sound_current, on='timestamp', how='left')
+        #merged_current['sound'].fillna('no_sound', inplace=True)
+
+        # Update the merged dataset and ROS parameter
+        self.merged_dataset = merged_current
+        rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
+        rospy.loginfo("Data merged and parameter set for timestamp: %s", current_timestamp)
+
+        with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'rb') as f:
+            scaler = pickle.load(f)
+
+
+    def run(self):
+        rate = rospy.Rate(1)  # Adjust the rate as needed
+        while not rospy.is_shutdown():
+            self.merge_datasets()
+            rate.sleep()
+
+
+
 
 if __name__ == '__main__':
-    rospy.init_node('irl_node')
-
-    csv_files = [
-    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_1.csv',
-    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_2.csv',
-    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_3.csv',
-    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_4.csv',
-    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_5.csv',
-    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_6.csv',
-    '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_7.csv'
-]
-
-    # Read the CSV files into a single DataFrame
-    data_frames = [pd.read_csv(file) for file in csv_files]
-    data = pd.concat(data_frames, ignore_index=True)
-    data['blocked_path'] = data['blocked_path'].apply(lambda x: 1 if x == 'Path is blocked. Obstacle detected.' else 0)
-    # Extract features and labels
-    X = data[['person_id','body_part_id','pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
-    scaler = StandardScaler()
-    #Fit the scaler to the data and transform X
-    X_normalized = scaler.fit_transform(X)
-
-    y = data['sound']  
-    #label_encoder = LabelEncoder()
-    #y_encoded = label_encoder.fit_transform(y)
-    label_binarizer = LabelBinarizer()
-    y_one_hot = label_binarizer.fit_transform(y)
-    # Initialize parameters
     
-    #initial_theta = np.random.rand(X.shape[1])
-    # Initialize parameters with correct shape
-    initial_theta = np.random.rand(X.shape[1], y_one_hot.shape[1])
+    reward_retrieval = 0  #0: run the real-time RL; 1: run ANN for reward function
+    
+    if reward_retrieval == 1:
+    
+        rospy.init_node('irl_node')
+
+        csv_files = [
+        '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_1.csv',
+        '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_2.csv',
+        '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_3.csv',
+        '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_4.csv',
+        '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_5.csv',
+        '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_6.csv',
+        '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_7.csv'
+    ]
+
+        # Read the CSV files into a single DataFrame
+        data_frames = [pd.read_csv(file) for file in csv_files]
+        data = pd.concat(data_frames, ignore_index=True)
+        data['blocked_path'] = data['blocked_path'].apply(lambda x: 1 if x == 'Path is blocked. Obstacle detected.' else 0)
+        # Extract features and labels
+        X = data[['person_id','body_part_id','pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
+        scaler = StandardScaler()
+        #Fit the scaler to the data and transform X
+        X_normalized = scaler.fit_transform(X)
+        with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'wb') as f:
+            pickle.dump(scaler, f)
+
+        y = data['sound']  
+        #label_encoder = LabelEncoder()
+        #y_encoded = label_encoder.fit_transform(y)
+        label_binarizer = LabelBinarizer()
+        y_one_hot = label_binarizer.fit_transform(y)
+        # Initialize parameters
+    
+        #initial_theta = np.random.rand(X.shape[1])
+        # Initialize parameters with correct shape
+        initial_theta = np.random.rand(X.shape[1], y_one_hot.shape[1])
     
    
-    # Optimize theta using a suitable optimizer (linear)
-    #result = minimize(lambda theta: maxent_irl_objective(theta, X_normalized, y_one_hot), initial_theta,  method='L-BFGS-B')
-    #optimal_theta = result.x
+        # Optimize theta using a suitable optimizer (linear)
+        #result = minimize(lambda theta: maxent_irl_objective(theta, X_normalized, y_one_hot), initial_theta,  method='L-BFGS-B')
+        #optimal_theta = result.x
 
 
-    #######################Let's consider a ANN for obtaining the reward function###############################
-    from sklearn.model_selection import train_test_split
-    from keras.models import Sequential
-    from keras.layers import Dense
-    from keras.callbacks import EarlyStopping
-    import tensorflow as tf
-    from tensorflow import keras
+        #######################Let's consider a ANN for obtaining the reward function###############################
+        from sklearn.model_selection import train_test_split
+        from keras.models import Sequential
+        from keras.layers import Dense
+        from keras.callbacks import EarlyStopping
+        import tensorflow as tf
+        from tensorflow import keras
 
-    ANN()
-    
+
+        ANN()
+    else:
+        try:
+            node = RealTimeDataNode()
+            node.run()
+        except rospy.ROSInterruptException:
+            pass
+
 
 
     
