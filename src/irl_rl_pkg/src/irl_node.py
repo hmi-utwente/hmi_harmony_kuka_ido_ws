@@ -88,14 +88,17 @@ def maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states):
 
     return -log_likelihood
 
+from sklearn.metrics import precision_score
+
 def ANN():
     kf = KFold(n_splits=5)
-    epochs = 20
+    epochs = 50
     overall_accuracy_history = []
     overall_accuracy_train_history = []
+    overall_precision_history = []
+    overall_precision_train_history = []
     best_model_path = ''
     best_val_accuracy = 0.0
-    #x_train, x_test, y_train, y_test = train_test_split(X_normalized, y_one_hot, test_size=0.10, shuffle=True)
 
     for fold, (train_index, val_index) in enumerate(kf.split(X_normalized)):
         rospy.loginfo(f'Fold {fold+1}')
@@ -106,14 +109,15 @@ def ANN():
         reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
         early_stop = EarlyStopping(monitor='loss', patience=2)
-        history = reward_model.fit(x_train_fold, y_train_fold, epochs=20, validation_split=0.20, batch_size=128, callbacks=[early_stop])
-
+        history = reward_model.fit(x_train_fold, y_train_fold, epochs=50, validation_split=0.20, batch_size=128, callbacks=[early_stop])
 
         expert_trajectories = [x_train_fold]  # Replace with your actual expert trajectories
         all_states = x_train_fold
 
         accuracy_history = []
         accuracy_history_train = []
+        precision_history = []
+        precision_history_train = []
 
         for epoch in range(epochs):
             with tf.GradientTape() as tape:
@@ -126,37 +130,64 @@ def ANN():
                 rospy.loginfo(f'Epoch {epoch}, Log Likelihood: {-log_likelihood}')
 
             validation_rewards = reward_model.predict(x_val_fold)
-            validation_accuracy = np.mean(np.argmax(validation_rewards, axis=1) == np.argmax(y_val_fold, axis=1))
-          
+            validation_preds = np.argmax(validation_rewards, axis=1)
+            y_val_true = np.argmax(y_val_fold, axis=1)
+            validation_accuracy = np.mean(validation_preds == y_val_true)
+
+            train_rewards = reward_model.predict(x_train_fold)
+            train_preds = np.argmax(train_rewards, axis=1)
+            y_train_true = np.argmax(y_train_fold, axis=1)
+            train_accuracy = np.mean(train_preds == y_train_true)
+
+            # Compute precision
+            validation_precision = precision_score(y_val_true, validation_preds, average='macro')
+            train_precision = precision_score(y_train_true, train_preds, average='macro')
 
             accuracy_history.append(validation_accuracy)
-            train_rewards = reward_model.predict(x_train_fold)
-            train_accuracy = np.mean(np.argmax(train_rewards, axis=1) == np.argmax(y_train_fold, axis=1))
             accuracy_history_train.append(train_accuracy)
-            rospy.loginfo(f'Epoch {epoch}, Train  Accuracy: {train_accuracy}')
-            rospy.loginfo(f'Epoch {epoch}, Validation Accuracy: {validation_accuracy}')
+            precision_history.append(validation_precision)
+            precision_history_train.append(train_precision)
+
+            rospy.loginfo(f'Epoch {epoch}, Train Accuracy: {train_accuracy}, Train Precision: {train_precision}')
+            rospy.loginfo(f'Epoch {epoch}, Validation Accuracy: {validation_accuracy}, Validation Precision: {validation_precision}')
 
         overall_accuracy_history.append(accuracy_history)
         overall_accuracy_train_history.append(accuracy_history_train)
+        overall_precision_history.append(precision_history)
+        overall_precision_train_history.append(precision_history_train)
 
         best_model_path = f'reward_model_fold_{fold+1}_final_epoch.h5'
         reward_model.save(best_model_path)
         rospy.loginfo(f'Saved model for fold {fold+1} at final epoch: {best_model_path}')
 
-
-    # Compute the mean accuracy over all folds for each epoch
+    # Compute the mean accuracy and precision over all folds for each epoch
     mean_accuracy_history = np.mean(overall_accuracy_history, axis=0)
-    mean_train_accuracy_history =  np.mean(overall_accuracy_train_history, axis=0)
-    # Plotting
+    mean_train_accuracy_history = np.mean(overall_accuracy_train_history, axis=0)
+    mean_precision_history = np.mean(overall_precision_history, axis=0)
+    mean_train_precision_history = np.mean(overall_precision_train_history, axis=0)
+
+    # Plotting Accuracy
     plt.plot(range(epochs), mean_accuracy_history, marker='o', label='Validation Accuracy')
-    plt.plot(range(epochs), mean_train_accuracy_history, marker = 'o', label = 'Training Accuracy')
+    plt.plot(range(epochs), mean_train_accuracy_history, marker='o', label='Training Accuracy')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.title('Accuracy for different Epochs (5-Fold Cross-Validation)')
     plt.legend()
     plt.grid(True)
     plt.xticks(range(epochs))
-    plt.savefig(f'plot_accuracy_ANN.png')
+    plt.savefig('plot_accuracy_ANN.png')
+    plt.show()
+
+    # Plotting Precision
+    plt.plot(range(epochs), mean_precision_history, marker='o', label='Validation Precision')
+    plt.plot(range(epochs), mean_train_precision_history, marker='o', label='Training Precision')
+    plt.xlabel('Epochs')
+    plt.ylabel('Precision')
+    plt.title('Precision for different Epochs (5-Fold Cross-Validation)')
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(range(epochs))
+    plt.savefig('plot_precision_ANN.png')
     plt.show()
 
 class RealTimeDataNode:
@@ -253,7 +284,7 @@ class RealTimeDataNode:
 
 if __name__ == '__main__':
     
-    reward_retrieval = 0  #0: run the real-time RL; 1: run ANN for reward function
+    reward_retrieval = 1  #0: run the real-time RL; 1: run ANN for reward function
     
     if reward_retrieval == 1:
     
