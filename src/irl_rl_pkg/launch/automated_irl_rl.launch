@@ -1,0 +1,15 @@
+<launch>
+    <!-- Start sound player node -->
+    <node pkg="sound_player" type="sound_player_node.py" name="sound_player_node" output="screen" />
+
+    <!-- Start obstacle check node -->
+    <node pkg="obstacle_check" type="obstacle_check_node.py" name="obstacle_check_node" output="screen" />
+
+    <!-- Launch ros_openpose with the specified camera argument -->
+    <include file="$(find ros_openpose)/launch/run.launch">
+        <arg name="camera" value="nodepth" />
+    </include>
+
+    <!-- Start IRL node -->
+    <!-- <node pkg="irl_rl_pkg" type="irl_node.py" name="irl_node" output="screen" />-->
+</launch>

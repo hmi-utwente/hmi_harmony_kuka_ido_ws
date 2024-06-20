@@ -2,251 +2,400 @@
 import rospy
 import numpy as np
 import pandas as pd
+from scipy.optimize import minimize
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelBinarizer
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+from ros_openpose.msg import Frame  
+from std_msgs.msg import String
+
+import time
+import tensorflow as tf
+from tensorflow import keras
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.model_selection import KFold
+
+from math import floor
+import pickle
+from sklearn.metrics import precision_score
+import gym
+from collections import deque
+
+from sklearn.model_selection import train_test_split
+import random
+        
 
 
-"""
-Implements maximum entropy inverse reinforcement learning (Ziebart et al., 2008)
 
-Matthew Alger, 2015
-matthew.alger@anu.edu.au
-"""
+# Start time
+start_time = time.time()
 
-from itertools import product
+# Define the MaxEnt IRL objective function
 
-import numpy as np
-import numpy.random as rn
+def maxent_irl_objective(theta, X, y):
+    # Ensure theta is a NumPy array and reshape it
+    theta = np.array(theta).reshape(X.shape[1], y.shape[1])
+    
+    # Calculate scores
+    scores = np.dot(X, theta)
+    
+    # Compute softmax probabilities
+    exp_scores = np.exp(scores - np.max(scores, axis=1, keepdims=True))
+    probabilities = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
+    
+    # Calculate negative log likelihood
+    log_likelihood = np.sum(np.log(probabilities[np.arange(len(y)), np.argmax(y, axis=1)]))
+    # Calculate gradient
+    return -log_likelihood
 
-from . import value_iteration
 
-def irl(feature_matrix, n_actions, discount, transition_probability,
-        trajectories, epochs, learning_rate):
-    """
-    Find the reward function for the given trajectories.
 
-    feature_matrix: Matrix with the nth row representing the nth state. NumPy
-        array with shape (N, D) where N is the number of states and D is the
-        dimensionality of the state.
-    n_actions: Number of actions A. int.
-    discount: Discount factor of the MDP. float.
-    transition_probability: NumPy array mapping (state_i, action, state_k) to
-        the probability of transitioning from state_i to state_k under action.
-        Shape (N, A, N).
-    trajectories: 3D array of state/action pairs. States are ints, actions
-        are ints. NumPy array with shape (T, L, 2) where T is the number of
-        trajectories and L is the trajectory length.
-    epochs: Number of gradient descent steps. int.
-    learning_rate: Gradient descent learning rate. float.
-    -> Reward vector with shape (N,).
-    """
+def extract_features(pixel_x, pixel_y, point_z, score, blocked_path):
+    # You can modify this function as needed based on your feature extraction logic
+    return np.array([pixel_x, pixel_y, point_z, score, blocked_path])
 
-    n_states, d_states = feature_matrix.shape
+# Calculate reward function
+def calculate_reward(state_action_pair, theta):
+    # Extract features for the state-action pair
+    features = extract_features(*state_action_pair)
+    
+    # Calculate reward using dot product of features and theta
+    reward = np.dot(theta, features)
+    
+    return reward
 
-    # Initialise weights.
-    alpha = rn.uniform(size=(d_states,))
 
-    # Calculate the feature expectations \tilde{phi}.
-    feature_expectations = find_feature_expectations(feature_matrix,
-                                                     trajectories)
+def create_reward_network(input_dim):
+    model = Sequential()
+    model.add(Dense(64, activation='relu', input_shape=(input_dim,)))
+    model.add(Dense(28, activation='relu'))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(7, activation='softmax'))  # Output reward values for each of the 7 classes
+    return model
 
-    # Gradient descent on alpha.
-    for i in range(epochs):
-        # print("i: {}".format(i))
-        r = feature_matrix.dot(alpha)
-        expected_svf = find_expected_svf(n_states, r, n_actions, discount,
-                                         transition_probability, trajectories)
-        grad = feature_expectations - feature_matrix.T.dot(expected_svf)
+def maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states):
+    # Convert inputs to tensors
+    all_states = tf.convert_to_tensor(all_states, dtype=tf.float32)
+    expert_trajectories = [tf.convert_to_tensor(traj, dtype=tf.float32) for traj in expert_trajectories]
 
-        alpha += learning_rate * grad
+    # Compute the rewards for all states using the neural network
+    all_rewards = reward_model(all_states)
 
-    return feature_matrix.dot(alpha).reshape((n_states,))
+    # Compute the feature expectations for the expert trajectories
+    expert_rewards = tf.concat([reward_model(traj) for traj in expert_trajectories], axis=0)
 
-def find_svf(n_states, trajectories):
-    """
-    Find the state visitation frequency from trajectories.
+    # Compute the partition function (Z) using softmax over all states
+    Z = tf.reduce_sum(tf.exp(all_rewards), axis=1)
 
-    n_states: Number of states. int.
-    trajectories: 3D array of state/action pairs. States are ints, actions
-        are ints. NumPy array with shape (T, L, 2) where T is the number of
-        trajectories and L is the trajectory length.
-    -> State visitation frequencies vector with shape (N,).
-    """
+    # Compute the log likelihood
+    log_likelihood = tf.reduce_sum(expert_rewards - tf.math.log(Z[:, tf.newaxis]))
 
-    svf = np.zeros(n_states)
+    return -log_likelihood
 
-    for trajectory in trajectories:
-        for state, _, _ in trajectory:
-            svf[state] += 1
 
-    svf /= trajectories.shape[0]
 
-    return svf
+def ANN():
+    kf = KFold(n_splits=5)
+    epochs = 50
+    overall_accuracy_history = []
+    overall_accuracy_train_history = []
+    overall_precision_history = []
+    overall_precision_train_history = []
+    best_model_path = ''
+    best_val_accuracy = 0.0
 
-def find_feature_expectations(feature_matrix, trajectories):
-    """
-    Find the feature expectations for the given trajectories. This is the
-    average path feature vector.
+    for fold, (train_index, val_index) in enumerate(kf.split(X_normalized)):
+        rospy.loginfo(f'Fold {fold+1}')
+        x_train_fold, x_val_fold = X_normalized[train_index], X_normalized[val_index]
+        y_train_fold, y_val_fold = y_one_hot[train_index], y_one_hot[val_index]
 
-    feature_matrix: Matrix with the nth row representing the nth state. NumPy
-        array with shape (N, D) where N is the number of states and D is the
-        dimensionality of the state.
-    trajectories: 3D array of state/action pairs. States are ints, actions
-        are ints. NumPy array with shape (T, L, 2) where T is the number of
-        trajectories and L is the trajectory length.
-    -> Feature expectations vector with shape (D,).
-    """
+        reward_model = create_reward_network(X_normalized.shape[1])
+        reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    feature_expectations = np.zeros(feature_matrix.shape[1])
+        early_stop = EarlyStopping(monitor='loss', patience=2)
+        history = reward_model.fit(x_train_fold, y_train_fold, epochs=50, validation_split=0.20, batch_size=128, callbacks=[early_stop])
 
-    for trajectory in trajectories:
-        for state, _, _ in trajectory:
-            feature_expectations += feature_matrix[state]
+        expert_trajectories = [x_train_fold]  # Replace with your actual expert trajectories
+        all_states = x_train_fold
 
-    feature_expectations /= trajectories.shape[0]
+        accuracy_history = []
+        accuracy_history_train = []
+        precision_history = []
+        precision_history_train = []
 
-    return feature_expectations
+        for epoch in range(epochs):
+            with tf.GradientTape() as tape:
+                log_likelihood = maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states)
 
-def find_expected_svf(n_states, r, n_actions, discount,
-                      transition_probability, trajectories):
-    """
-    Find the expected state visitation frequencies using algorithm 1 from
-    Ziebart et al. 2008.
+            gradients = tape.gradient(log_likelihood, reward_model.trainable_variables)
+            reward_model.optimizer.apply_gradients(zip(gradients, reward_model.trainable_variables))
 
-    n_states: Number of states N. int.
-    alpha: Reward. NumPy array with shape (N,).
-    n_actions: Number of actions A. int.
-    discount: Discount factor of the MDP. float.
-    transition_probability: NumPy array mapping (state_i, action, state_k) to
-        the probability of transitioning from state_i to state_k under action.
-        Shape (N, A, N).
-    trajectories: 3D array of state/action pairs. States are ints, actions
-        are ints. NumPy array with shape (T, L, 2) where T is the number of
-        trajectories and L is the trajectory length.
-    -> Expected state visitation frequencies vector with shape (N,).
-    """
+            if epoch % 10 == 0:
+                rospy.loginfo(f'Epoch {epoch}, Log Likelihood: {-log_likelihood}')
 
-    n_trajectories = trajectories.shape[0]
-    trajectory_length = trajectories.shape[1]
+            validation_rewards = reward_model.predict(x_val_fold)
+            validation_preds = np.argmax(validation_rewards, axis=1)
+            y_val_true = np.argmax(y_val_fold, axis=1)
+            validation_accuracy = np.mean(validation_preds == y_val_true)
 
-    # policy = find_policy(n_states, r, n_actions, discount,
-    #                                 transition_probability)
-    policy = value_iteration.find_policy(n_states, n_actions,
-                                         transition_probability, r, discount)
+            train_rewards = reward_model.predict(x_train_fold)
+            train_preds = np.argmax(train_rewards, axis=1)
+            y_train_true = np.argmax(y_train_fold, axis=1)
+            train_accuracy = np.mean(train_preds == y_train_true)
 
-    start_state_count = np.zeros(n_states)
-    for trajectory in trajectories:
-        start_state_count[trajectory[0, 0]] += 1
-    p_start_state = start_state_count/n_trajectories
+            # Compute precision
+            validation_precision = precision_score(y_val_true, validation_preds, average='macro')
+            train_precision = precision_score(y_train_true, train_preds, average='macro')
 
-    expected_svf = np.tile(p_start_state, (trajectory_length, 1)).T
-    for t in range(1, trajectory_length):
-        expected_svf[:, t] = 0
-        for i, j, k in product(range(n_states), range(n_actions), range(n_states)):
-            expected_svf[k, t] += (expected_svf[i, t-1] *
-                                  policy[i, j] * # Stochastic policy
-                                  transition_probability[i, j, k])
+            accuracy_history.append(validation_accuracy)
+            accuracy_history_train.append(train_accuracy)
+            precision_history.append(validation_precision)
+            precision_history_train.append(train_precision)
 
-    return expected_svf.sum(axis=1)
+            rospy.loginfo(f'Epoch {epoch}, Train Accuracy: {train_accuracy}, Train Precision: {train_precision}')
+            rospy.loginfo(f'Epoch {epoch}, Validation Accuracy: {validation_accuracy}, Validation Precision: {validation_precision}')
 
-def softmax(x1, x2):
-    """
-    Soft-maximum calculation, from algorithm 9.2 in Ziebart's PhD thesis.
+        overall_accuracy_history.append(accuracy_history)
+        overall_accuracy_train_history.append(accuracy_history_train)
+        overall_precision_history.append(precision_history)
+        overall_precision_train_history.append(precision_history_train)
 
-    x1: float.
-    x2: float.
-    -> softmax(x1, x2)
-    """
+        best_model_path = f'reward_model_fold_{fold+1}_final_epoch.h5'
+        reward_model.save(best_model_path)
+        rospy.loginfo(f'Saved model for fold {fold+1} at final epoch: {best_model_path}')
 
-    max_x = max(x1, x2)
-    min_x = min(x1, x2)
-    return max_x + np.log(1 + np.exp(min_x - max_x))
+    # Compute the mean accuracy and precision over all folds for each epoch
+    mean_accuracy_history = np.mean(overall_accuracy_history, axis=0)
+    mean_train_accuracy_history = np.mean(overall_accuracy_train_history, axis=0)
+    mean_precision_history = np.mean(overall_precision_history, axis=0)
+    mean_train_precision_history = np.mean(overall_precision_train_history, axis=0)
 
-def find_policy(n_states, r, n_actions, discount,
-                           transition_probability):
-    """
-    Find a policy with linear value iteration. Based on the code accompanying
-    the Levine et al. GPIRL paper and on Ziebart's PhD thesis (algorithm 9.1).
+    # Plotting Accuracy
+    plt.plot(range(epochs), mean_accuracy_history, marker='o', label='Validation Accuracy')
+    plt.plot(range(epochs), mean_train_accuracy_history, marker='o', label='Training Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.title('Accuracy for different Epochs (5-Fold Cross-Validation)')
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(range(epochs))
+    plt.savefig('plot_accuracy_ANN.png')
+    plt.show()
 
-    n_states: Number of states N. int.
-    r: Reward. NumPy array with shape (N,).
-    n_actions: Number of actions A. int.
-    discount: Discount factor of the MDP. float.
-    transition_probability: NumPy array mapping (state_i, action, state_k) to
-        the probability of transitioning from state_i to state_k under action.
-        Shape (N, A, N).
-    -> NumPy array of states and the probability of taking each action in that
-        state, with shape (N, A).
-    """
+    # Plotting Precision
+    plt.plot(range(epochs), mean_precision_history, marker='o', label='Validation Precision')
+    plt.plot(range(epochs), mean_train_precision_history, marker='o', label='Training Precision')
+    plt.xlabel('Epochs')
+    plt.ylabel('Precision')
+    plt.title('Precision for different Epochs (5-Fold Cross-Validation)')
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(range(epochs))
+    plt.savefig('plot_precision_ANN.png')
+    plt.show()
 
-    # V = value_iteration.value(n_states, transition_probability, r, discount)
+class RealTimeDataNode:
+    def __init__(self):
+        rospy.init_node('real_time_data_node')
+        self.dataset_openpose = pd.DataFrame(columns=['timestamp', 'person_id', 'body_part_id', 'pixel_x', 'pixel_y', 'point_z', 'score'])
+        self.dataset_obstacle_check = pd.DataFrame(columns=['timestamp', 'blocked_path'])
+        self.dataset_sound = pd.DataFrame(columns=['timestamp', 'sound'])
+        
+        self.openpose_sub = rospy.Subscriber('/frame', Frame, self.frame_callback)
+        self.obstacle_check_sub = rospy.Subscriber('obstacle_check', String, self.obstacle_check_callback)
+        self.sound_sub = rospy.Subscriber('/sound_command', String, self.sound_callback)
 
-    # NumPy's dot really dislikes using inf, so I'm making everything finite
-    # using nan_to_num.
-    V = np.nan_to_num(np.ones((n_states, 1)) * float("-inf"))
+        rospy.loginfo("Real-time data node initialized and subscribers set up.")
 
-    diff = np.ones((n_states,))
-    while (diff > 1e-4).all():  # Iterate until convergence.
-        new_V = r.copy()
-        for j in range(n_actions):
-            for i in range(n_states):
-                new_V[i] = softmax(new_V[i], r[i] + discount*
-                    np.sum(transition_probability[i, j, k] * V[k]
-                           for k in range(n_states)))
+    def frame_callback(self, data):
+        timestamp = rospy.get_rostime().to_sec()
+        for person_id, person in enumerate(data.persons):
+            for body_part_id, body_part in enumerate(person.bodyParts):
+                new_data = {
+                    'timestamp': timestamp,
+                    'person_id': person_id,
+                    'body_part_id': body_part_id,
+                    'pixel_x': body_part.pixel.x,
+                    'pixel_y': body_part.pixel.y,
+                    'point_z': body_part.point.z,
+                    'score': body_part.score
+                }
+                self.dataset_openpose = self.dataset_openpose.append(new_data, ignore_index=True)
+                self.dataset_openpose = self.dataset_openpose.dropna()
+                #rospy.loginfo(f"New data appended to openpose dataset: {new_data}")
+        
+    def obstacle_check_callback(self, data):
+        timestamp = rospy.get_rostime().to_sec()
+        new_data = {
+            'timestamp': timestamp,
+            'blocked_path': data.data
+        }
+        self.dataset_obstacle_check = self.dataset_obstacle_check.append(new_data, ignore_index=True)
+        self.dataset_obstacle_check = self.dataset_obstacle_check.dropna()
+        #rospy.loginfo(f"New data appended to obstacle check dataset: {new_data}")
 
-        # # This seems to diverge, so we z-score it (engineering hack).
-        new_V = (new_V - new_V.mean())/new_V.std()
+    def sound_callback(self, data):
+        timestamp = rospy.get_rostime().to_sec()
+        new_data = {
+            'timestamp': timestamp,
+            'sound': data.data
+        }
+        self.dataset_sound = self.dataset_sound.append(new_data, ignore_index=True)
+        self.dataset_sound = self.dataset_sound.dropna()
+        #rospy.loginfo(f"New data appended to sound dataset: {new_data}")
 
-        diff = abs(V - new_V)
-        V = new_V
+    def merge_datasets(self):
+        current_timestamp = floor(rospy.get_time())
+        self.dataset_openpose['timestamp'] = self.dataset_openpose['timestamp'].apply(lambda x: floor(x)).astype(float)
+        self.dataset_obstacle_check['timestamp'] = self.dataset_obstacle_check['timestamp'].apply(lambda x: floor(x)).astype(float)
+        #self.dataset_sound['timestamp'] = self.dataset_sound['timestamp'].apply(lambda x: floor(x)).astype(float)
 
-    # We really want Q, not V, so grab that using equation 9.2 from the thesis.
-    Q = np.zeros((n_states, n_actions))
-    for i in range(n_states):
-        for j in range(n_actions):
-            p = np.array([transition_probability[i, j, k]
-                          for k in range(n_states)])
-            Q[i, j] = p.dot(r + discount*V)
+        self.merged_dataset = pd.merge(self.dataset_openpose, self.dataset_obstacle_check, on='timestamp')
+        #self.merged_dataset = pd.merge(self.merged_dataset, self.dataset_sound, on='timestamp', how='left')
+        #self.merged_dataset['sound'].fillna('no_sound', inplace=True)
+        
+        # Set the DataFrame as a ROS parameter (optional)
+        rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
+        rospy.loginfo("Data merged and parameter set.")
 
-    # Softmax by row to interpret these values as probabilities.
-    Q -= Q.max(axis=1).reshape((n_states, 1))  # For numerical stability.
-    Q = np.exp(Q)/np.exp(Q).sum(axis=1).reshape((n_states, 1))
-    return Q
+        # Filter the DataFrames to only include rows with the current integer timestamp
+        openpose_current = self.dataset_openpose[self.dataset_openpose['timestamp'] == current_timestamp]
+        obstacle_check_current = self.dataset_obstacle_check[self.dataset_obstacle_check['timestamp'] == current_timestamp]
+        sound_current = self.dataset_sound[self.dataset_sound['timestamp'] == current_timestamp]
 
-def expected_value_difference(n_states, n_actions, transition_probability,
-    reward, discount, p_start_state, optimal_value, true_reward):
-    """
-    Calculate the expected value difference, which is a proxy to how good a
-    recovered reward function is.
+        # Merge the filtered DataFrames
+        merged_current = pd.merge(openpose_current, obstacle_check_current, on='timestamp', how='outer')
+        #merged_current = pd.merge(merged_current, sound_current, on='timestamp', how='left')
+        #merged_current['sound'].fillna('no_sound', inplace=True)
 
-    n_states: Number of states. int.
-    n_actions: Number of actions. int.
-    transition_probability: NumPy array mapping (state_i, action, state_k) to
-        the probability of transitioning from state_i to state_k under action.
-        Shape (N, A, N).
-    reward: Reward vector mapping state int to reward. Shape (N,).
-    discount: Discount factor. float.
-    p_start_state: Probability vector with the ith component as the probability
-        that the ith state is the start state. Shape (N,).
-    optimal_value: Value vector for the ground reward with optimal policy.
-        The ith component is the value of the ith state. Shape (N,).
-    true_reward: True reward vector. Shape (N,).
-    -> Expected value difference. float.
-    """
+        # Update the merged dataset and ROS parameter
+        self.merged_dataset = merged_current
+        rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
+        rospy.loginfo("Data merged and parameter set for timestamp: %s", current_timestamp)
 
-    policy = value_iteration.find_policy(n_states, n_actions,
-        transition_probability, reward, discount)
-    value = value_iteration.value(policy.argmax(axis=1), n_states,
-        transition_probability, true_reward, discount)
+        with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'rb') as f:
+            scaler = pickle.load(f)
+        return scaler.fit_transform(merged_current)
 
-    evd = optimal_value.dot(p_start_state) - value.dot(p_start_state)
-    return evd
+
+
+    def run(self):
+        rate = rospy.Rate(1)  # Adjust the rate as needed
+        while not rospy.is_shutdown():
+            self.merge_datasets()
+            rate.sleep()
+
+
+
+
+class CustomEnv(gym.Env):
+    def __init__(self, reward_model, state_shape):
+        super(CustomEnv, self).__init__()
+        self.reward_model = reward_model
+        self.state_shape = state_shape
+        self.action_space = gym.spaces.Discrete(2)  # Example for binary action space
+        self.observation_space = gym.spaces.Box(low=0, high=1, shape=state_shape, dtype=np.float32)
+
+    def step(self, action):
+        state = self._get_state()  # Define this method to get the next state
+        done = self._check_done(state)  # Define this method to check if the episode is done
+        
+        reward = self._get_reward(state)  # Get reward from ANN model
+        return state, reward, done, {}
+
+    def reset(self):
+        state = self._reset_state()  # Define this method to reset the environment
+        return state
+
+    def _get_reward(self, state):
+        state = np.expand_dims(state, axis=0)  # Add batch dimension
+        reward_prediction = self.reward_model.predict(state)
+        return np.max(reward_prediction)
+
+    def _get_state(self):
+        # Define how to get the next state
+        #pass
+        return RealTimeDataNode.merge_datasets
+
+    def _check_done(self, state):
+        # Define condition to end the episode
+        pass
+
+    def _reset_state(self):
+        # Define how to reset the environment
+        pass
+
+
+
+class DQNAgent:
+    def __init__(self, state_size, action_size):
+        self.state_size = state_size
+        self.action_size = action_size
+        self.memory = deque(maxlen=2000)
+        self.gamma = 0.95    # discount rate
+        self.epsilon = 1.0  # exploration rate
+        self.epsilon_min = 0.01
+        self.epsilon_decay = 0.995
+        self.learning_rate = 0.001
+        self.model = self._build_model()
+
+    def _build_model(self):
+        model = Sequential()
+        model.add(Dense(24, input_dim=self.state_size, activation='relu'))
+        model.add(Dense(24, activation='relu'))
+        model.add(Dense(self.action_size, activation='linear'))
+        model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate))
+        return model
+
+    def remember(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
+
+    def act(self, state):
+        if np.random.rand() <= self.epsilon:
+            return random.randrange(self.action_size)
+        act_values = self.model.predict(state)
+        rospy.loginfo(np.argmax(act_values))
+        return np.argmax(act_values[0])
+
+    def replay(self, batch_size):
+        minibatch = random.sample(self.memory, batch_size)
+        for state, action, reward, next_state, done in minibatch:
+            target = reward
+            if not done:
+                target = (reward + self.gamma *
+                          np.amax(self.model.predict(next_state)[0]))
+            target_f = self.model.predict(state)
+            target_f[0][action] = target
+            self.model.fit(state, target_f, epochs=1, verbose=0)
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay
+
+    def load(self, name):
+        self.model.load_weights(name)
+
+    def save(self, name):
+        self.model.save_weights(name)
+
+
 
 
 
 if __name__ == '__main__':
-    rospy.init_node('irl_node')
+    
+    reward_retrieval = 0  #0: run the real-time RL; 1: run ANN for reward function
+    
+    if reward_retrieval == 1:
+    
+        rospy.init_node('irl_node')
 
-    # Define CSV file paths
-    csv_files = [
+        csv_files = [
         '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_1.csv',
         '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_2.csv',
         '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_3.csv',
@@ -256,43 +405,78 @@ if __name__ == '__main__':
         '/home/arjan/Desktop/data/data_processed_csv/large_dataset_part_7.csv'
     ]
 
-    # Load and concatenate CSV files into a single DataFrame
-    dataframes = [pd.read_csv(file) for file in csv_files]
-    dataset = pd.concat(dataframes, ignore_index=True)
+        # Read the CSV files into a single DataFrame
+        data_frames = [pd.read_csv(file) for file in csv_files]
+        data = pd.concat(data_frames, ignore_index=True)
+        data['blocked_path'] = data['blocked_path'].apply(lambda x: 1 if x == 'Path is blocked. Obstacle detected.' else 0)
+        # Extract features and labels
+        X = data[['person_id','body_part_id','pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
+        scaler = StandardScaler()
+        #Fit the scaler to the data and transform X
+        X_normalized = scaler.fit_transform(X)
+        with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'wb') as f:
+            pickle.dump(scaler, f)
 
-
-    # Assuming obstacle_check is 1 if obstacle is present, 0 otherwise
-    dataset['obstacle_check'] = dataset['blocked_path'].apply(lambda x: 1 if x == 'Path is blocked. Obstacle detected.' else 0)
-    dataset = dataset.dropna()
-    feature_matrix = dataset[['pixel_x', 'pixel_y', 'point_z', 'score', 'obstacle_check']].values
-    action_data = dataset['sound'].values
-
-    # Convert action_data to numeric values if they are strings
-    action_mapping = {label: idx for idx, label in enumerate(set(action_data))}
-    action_data = np.array([action_mapping[action] for action in action_data])
-
-    num_actions = len(set(action_data))
-    rospy.loginfo(action_data)
-
-    class Environment:
-        def __init__(self, feature_matrix, num_actions):
-            self.feature_matrix = feature_matrix
-            self.num_actions = num_actions
-
-    env = Environment(feature_matrix, num_actions)
-    trajectories = [(state, action) for state, action in zip(feature_matrix, action_data)]
+        y = data['sound']  
+        #label_encoder = LabelEncoder()
+        #y_encoded = label_encoder.fit_transform(y)
+        label_binarizer = LabelBinarizer()
+        y_one_hot = label_binarizer.fit_transform(y)
+        # Initialize parameters
     
+        #initial_theta = np.random.rand(X.shape[1])
+        # Initialize parameters with correct shape
+        initial_theta = np.random.rand(X.shape[1], y_one_hot.shape[1])
+    
+   
+        # Optimize theta using a suitable optimizer (linear)
+        #result = minimize(lambda theta: maxent_irl_objective(theta, X_normalized, y_one_hot), initial_theta,  method='L-BFGS-B')
+        #optimal_theta = result.x
 
 
-    #parameters
-    epochs = 100
-    learning_rate = 0.01
-    discount = 0.9
-    n_states = len(feature_matrix)  # Assuming feature_matrix contains all states
-    transition_probability = np.ones((n_states, num_actions, n_states)) / n_states
-    reward_function = irl(feature_matrix, num_actions, discount, transition_probability, trajectories, epochs, learning_rate)
+        #######################Let's consider a ANN for obtaining the reward function###############################
 
-    # Log the learned reward weights
+        ANN()
+    else:
+        try:
+            node = RealTimeDataNode()
+            node.run()
 
-    rospy.set_param('irl_theta', reward_function.tolist())
-    rospy.loginfo(f"Learned reward weights: {reward_function}")
+
+
+             # Initialize the reward model (assumed to be already trained)
+            reward_model = tf.keras.models.load_model('/home/arjan/Desktop/ros_noetic_base_2204/reward_model_fold_5_final_epoch.h5')  # Load or create the reward model here
+            state_shape = node.merge_datasets.shape[1]  # Define the shape of your state
+            env = CustomEnv(reward_model, state_shape)
+
+            state_size = env.observation_space.shape[0]
+            action_size = env.action_space.n
+            agent = DQNAgent(state_size, action_size)
+            done = False
+            batch_size = 32
+
+            for e in range(1000):
+                state = env.reset()
+                state = np.reshape(state, [1, state_size])
+                for time in range(500):
+                    action = agent.act(state)
+                    next_state, reward, done, _ = env.step(action)
+                    next_state = np.reshape(next_state, [1, state_size])
+                    agent.remember(state, action, reward, next_state, done)
+                    state = next_state
+                    if done:
+                        print(f"episode: {e}/{1000}, score: {time}, e: {agent.epsilon:.2}")
+                        break
+                    if len(agent.memory) > batch_size:
+                        agent.replay(batch_size)
+                # Save the model weights every 50 episodes
+                if e % 50 == 0:
+                    agent.save(f"dqn_model_{e}.h5")
+
+
+        except rospy.ROSInterruptException:
+            pass
+
+
+
+    

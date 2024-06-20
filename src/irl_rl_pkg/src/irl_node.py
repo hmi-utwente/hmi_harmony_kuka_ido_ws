@@ -12,6 +12,8 @@ from ros_openpose.msg import Frame
 from std_msgs.msg import String
 
 import time
+import tensorflow as tf
+from tensorflow import keras
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
@@ -20,6 +22,15 @@ from sklearn.model_selection import KFold
 
 from math import floor
 import pickle
+from sklearn.metrics import precision_score
+import gym
+from collections import deque
+
+from sklearn.model_selection import train_test_split
+import random
+        
+
+
 
 # Start time
 start_time = time.time()
@@ -88,7 +99,7 @@ def maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states):
 
     return -log_likelihood
 
-from sklearn.metrics import precision_score
+
 
 def ANN():
     kf = KFold(n_splits=5)
@@ -196,7 +207,7 @@ class RealTimeDataNode:
         self.dataset_openpose = pd.DataFrame(columns=['timestamp', 'person_id', 'body_part_id', 'pixel_x', 'pixel_y', 'point_z', 'score'])
         self.dataset_obstacle_check = pd.DataFrame(columns=['timestamp', 'blocked_path'])
         self.dataset_sound = pd.DataFrame(columns=['timestamp', 'sound'])
-        
+
         self.openpose_sub = rospy.Subscriber('/frame', Frame, self.frame_callback)
         self.obstacle_check_sub = rospy.Subscriber('obstacle_check', String, self.obstacle_check_callback)
         self.sound_sub = rospy.Subscriber('/sound_command', String, self.sound_callback)
@@ -205,9 +216,10 @@ class RealTimeDataNode:
 
     def frame_callback(self, data):
         timestamp = rospy.get_rostime().to_sec()
+        new_data = []
         for person_id, person in enumerate(data.persons):
             for body_part_id, body_part in enumerate(person.bodyParts):
-                new_data = {
+                new_data.append({
                     'timestamp': timestamp,
                     'person_id': person_id,
                     'body_part_id': body_part_id,
@@ -215,21 +227,20 @@ class RealTimeDataNode:
                     'pixel_y': body_part.pixel.y,
                     'point_z': body_part.point.z,
                     'score': body_part.score
-                }
-                self.dataset_openpose = self.dataset_openpose.append(new_data, ignore_index=True)
-                self.dataset_openpose = self.dataset_openpose.dropna()
-                #rospy.loginfo(f"New data appended to openpose dataset: {new_data}")
+                })
+        self.dataset_openpose = self.dataset_openpose.append(new_data, ignore_index=True)
+        self.dataset_openpose.dropna(inplace=True)
         
     def obstacle_check_callback(self, data):
         timestamp = rospy.get_rostime().to_sec()
+        blocked_path = 1 if data.data == 'Path is blocked. Obstacle detected.' else 0
         new_data = {
             'timestamp': timestamp,
-            'blocked_path': data.data
+            'blocked_path': blocked_path
         }
         self.dataset_obstacle_check = self.dataset_obstacle_check.append(new_data, ignore_index=True)
-        self.dataset_obstacle_check = self.dataset_obstacle_check.dropna()
-        #rospy.loginfo(f"New data appended to obstacle check dataset: {new_data}")
-
+        self.dataset_obstacle_check.dropna(inplace=True)
+       
     def sound_callback(self, data):
         timestamp = rospy.get_rostime().to_sec()
         new_data = {
@@ -237,54 +248,191 @@ class RealTimeDataNode:
             'sound': data.data
         }
         self.dataset_sound = self.dataset_sound.append(new_data, ignore_index=True)
-        self.dataset_sound = self.dataset_sound.dropna()
-        #rospy.loginfo(f"New data appended to sound dataset: {new_data}")
+        self.dataset_sound.dropna(inplace=True)
 
     def merge_datasets(self):
         current_timestamp = floor(rospy.get_time())
-        self.dataset_openpose['timestamp'] = self.dataset_openpose['timestamp'].apply(lambda x: floor(x)).astype(float)
-        self.dataset_obstacle_check['timestamp'] = self.dataset_obstacle_check['timestamp'].apply(lambda x: floor(x)).astype(float)
-        #self.dataset_sound['timestamp'] = self.dataset_sound['timestamp'].apply(lambda x: floor(x)).astype(float)
-
-        self.merged_dataset = pd.merge(self.dataset_openpose, self.dataset_obstacle_check, on='timestamp')
-        #self.merged_dataset = pd.merge(self.merged_dataset, self.dataset_sound, on='timestamp', how='left')
-        #self.merged_dataset['sound'].fillna('no_sound', inplace=True)
-        
-        # Set the DataFrame as a ROS parameter (optional)
+    
+        # Assuming each dataset has at least 500 rows
+        openpose_latest = self.dataset_openpose[-500:]
+        obstacle_check_latest = self.dataset_obstacle_check[-500:]
+        sound_latest = self.dataset_sound[-500:]
+    
+        openpose_latest['timestamp'] = openpose_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
+        obstacle_check_latest['timestamp'] = obstacle_check_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
+        sound_latest['timestamp'] = sound_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
+    
+        self.merged_dataset = pd.merge(openpose_latest, obstacle_check_latest, on='timestamp', how='outer')
+        self.merged_dataset = pd.merge(self.merged_dataset, sound_latest, on='timestamp', how='left')
+        self.merged_dataset['sound'].fillna('no_sound', inplace=True)
+    
         rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
-        rospy.loginfo("Data merged and parameter set.")
+        rospy.loginfo("Data merged and parameter set for the latest 500 rows.")
 
-        # Filter the DataFrames to only include rows with the current integer timestamp
-        openpose_current = self.dataset_openpose[self.dataset_openpose['timestamp'] == current_timestamp]
-        obstacle_check_current = self.dataset_obstacle_check[self.dataset_obstacle_check['timestamp'] == current_timestamp]
-        sound_current = self.dataset_sound[self.dataset_sound['timestamp'] == current_timestamp]
+        openpose_current = openpose_latest[openpose_latest['timestamp'] == current_timestamp]
+        obstacle_check_current = obstacle_check_latest[obstacle_check_latest['timestamp'] == current_timestamp]
+        sound_current = sound_latest[sound_latest['timestamp'] == current_timestamp]
 
-        # Merge the filtered DataFrames
         merged_current = pd.merge(openpose_current, obstacle_check_current, on='timestamp', how='outer')
-        #merged_current = pd.merge(merged_current, sound_current, on='timestamp', how='left')
-        #merged_current['sound'].fillna('no_sound', inplace=True)
+        merged_current = pd.merge(merged_current, sound_current, on='timestamp', how='left')
+        merged_current['sound'].fillna('no_sound', inplace=True)
 
-        # Update the merged dataset and ROS parameter
-        self.merged_dataset = merged_current
-        rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
-        rospy.loginfo("Data merged and parameter set for timestamp: %s", current_timestamp)
+        self.merged_dataset_fitted = merged_current[['person_id','body_part_id','pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
 
         with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'rb') as f:
             scaler = pickle.load(f)
+    
+        try:
+            self.merged_dataset_fitted = scaler.transform(self.merged_dataset_fitted)
+        except Exception as e:
+            rospy.logerr(f"Error in scaling dataset: {e}")
 
 
     def run(self):
+        idx = 0
         rate = rospy.Rate(1)  # Adjust the rate as needed
-        while not rospy.is_shutdown():
+        while not idx == 5:
             self.merge_datasets()
-            rate.sleep()
+            idx += 1
+        return self.merged_dataset_fitted
 
 
+
+class CustomEnv(gym.Env):
+    def __init__(self, reward_model, state_shape, node):
+        super(CustomEnv, self).__init__()
+        self.reward_model = reward_model
+        self.state_shape = state_shape
+        self.action_space_shape = 7  # Size of the action space array
+        self.action_space = gym.spaces.Box(low=0, high=1, shape=(self.action_space_shape,), dtype=np.float32)  # Box space for action array
+        self.observation_space = gym.spaces.Box(low=0, high=1, shape=state_shape, dtype=np.float32)
+        self.state = node.merged_dataset_fitted
+        self.last_action_time = time.time() 
+        self.last_action = None
+
+ 
+    def step(self, action):
+        # Ensure minimum time interval between actions
+        current_time = time.time()
+        time_since_last_action = current_time - self.last_action_time
+        if time_since_last_action < 5.0:  # Adjust 1.0 second as needed
+            time.sleep(5.0 - time_since_last_action)  # Wait to enforce minimum interval
+
+        if self.last_action == action and time_since_last_action < 15.0:
+            # Skip action execution
+            reward = 0.0  # Set a zero reward or penalty for skipping
+            done = False  # Assuming episode is not done
+            return self.state, reward, done, {}
+        
+        # Update last action time
+        self.last_action = action
+        self.last_action_time = time.time()
+
+        # Execute the action (play the sound)
+        #self._play_sound(action)
+        rospy.loginfo("Play sound {action}" )
+        # Define how to get the next state
+        state = self._get_state()
+
+        # Define condition to end the episode
+        done = self._check_done(state)
+
+        # Get reward from ANN model
+        reward = self._get_reward(state)
+
+        # Return state, reward, done, and additional info (empty for now)
+        return state, reward, done, {}
+    
+
+    def reset(self):
+        state = self._reset_state()  # Define this method to reset the environment
+        self.last_action_time = time.time()
+        self.last_action = None  # Reset last action after reset
+        return state
+
+    #def _get_reward(self, state):
+    #    state = np.expand_dims(state, axis=0)  # Add batch dimension
+    #    reward_prediction = self.reward_model.predict(state)
+    #    return np.max(reward_prediction)
+    
+    def _get_reward(self, state):
+        reward_prediction = self.reward_model.predict(state)
+        return np.max(reward_prediction)
+
+
+    def _get_state(self):
+        # Define how to get the next state
+        #pass
+        return self.state
+
+    def _check_done(self, state):
+        # Define condition to end the episode
+        pass
+
+    def _reset_state(self):
+        # Define how to reset the environment
+        return node.run()
+
+
+class DQNAgent:
+    def __init__(self, state_size, action_size):
+        self.state_size = state_size
+        self.action_size = action_size
+        self.memory = deque(maxlen=1000)
+        self.gamma = 0.95    # discount rate
+        self.epsilon = 1.0  # exploration rate
+        self.epsilon_min = 0.01
+        self.epsilon_decay = 0.995
+        self.learning_rate = 0.001
+        self.model = self._build_model()
+
+    def _build_model(self):
+        model = Sequential()
+        model.add(Dense(24, input_dim=self.state_size, activation='relu'))
+        model.add(Dense(24, activation='relu'))
+        model.add(Dense(self.action_size, activation='linear'))
+        model.compile(loss='mse', optimizer=tf.keras.optimizers.Adam(learning_rate=self.learning_rate))
+        return model
+
+    def remember(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
+
+    def act(self, state):
+        if np.random.rand() <= self.epsilon:
+            return random.randrange(self.action_size)
+        act_values = self.model.predict(state)
+        rospy.loginfo(act_values[0])
+        return np.argmax(act_values[0])
+
+    def replay(self, batch_size):
+        minibatch = random.sample(self.memory, batch_size)
+        for state, action, reward, next_state, done in minibatch:
+            target = reward
+            if not done:
+                target = (reward + self.gamma *
+                          np.amax(self.model.predict(next_state)[0]))
+            target_f = self.model.predict(state)
+            old_action = np.argmax(target_f[0])  # Get the old action before updating
+            target_f[0][action] = target
+            self.model.fit(state, target_f, epochs=1, verbose=0)
+            new_action = np.argmax(target_f[0])  # Get the new action after updating
+            print(f"State: {state}, Old Action: {old_action}, New Action: {new_action}")
+        
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay
+
+    def load(self, name):
+        self.model.load_weights(name)
+
+    def save(self, name):
+        if not name.endswith('.weights.h5'):
+            name += '.weights.h5'
+        self.model.save_weights(name)
 
 
 if __name__ == '__main__':
     
-    reward_retrieval = 1  #0: run the real-time RL; 1: run ANN for reward function
+    reward_retrieval = 0  #0: run the real-time RL; 1: run ANN for reward function
     
     if reward_retrieval == 1:
     
@@ -317,6 +465,12 @@ if __name__ == '__main__':
         #y_encoded = label_encoder.fit_transform(y)
         label_binarizer = LabelBinarizer()
         y_one_hot = label_binarizer.fit_transform(y)
+
+        with open('/home/arjan/Desktop/data/data_processed_csv/label_binarizer.pkl', 'wb') as f:
+            pickle.dump(label_binarizer, f)
+
+
+
         # Initialize parameters
     
         #initial_theta = np.random.rand(X.shape[1])
@@ -330,19 +484,46 @@ if __name__ == '__main__':
 
 
         #######################Let's consider a ANN for obtaining the reward function###############################
-        from sklearn.model_selection import train_test_split
-        from keras.models import Sequential
-        from keras.layers import Dense
-        from keras.callbacks import EarlyStopping
-        import tensorflow as tf
-        from tensorflow import keras
-
 
         ANN()
     else:
         try:
             node = RealTimeDataNode()
             node.run()
+        
+
+             # Initialize the reward model (assumed to be already trained)
+            reward_model = tf.keras.models.load_model('/home/arjan/Desktop/ros_noetic_base_2204/reward_model_fold_5_final_epoch.h5')  # Load or create the reward model here
+            
+            if hasattr(node, 'merged_dataset_fitted') and node.merged_dataset_fitted is not None:
+                #rospy.loginfo(f"Merged dataset fitted shape: {node.merged_dataset_fitted.shape}")
+                state_shape = node.merged_dataset_fitted.shape  # Correctly define the shape as a tuple
+                #rospy.loginfo(f"State shape: {state_shape}")
+                obj = node.merged_dataset_fitted
+                env = CustomEnv(reward_model, state_shape,node)
+
+                state_size = env.observation_space.shape[0]
+                action_size = env.action_space_shape
+                agent = DQNAgent(state_size, action_size)
+                done = False
+                batch_size = 250
+                for e in range(100):
+                    state = env.reset()
+                    for time in range(60):
+                        action = agent.act(state)
+                        next_state, reward, done, _ = env.step(action)
+                        agent.remember(state, action, reward, next_state, done)
+                        state = next_state
+                        if done:
+                            rospy.loginfo(f"episode: {e}/{1000}, score: {time}, e: {agent.epsilon:.2}")
+                            break
+                        if len(agent.memory) > batch_size:
+                            agent.replay(batch_size)
+                        # Save the model weights every 50 episodes
+                    if e % 50 == 0:
+                    #    agent.save(f"dqn_model_{e}.h5")
+                        agent.save(f"dqn_model_{e}.h5")
+
         except rospy.ROSInterruptException:
             pass
 
