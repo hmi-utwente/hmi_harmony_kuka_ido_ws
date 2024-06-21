@@ -103,7 +103,7 @@ def maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states):
 
 def ANN():
     kf = KFold(n_splits=5)
-    epochs = 50
+    epochs = 100
     overall_accuracy_history = []
     overall_accuracy_train_history = []
     overall_precision_history = []
@@ -120,7 +120,7 @@ def ANN():
         reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
         early_stop = EarlyStopping(monitor='loss', patience=2)
-        history = reward_model.fit(x_train_fold, y_train_fold, epochs=50, validation_split=0.20, batch_size=128, callbacks=[early_stop])
+        history = reward_model.fit(x_train_fold, y_train_fold, epochs=100, validation_split=0.20, batch_size=128, callbacks=[early_stop])
 
         expert_trajectories = [x_train_fold]  # Replace with your actual expert trajectories
         all_states = x_train_fold
@@ -185,7 +185,7 @@ def ANN():
     plt.title('Accuracy for different Epochs (5-Fold Cross-Validation)')
     plt.legend()
     plt.grid(True)
-    plt.xticks(range(epochs))
+    plt.xticks(range(0, epochs + 1, 10))
     plt.savefig('plot_accuracy_ANN.png')
     plt.show()
 
@@ -197,7 +197,7 @@ def ANN():
     plt.title('Precision for different Epochs (5-Fold Cross-Validation)')
     plt.legend()
     plt.grid(True)
-    plt.xticks(range(epochs))
+    plt.xticks(range(0, epochs + 1, 10))
     plt.savefig('plot_precision_ANN.png')
     plt.show()
 
@@ -315,13 +315,15 @@ class CustomEnv(gym.Env):
         # Ensure minimum time interval between actions
         current_time = time.time()
         time_since_last_action = current_time - self.last_action_time
-        if time_since_last_action < 5.0:  # Adjust 1.0 second as needed
-            time.sleep(5.0 - time_since_last_action)  # Wait to enforce minimum interval
+        if time_since_last_action < 10.0:  # Adjust 1.0 second as needed
+            time.sleep(10.0 - time_since_last_action)  # Wait to enforce minimum interval
+            rospy.loginfo("check")
 
-        if self.last_action == action and time_since_last_action < 15.0:
+        if self.last_action == action and time_since_last_action < 20.0:
             # Skip action execution
             reward = 0.0  # Set a zero reward or penalty for skipping
             done = False  # Assuming episode is not done
+            rospy.loginfo("check 2")
             return self.state, reward, done, {}
         
         # Update last action time
@@ -330,7 +332,7 @@ class CustomEnv(gym.Env):
 
         # Execute the action (play the sound)
         #self._play_sound(action)
-        rospy.loginfo("Play sound {action}" )
+        rospy.loginfo(f"Play sound {action}" )
         # Define how to get the next state
         state = self._get_state()
 
@@ -401,7 +403,7 @@ class DQNAgent:
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.action_size)
         act_values = self.model.predict(state)
-        rospy.loginfo(act_values[0])
+        
         return np.argmax(act_values[0])
 
     def replay(self, batch_size):
@@ -507,15 +509,19 @@ if __name__ == '__main__':
                 agent = DQNAgent(state_size, action_size)
                 done = False
                 batch_size = 250
-                for e in range(100):
-                    state = env.reset()
-                    for time in range(60):
+                for e in range(1000):
+                    try:
+                        state = env.reset()
+                    except:
+                        time.sleep(30)
+                        break
+                    for t in range(10):
                         action = agent.act(state)
                         next_state, reward, done, _ = env.step(action)
                         agent.remember(state, action, reward, next_state, done)
                         state = next_state
                         if done:
-                            rospy.loginfo(f"episode: {e}/{1000}, score: {time}, e: {agent.epsilon:.2}")
+                            rospy.loginfo(f"episode: {e}/{1000}, score: {t}, e: {agent.epsilon:.2}")
                             break
                         if len(agent.memory) > batch_size:
                             agent.replay(batch_size)
