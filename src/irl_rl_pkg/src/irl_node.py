@@ -434,7 +434,7 @@ class DQNAgent:
 
 if __name__ == '__main__':
     
-    reward_retrieval = 0  #0: run the real-time RL; 1: run ANN for reward function
+    reward_retrieval = 1  #0: run the real-time RL; 1: run ANN for reward function
     
     if reward_retrieval == 1:
     
