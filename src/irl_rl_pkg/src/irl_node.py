@@ -26,9 +26,11 @@ from sklearn.metrics import precision_score
 import gym
 from collections import deque
 
+from imblearn.over_sampling import RandomOverSampler
 from sklearn.model_selection import train_test_split
 import random
-        
+from sklearn.linear_model import LogisticRegression
+
 
 
 
@@ -77,7 +79,7 @@ def create_reward_network(input_dim):
     model.add(Dense(64, activation='relu'))
     model.add(Dense(128, activation='relu'))
     model.add(Dense(64, activation='relu'))
-    model.add(Dense(7, activation='softmax'))  # Output reward values for each of the 7 classes
+    model.add(Dense(3, activation='softmax'))  # Output reward values for each of the 7 classes
     return model
 
 def maxent_irl_objective_ANN(reward_model, expert_trajectories, all_states):
@@ -120,7 +122,19 @@ def ANN():
         reward_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
         early_stop = EarlyStopping(monitor='loss', patience=2)
-        history = reward_model.fit(x_train_fold, y_train_fold, epochs=100, validation_split=0.20, batch_size=128, callbacks=[early_stop])
+        oversampler = RandomOverSampler()
+
+        # Resample training data
+        X_train_resampled, y_train_resampled = oversampler.fit_resample(x_train_fold, y_train_fold)
+
+        # Assuming reward_model is defined and compiled with the appropriate architecture and loss function
+        history = reward_model.fit(X_train_resampled, y_train_resampled,
+                           epochs=100, validation_split=0.20,
+                           batch_size=128, callbacks=[EarlyStopping()],
+                           validation_data=(x_val_fold, y_val_fold))
+
+
+        #history = reward_model.fit(x_train_fold, y_train_fold, epochs=100, validation_split=0.20, batch_size=128, callbacks=[early_stop])
 
         expert_trajectories = [x_train_fold]  # Replace with your actual expert trajectories
         all_states = x_train_fold
@@ -462,17 +476,87 @@ if __name__ == '__main__':
         with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'wb') as f:
             pickle.dump(scaler, f)
 
-        y = data['sound']  
+        data['sound'] = data['sound'].apply(lambda x: 'positive' if x in ['happy', 'hello'] else ('no_sound' if x == 'no_sound' else 'other'))  
+        y = data['sound']
+
         #label_encoder = LabelEncoder()
         #y_encoded = label_encoder.fit_transform(y)
+        label_encoder = LabelEncoder()
+        y_encoded = label_encoder.fit_transform(y)
+
+        #with open('/home/arjan/Desktop/data/data_processed_csv/label_binarizer.pkl', 'wb') as f:
+        #    pickle.dump(label_binarizer, f)
+
+
+
+        # Convert text data to TF-IDF features
+    
+
+        # Train the model
+        model = LogisticRegression()
+        model.fit(X_normalized, y_encoded)
+
+       
+        # Get class labels
+        classes = label_encoder.classes_
+        class_indices = {class_name: idx for idx, class_name in enumerate(classes)}
+        # Initialize a new column for adjusted labels in the original data frame
+        data['adjusted_sound'] = data['sound']
+
+        # Predict probabilities on the full dataset
+        probabilities = model.predict_proba(X_normalized)
+        pos = 0
+        oth = 0
+        # Adjust labels based on the confidence interval
+        # Example: Calculate mean and standard deviation of predicted probabilities
+        mean_probs = np.mean(probabilities, axis=0)  # Mean probabilities for each class
+        std_probs = np.std(probabilities, axis=0)    # Standard deviation of probabilities for each class
+        rospy.loginfo(mean_probs)
+        # Example: Adjust labels based on 2 standard deviations
+        threshold_lower = mean_probs - 2 * std_probs
+        threshold_upper = mean_probs + 2 * std_probs
+        adjusted_labels = []
+       
+        for i, prob in enumerate(probabilities):
+            positive_prob = prob[class_indices['positive']]
+            other_prob = prob[class_indices['other']]
+    
+            # Adjust label if probability is within 2 standard deviations
+            if threshold_lower[class_indices['positive']] <= positive_prob <= threshold_upper[class_indices['positive']]:
+                new_label = 'positive'
+            elif threshold_lower[class_indices['other']] <= other_prob <= threshold_upper[class_indices['other']]:
+                new_label = 'other'
+            else:
+                new_label = data['sound'][i]  # Keep original label if not within threshold
+    
+            adjusted_labels.append(new_label)
+
+        data['adjusted_sound'] = adjusted_labels
+        
+        # Update y with adjusted labels
+        y = data['adjusted_sound']
+
+        counts_sound = data['sound'].value_counts()
+
+        # Count occurrences of each category in the 'adjusted_sound' column
+        counts_adjusted_sound = y.value_counts()
+
+        rospy.loginfo("Original 'sound' counts:")
+        rospy.loginfo(counts_sound)
+
+        rospy.loginfo("\nAdjusted 'sound' counts:")
+        rospy.loginfo(counts_adjusted_sound)
+        
+
+        # Convert the labels y to a one-hot encoded format
         label_binarizer = LabelBinarizer()
         y_one_hot = label_binarizer.fit_transform(y)
+
 
         with open('/home/arjan/Desktop/data/data_processed_csv/label_binarizer.pkl', 'wb') as f:
             pickle.dump(label_binarizer, f)
 
-
-
+        
         # Initialize parameters
     
         #initial_theta = np.random.rand(X.shape[1])
