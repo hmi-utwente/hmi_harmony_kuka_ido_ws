@@ -229,22 +229,25 @@ class RealTimeDataNode:
         rospy.loginfo("Real-time data node initialized and subscribers set up.")
 
     def frame_callback(self, data):
-        timestamp = rospy.get_rostime().to_sec()
-        new_data = []
-        for person_id, person in enumerate(data.persons):
-            for body_part_id, body_part in enumerate(person.bodyParts):
-                new_data.append({
-                    'timestamp': timestamp,
-                    'person_id': person_id,
-                    'body_part_id': body_part_id,
-                    'pixel_x': body_part.pixel.x,
-                    'pixel_y': body_part.pixel.y,
-                    'point_z': body_part.point.z,
-                    'score': body_part.score
-                })
-        self.dataset_openpose = self.dataset_openpose.append(new_data, ignore_index=True)
-        self.dataset_openpose.dropna(inplace=True)
-        
+        try:
+            timestamp = rospy.get_rostime().to_sec()
+            new_data = []
+            for person_id, person in enumerate(data.persons):
+                for body_part_id, body_part in enumerate(person.bodyParts):
+                    new_data.append({
+                        'timestamp': timestamp,
+                        'person_id': person_id,
+                        'body_part_id': body_part_id,
+                        'pixel_x': body_part.pixel.x,
+                        'pixel_y': body_part.pixel.y,
+                        'point_z': body_part.point.z,
+                        'score': body_part.score
+                    })
+            self.dataset_openpose = self.dataset_openpose.append(new_data, ignore_index=True)
+            self.dataset_openpose.dropna(inplace=True)
+        except:
+            pass
+    
     def obstacle_check_callback(self, data):
         timestamp = rospy.get_rostime().to_sec()
         blocked_path = 1 if data.data == 'Path is blocked. Obstacle detected.' else 0
@@ -265,51 +268,55 @@ class RealTimeDataNode:
         self.dataset_sound.dropna(inplace=True)
 
     def merge_datasets(self):
-        current_timestamp = floor(rospy.get_time())
-    
-        # Assuming each dataset has at least 500 rows
-        openpose_latest = self.dataset_openpose[-500:]
-        obstacle_check_latest = self.dataset_obstacle_check[-500:]
-        sound_latest = self.dataset_sound[-500:]
-    
-        openpose_latest['timestamp'] = openpose_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
-        obstacle_check_latest['timestamp'] = obstacle_check_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
-        sound_latest['timestamp'] = sound_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
-    
-        self.merged_dataset = pd.merge(openpose_latest, obstacle_check_latest, on='timestamp', how='outer')
-        self.merged_dataset = pd.merge(self.merged_dataset, sound_latest, on='timestamp', how='left')
-        self.merged_dataset['sound'].fillna('no_sound', inplace=True)
-    
-        rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
-        rospy.loginfo("Data merged and parameter set for the latest 500 rows.")
-
-        openpose_current = openpose_latest[openpose_latest['timestamp'] == current_timestamp]
-        obstacle_check_current = obstacle_check_latest[obstacle_check_latest['timestamp'] == current_timestamp]
-        sound_current = sound_latest[sound_latest['timestamp'] == current_timestamp]
-
-        merged_current = pd.merge(openpose_current, obstacle_check_current, on='timestamp', how='outer')
-        merged_current = pd.merge(merged_current, sound_current, on='timestamp', how='left')
-        merged_current['sound'].fillna('no_sound', inplace=True)
-
-        self.merged_dataset_fitted = merged_current[['person_id','body_part_id','pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
-
-        with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'rb') as f:
-            scaler = pickle.load(f)
-    
         try:
-            self.merged_dataset_fitted = scaler.transform(self.merged_dataset_fitted)
-        except Exception as e:
-            rospy.logerr(f"Error in scaling dataset: {e}")
+            current_timestamp = floor(rospy.get_time())
+    
+            # Assuming each dataset has at least 500 rows
+            openpose_latest = self.dataset_openpose[-500:]
+            obstacle_check_latest = self.dataset_obstacle_check[-500:]
+            sound_latest = self.dataset_sound[-500:]
+    
+            openpose_latest['timestamp'] = openpose_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
+            obstacle_check_latest['timestamp'] = obstacle_check_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
+            sound_latest['timestamp'] = sound_latest['timestamp'].apply(lambda x: floor(x)).astype(float)
+    
+            self.merged_dataset = pd.merge(openpose_latest, obstacle_check_latest, on='timestamp', how='outer')
+            self.merged_dataset = pd.merge(self.merged_dataset, sound_latest, on='timestamp', how='left')
+            self.merged_dataset['sound'].fillna('no_sound', inplace=True)
+    
+            rospy.set_param("merged_data", self.merged_dataset.to_dict(orient='list'))
+            rospy.loginfo("Data merged and parameter set for the latest 500 rows.")
 
+            openpose_current = openpose_latest[openpose_latest['timestamp'] == current_timestamp]
+            obstacle_check_current = obstacle_check_latest[obstacle_check_latest['timestamp'] == current_timestamp]
+            sound_current = sound_latest[sound_latest['timestamp'] == current_timestamp]
+
+            merged_current = pd.merge(openpose_current, obstacle_check_current, on='timestamp', how='outer')
+            merged_current = pd.merge(merged_current, sound_current, on='timestamp', how='left')
+            merged_current['sound'].fillna('no_sound', inplace=True)
+
+            self.merged_dataset_fitted = merged_current[['person_id','body_part_id','pixel_x', 'pixel_y', 'point_z', 'score', 'blocked_path']].values
+
+            with open('/home/arjan/Desktop/data/data_processed_csv/scaler.pkl', 'rb') as f:
+                scaler = pickle.load(f)
+    
+            try:
+                self.merged_dataset_fitted = scaler.transform(self.merged_dataset_fitted)
+            except Exception as e:
+                rospy.logerr(f"Error in scaling dataset: {e}")
+        except:
+            pass
 
     def run(self):
-        idx = 0
-        rate = rospy.Rate(1)  # Adjust the rate as needed
-        while not idx == 5:
-            self.merge_datasets()
-            idx += 1
-        return self.merged_dataset_fitted
-
+        try:
+            idx = 0
+            rate = rospy.Rate(1)  # Adjust the rate as needed
+            while not idx == 5:
+                self.merge_datasets()
+                idx += 1
+            return self.merged_dataset_fitted
+        except:
+            pass
 
 
 class CustomEnv(gym.Env):
@@ -317,36 +324,62 @@ class CustomEnv(gym.Env):
         super(CustomEnv, self).__init__()
         self.reward_model = reward_model
         self.state_shape = state_shape
-        self.action_space_shape = 7  # Size of the action space array
+        self.action_space_shape = 3  # Size of the action space array
         self.action_space = gym.spaces.Box(low=0, high=1, shape=(self.action_space_shape,), dtype=np.float32)  # Box space for action array
         self.observation_space = gym.spaces.Box(low=0, high=1, shape=state_shape, dtype=np.float32)
         self.state = node.merged_dataset_fitted
         self.last_action_time = time.time() 
         self.last_action = None
+        self.sound_pub = rospy.Publisher('/sound_command', String, queue_size=1)
 
+        with open('/home/arjan/Desktop/data/data_processed_csv/label_binarizer.pkl', 'rb') as f:
+            self.label_binarizer = pickle.load(f)
+
+    def _adjust_other_label(self):
+        # Generate a random suffix for 'other'
+        random_suffix = random.randint(1, 5)
+        adjusted_label = f'other{random_suffix}'
+        rospy.loginfo(f"Adjusted 'other' label to: {adjusted_label}")
+        return adjusted_label
+    
+    def _adjust_positive_label(self):
+        # Generate a random suffix for 'other'
+        random_suffix = random.randint(1, 3)
+        adjusted_label = f'other{random_suffix}'
+        rospy.loginfo(f"Adjusted 'other' label to: {adjusted_label}")
+        return adjusted_label
  
     def step(self, action):
         # Ensure minimum time interval between actions
         current_time = time.time()
         time_since_last_action = current_time - self.last_action_time
-        if time_since_last_action < 10.0:  # Adjust 1.0 second as needed
+        if time_since_last_action < 5.0:  # Adjust 1.0 second as needed
             time.sleep(10.0 - time_since_last_action)  # Wait to enforce minimum interval
             rospy.loginfo("check")
 
-        if self.last_action == action and time_since_last_action < 20.0:
-            # Skip action execution
-            reward = 0.0  # Set a zero reward or penalty for skipping
-            done = False  # Assuming episode is not done
-            rospy.loginfo("check 2")
-            return self.state, reward, done, {}
-        
+        if self.last_action == action and time_since_last_action < 10.0:
+            time.sleep(20.0 - time_since_last_action) 
+          
         # Update last action time
         self.last_action = action
         self.last_action_time = time.time()
 
         # Execute the action (play the sound)
-        #self._play_sound(action)
-        rospy.loginfo(f"Play sound {action}" )
+        arr = np.zeros(self.action_space_shape)
+        arr[action] = 1
+
+        # Decode the one-hot encoded action to its original label
+        action_label = self.label_binarizer.inverse_transform(np.array([arr]))
+
+        if action_label[0] == 'other':
+            action_label[0] = self._adjust_other_label()
+
+        if action_label[0] == 'positive':
+            action_label[0] = self._adjust_positive_label()
+        
+        rospy.loginfo(f"Play sound {action_label[0]}" )
+        self.sound_pub.publish(action_label[0])
+        
         # Define how to get the next state
         state = self._get_state()
 
@@ -448,7 +481,7 @@ class DQNAgent:
 
 if __name__ == '__main__':
     
-    reward_retrieval = 1  #0: run the real-time RL; 1: run ANN for reward function
+    reward_retrieval = 0  #0: run the real-time RL; 1: run ANN for reward function
     
     if reward_retrieval == 1:
     
@@ -615,7 +648,7 @@ if __name__ == '__main__':
                         agent.save(f"dqn_model_{e}.h5")
 
         except rospy.ROSInterruptException:
-            pass
+           pass
 
 
 
